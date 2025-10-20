@@ -2,6 +2,7 @@
 import Link from '@/components/Link.astro'
 import PageHead from '@/components/PageHead.astro'
 
+import { ScrollArea } from '@/components/ui/scroll-area'
 import Layout from '@/layouts/Layout.astro'
 ---
 
@@ -27,8 +28,8 @@ import Layout from '@/layouts/Layout.astro'
               class="gradient-text">seraph</span
             > online (and in person at this point). This website is a random collection
             of my past 1.5 years of work and learning. I started coding seriously
-            pretty late (2024) compared to many of my peers so there's an endless
-            amount of learning to do right now.
+            relatively late (2024) so there's an endless amount of learning to do
+            right now.
           </p>
 
           <p>
@@ -43,8 +44,7 @@ import Layout from '@/layouts/Layout.astro'
               external
               underline><span class="gradient-text">LunaBill</span></Link
             > (Y Combinator F25), working on automating medical-insurance call and
-            claim pipelines using LLM-based classification and data normalization.
-            Previously, I was an MLE Intern at <Link
+            claim pipelines. Previously, I was an MLE Intern at <Link
               href="https://www.foxconn.com"
               external
               underline><span class="gradient-text">Foxconn</span></Link
@@ -75,25 +75,13 @@ import Layout from '@/layouts/Layout.astro'
             I also like hunting for good cafes and hidden gems.
           </p>
 
-          <div class="mt-4 flex justify-start gap-x-6 text-sm">
-            <Link
-              href="/work"
-              class="text-foreground text-base hover:underline"
-            >
-              Work →
-            </Link>
-            <Link
-              href="/projects"
-              class="text-foreground text-base hover:underline"
-            >
-              Projects →
-            </Link>
-          </div>
-
           <div class="mt-8">
             <h3 class="text-foreground mb-3 text-sm font-semibold">News</h3>
-            <div class="h-[120px] w-full overflow-y-auto rounded-md border p-4">
-              <div class="space-y-2 text-sm">
+            <ScrollArea
+              className="h-[150px] w-full rounded-md border"
+              client:load
+            >
+              <div class="space-y-2 p-4 text-sm">
                 <div class="grid grid-cols-[110px_1fr] gap-x-2">
                   <span class="text-foreground">[2025/11]</span>
                   <span>Upcoming ICPC SoCal Regionals 2025</span>
@@ -129,7 +117,7 @@ import Layout from '@/layouts/Layout.astro'
                   <span>Attended UCSD</span>
                 </div>
               </div>
-            </div>
+            </ScrollArea>
           </div>
         </div>
       </div>
