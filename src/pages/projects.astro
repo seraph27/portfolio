@@ -1,0 +1,48 @@
+---
+import Breadcrumbs from '@/components/Breadcrumbs.astro'
+import PageHead from '@/components/PageHead.astro'
+import ProjectCard from '@/components/ProjectCard.astro'
+import Layout from '@/layouts/Layout.astro'
+import { getAllProjects } from '@/lib/data-utils'
+
+const allProjects = await getAllProjects()
+// Filter to show personal projects
+const projects = allProjects.filter(
+  (p) =>
+    p.id.includes('cp-dashboard') ||
+    p.id.includes('cp-solutions') ||
+    p.id.includes('old-blog') ||
+    p.id.includes('tsukiyomi'),
+)
+---
+
+<Layout>
+  <PageHead
+    slot="head"
+    title="Projects"
+    description="Personal projects and side work"
+  />
+  <div class="mx-auto w-full max-w-[calc(var(--container-3xl)-2rem)]">
+    <Breadcrumbs items={[{ label: 'Projects', icon: 'lucide:folder' }]} />
+  </div>
+
+  <section
+    class="mx-auto flex max-w-[calc(var(--container-3xl)-2rem)] flex-col gap-4"
+  >
+    <div class="flex flex-col gap-y-1">
+      <h1 class="mb-1 text-lg font-medium">Some projects I've built</h1>
+    </div>
+
+    <div class="flex flex-col gap-y-4">
+      <ul class="flex flex-col gap-4">
+        {
+          projects.map((project) => (
+            <li>
+              <ProjectCard project={project} />
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+</Layout>

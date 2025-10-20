@@ -1,0 +1,105 @@
+---
+import Breadcrumbs from '@/components/Breadcrumbs.astro'
+import Link from '@/components/Link.astro'
+import PageHead from '@/components/PageHead.astro'
+import WidgetCard from '@/components/WidgetCard.astro'
+import Layout from '@/layouts/Layout.astro'
+---
+
+<style>
+  .gradient-text {
+    background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+</style>
+
+<Layout>
+  <PageHead slot="head" title="playground" description="widgets and stuff" />
+  <div class="mx-auto w-full max-w-[calc(var(--container-3xl)-2rem)]">
+    <Breadcrumbs
+      items={[{ label: 'playground', icon: 'lucide:layout-grid' }]}
+    />
+  </div>
+
+  <section class="mx-auto max-w-[calc(var(--container-3xl)-2rem)]">
+    <div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+      <!-- Tech Stack Self-Rating -->
+      <WidgetCard title="tech stack">
+        <div class="space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="text-foreground text-sm">C++</span>
+            <span class="text-muted-foreground text-sm">4/10</span>
+          </div>
+          <div class="flex items-center justify-between">
+            <span class="text-foreground text-sm">Python</span>
+            <span class="text-muted-foreground text-sm">2/10</span>
+          </div>
+          <div class="flex items-center justify-between">
+            <span class="text-foreground text-sm">TypeScript</span>
+            <span class="text-muted-foreground text-sm">1.5/10</span>
+          </div>
+        </div>
+      </WidgetCard>
+
+      <!-- Currently Reading -->
+      <WidgetCard title="currently reading">
+        <div
+          class="hover:bg-muted/50 bg-muted/30 rounded-md border p-4 transition-colors"
+        >
+          <div
+            class="text-muted-foreground mb-2 text-xs tracking-wide uppercase"
+          >
+            book
+          </div>
+          <Link
+            href="https://pages.cs.wisc.edu/~remzi/OSTEP/"
+            external
+            underline
+            class="text-foreground"
+          >
+            Operating Systems: Three Easy Pieces
+          </Link>
+          <div class="text-muted-foreground mt-2 text-xs">
+            by Remzi H. Arpaci-Dusseau
+          </div>
+        </div>
+      </WidgetCard>
+
+      <!-- Last Played Music -->
+      <WidgetCard title="last played">
+        <div
+          class="hover:bg-muted/50 bg-muted/30 flex items-center gap-4 rounded-md border p-4 transition-colors"
+        >
+          <div class="text-4xl">🎵</div>
+          <div class="flex-1">
+            <div class="text-foreground text-sm font-medium">
+              Coming soon...
+            </div>
+            <div class="text-muted-foreground text-xs">
+              YouTube Music integration
+            </div>
+          </div>
+        </div>
+      </WidgetCard>
+
+      <!-- Favorite Piano Piece -->
+      <WidgetCard title="favorite piano rn" class="md:col-span-2 lg:col-span-3">
+        <div
+          class="hover:bg-muted/50 bg-muted/30 rounded-md border p-4 transition-colors"
+        >
+          <div class="text-foreground mb-1 text-base font-medium">
+            Chopin - Prelude No. 11
+          </div>
+          <div class="text-muted-foreground text-sm">
+            Op. 28 No. 11 in B major
+          </div>
+          <div class="text-muted-foreground mt-1 text-xs italic">
+            preview coming soon
+          </div>
+        </div>
+      </WidgetCard>
+    </div>
+  </section>
+</Layout>

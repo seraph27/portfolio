@@ -1,10 +1,6 @@
 import { getCollection, render, type CollectionEntry } from 'astro:content'
 import { readingTime, calculateWordCountFromHtml } from '@/lib/utils'
 
-export async function getAllAuthors(): Promise<CollectionEntry<'authors'>[]> {
-  return await getCollection('authors')
-}
-
 export async function getAllPosts(): Promise<CollectionEntry<'blog'>[]> {
   const posts = await getCollection('blog')
   return posts
@@ -99,13 +95,6 @@ export async function getAdjacentPosts(currentId: string): Promise<{
   }
 }
 
-export async function getPostsByAuthor(
-  authorId: string,
-): Promise<CollectionEntry<'blog'>[]> {
-  const posts = await getAllPosts()
-  return posts.filter((post) => post.data.authors?.includes(authorId))
-}
-
 export async function getPostsByTag(
   tag: string,
 ): Promise<CollectionEntry<'blog'>[]> {
@@ -170,6 +159,19 @@ export function groupPostsByYear(
   )
 }
 
+export function groupProjectsByYear(
+  projects: CollectionEntry<'projects'>[],
+): Record<string, CollectionEntry<'projects'>[]> {
+  return projects.reduce(
+    (acc: Record<string, CollectionEntry<'projects'>[]>, project) => {
+      const year = project.data.startDate?.getFullYear().toString() || 'Ongoing'
+      ;(acc[year] ??= []).push(project)
+      return acc
+    },
+    {},
+  )
+}
+
 export async function hasSubposts(postId: string): Promise<boolean> {
   const subposts = await getSubpostsForParent(postId)
   return subposts.length > 0
@@ -189,23 +191,6 @@ export async function getParentPost(
   const parentId = getParentId(subpostId)
   const allPosts = await getAllPosts()
   return allPosts.find((post) => post.id === parentId) || null
-}
-
-export async function parseAuthors(authorIds: string[] = []) {
-  if (!authorIds.length) return []
-
-  const allAuthors = await getAllAuthors()
-  const authorMap = new Map(allAuthors.map((author) => [author.id, author]))
-
-  return authorIds.map((id) => {
-    const author = authorMap.get(id)
-    return {
-      id,
-      name: author?.data?.name || id,
-      avatar: author?.data?.avatar || '/static/logo.png',
-      isRegistered: !!author,
-    }
-  })
 }
 
 export async function getPostById(
