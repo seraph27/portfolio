@@ -44,11 +44,11 @@
 
 :root {
   --background: oklch(0.97 0.02 308);
-  --foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
+  --foreground: oklch(0.2 0.05 295);
+  --primary: oklch(0.21 0.04 266);
   --primary-foreground: oklch(0.985 0 0);
   --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
+  --muted-foreground: oklch(0.1 0.05 295);
   --destructive: oklch(0.577 0.245 27.325);
   --border: oklch(0.922 0 0);
   --ring: oklch(0.708 0 0);

@@ -20,10 +20,10 @@ export const NAV_LINKS: SocialLink[] = [
     href: '/projects',
     label: 'projects',
   },
-  {
-    href: '/playground',
-    label: 'playground',
-  },
+  // {
+  //   href: '/playground',
+  //   label: 'playground',
+  // },
 ]
 
 export const SOCIAL_LINKS: SocialLink[] = [

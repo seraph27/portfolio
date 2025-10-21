@@ -23,133 +23,120 @@ const categoryMappings = [
   {
     keywords: ['python'],
     style: {
-      color: 'bg-blue-50 text-blue-700 dark:bg-blue-950/30 dark:text-blue-200',
       icon: 'lucide:code',
     },
   },
   {
     keywords: ['typescript', 'javascript'],
     style: {
-      color: 'bg-sky-50 text-sky-700 dark:bg-sky-950/30 dark:text-sky-200',
       icon: 'lucide:code-2',
     },
   },
   {
     keywords: ['react', 'next.js', 'nextjs'],
     style: {
-      color: 'bg-cyan-50 text-cyan-700 dark:bg-cyan-950/30 dark:text-cyan-200',
       icon: 'lucide:atom',
     },
   },
   {
     keywords: ['pytorch', 'tensorflow', 'machine learning', 'ml'],
     style: {
-      color: 'bg-orange-50 text-orange-700 dark:bg-orange-950/30 dark:text-orange-200',
       icon: 'lucide:brain',
     },
   },
   {
     keywords: ['postgresql', 'database', 'sql'],
     style: {
-      color: 'bg-indigo-50 text-indigo-700 dark:bg-indigo-950/30 dark:text-indigo-200',
       icon: 'lucide:database',
     },
   },
   {
     keywords: ['docker', 'kubernetes'],
     style: {
-      color: 'bg-blue-50 text-blue-700 dark:bg-blue-950/30 dark:text-blue-200',
       icon: 'lucide:container',
     },
   },
   {
     keywords: ['vercel', 'deployment'],
     style: {
-      color: 'bg-slate-50 text-slate-700 dark:bg-slate-950/30 dark:text-slate-200',
       icon: 'lucide:cloud',
     },
   },
   {
     keywords: ['gcp', 'aws', 'cloud'],
     style: {
-      color: 'bg-amber-50 text-amber-700 dark:bg-amber-950/30 dark:text-amber-200',
       icon: 'lucide:cloud-cog',
     },
   },
   {
     keywords: ['c++', 'cpp'],
     style: {
-      color: 'bg-violet-50 text-violet-700 dark:bg-violet-950/30 dark:text-violet-200',
       icon: 'lucide:cpu',
     },
   },
   {
     keywords: ['llama', 'whisper', 'llm'],
     style: {
-      color: 'bg-purple-50 text-purple-700 dark:bg-purple-950/30 dark:text-purple-200',
       icon: 'lucide:sparkles',
     },
   },
   {
     keywords: ['rag', 'retrieval'],
     style: {
-      color: 'bg-fuchsia-50 text-fuchsia-700 dark:bg-fuchsia-950/30 dark:text-fuchsia-200',
       icon: 'lucide:search',
+    },
+  },
+  {
+    keywords: ['scripting'],
+    style: {
+      icon: 'lucide:scroll-text',
     },
   },
   {
     keywords: ['commercial'],
     style: {
-      color: 'text-foreground bg-foreground/10',
       icon: 'lucide:building-2',
     },
   },
   {
     keywords: ['contract'],
     style: {
-      color: 'bg-emerald-50 text-emerald-700 dark:bg-emerald-950/30 dark:text-emerald-200',
       icon: 'lucide:file-text',
     },
   },
   {
     keywords: ['team'],
     style: {
-      color: 'bg-teal-50 text-teal-700 dark:bg-teal-950/30 dark:text-teal-200',
       icon: 'lucide:users',
     },
   },
   {
     keywords: ['internship', 'intern'],
     style: {
-      color: 'bg-lime-50 text-lime-700 dark:bg-lime-950/30 dark:text-lime-200',
       icon: 'lucide:briefcase',
     },
   },
   {
     keywords: ['astro'],
     style: {
-      color: 'bg-rose-50 text-rose-700 dark:bg-rose-950/30 dark:text-rose-200',
       icon: 'lucide:rocket',
     },
   },
   {
     keywords: ['figma', 'design'],
     style: {
-      color: 'bg-pink-50 text-pink-700 dark:bg-pink-950/30 dark:text-pink-200',
       icon: 'lucide:palette',
     },
   },
   {
     keywords: ['hugging face', 'transformers'],
     style: {
-      color: 'bg-yellow-50 text-yellow-700 dark:bg-yellow-950/30 dark:text-yellow-200',
       icon: 'lucide:heart',
     },
   },
   {
     keywords: ['milvus', 'vector'],
     style: {
-      color: 'bg-green-50 text-green-700 dark:bg-green-950/30 dark:text-green-200',
       icon: 'lucide:layers',
     },
   },
@@ -162,7 +149,7 @@ const getCategoryStyle = (content: string) => {
     category.keywords.some((keyword) => lowerContent.includes(keyword)),
   )
 
-  return match?.style || null
+  return match?.style
 }
 
 const content = text || (typeof children === 'string' ? children : '')
@@ -171,7 +158,12 @@ const categoryStyle = getCategoryStyle(content)
 
 <BadgeComponent
   variant={categoryStyle ? 'muted' : variant}
-  className={cn(categoryStyle?.color, className)}
+  className={cn(
+    categoryStyle && 'border-border',
+    categoryStyle && 'bg-muted',
+    categoryStyle && 'text-muted-foreground',
+    className,
+  )}
   client:load
 >
   {

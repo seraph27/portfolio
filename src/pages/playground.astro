@@ -1,22 +1,12 @@
 ---
 import Breadcrumbs from '@/components/Breadcrumbs.astro'
-import Link from '@/components/Link.astro'
 import PageHead from '@/components/PageHead.astro'
-import WidgetCard from '@/components/WidgetCard.astro'
 import Layout from '@/layouts/Layout.astro'
+import { edgeData, nodeData } from '@/lib/graph-data'
 ---
 
-<style>
-  .gradient-text {
-    background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-</style>
-
 <Layout>
-  <PageHead slot="head" title="playground" description="widgets and stuff" />
+  <PageHead slot="head" title="playground" description="interactive graph" />
   <div class="mx-auto w-full max-w-[calc(var(--container-3xl)-2rem)]">
     <Breadcrumbs
       items={[{ label: 'playground', icon: 'lucide:layout-grid' }]}
@@ -24,82 +14,368 @@ import Layout from '@/layouts/Layout.astro'
   </div>
 
   <section class="mx-auto max-w-[calc(var(--container-3xl)-2rem)]">
-    <div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-      <!-- Tech Stack Self-Rating -->
-      <WidgetCard title="tech stack">
-        <div class="space-y-2">
-          <div class="flex items-center justify-between">
-            <span class="text-foreground text-sm">C++</span>
-            <span class="text-muted-foreground text-sm">4/10</span>
-          </div>
-          <div class="flex items-center justify-between">
-            <span class="text-foreground text-sm">Python</span>
-            <span class="text-muted-foreground text-sm">2/10</span>
-          </div>
-          <div class="flex items-center justify-between">
-            <span class="text-foreground text-sm">TypeScript</span>
-            <span class="text-muted-foreground text-sm">1.5/10</span>
-          </div>
-        </div>
-      </WidgetCard>
-
-      <!-- Currently Reading -->
-      <WidgetCard title="currently reading">
-        <div
-          class="hover:bg-muted/50 bg-muted/30 rounded-md border p-4 transition-colors"
-        >
-          <div
-            class="text-muted-foreground mb-2 text-xs tracking-wide uppercase"
-          >
-            book
-          </div>
-          <Link
-            href="https://pages.cs.wisc.edu/~remzi/OSTEP/"
-            external
-            underline
-            class="text-foreground"
-          >
-            Operating Systems: Three Easy Pieces
-          </Link>
-          <div class="text-muted-foreground mt-2 text-xs">
-            by Remzi H. Arpaci-Dusseau
-          </div>
-        </div>
-      </WidgetCard>
-
-      <!-- Last Played Music -->
-      <WidgetCard title="last played">
-        <div
-          class="hover:bg-muted/50 bg-muted/30 flex items-center gap-4 rounded-md border p-4 transition-colors"
-        >
-          <div class="text-4xl">🎵</div>
-          <div class="flex-1">
-            <div class="text-foreground text-sm font-medium">
-              Coming soon...
-            </div>
-            <div class="text-muted-foreground text-xs">
-              YouTube Music integration
-            </div>
-          </div>
-        </div>
-      </WidgetCard>
-
-      <!-- Favorite Piano Piece -->
-      <WidgetCard title="favorite piano rn" class="md:col-span-2 lg:col-span-3">
-        <div
-          class="hover:bg-muted/50 bg-muted/30 rounded-md border p-4 transition-colors"
-        >
-          <div class="text-foreground mb-1 text-base font-medium">
-            Chopin - Prelude No. 11
-          </div>
-          <div class="text-muted-foreground text-sm">
-            Op. 28 No. 11 in B major
-          </div>
-          <div class="text-muted-foreground mt-1 text-xs italic">
-            preview coming soon
-          </div>
-        </div>
-      </WidgetCard>
+    <div class="flex flex-col gap-4">
+      <div
+        id="graph-container"
+        class="bg-background relative h-[600px] w-full overflow-hidden border"
+      >
+        <canvas
+          id="graph-canvas"
+          class="h-full w-full cursor-grab active:cursor-grabbing"></canvas>
+      </div>
     </div>
   </section>
+
+  <dialog
+    id="node-dialog"
+    class="bg-background fixed top-1/2 left-1/2 max-w-2xl -translate-x-1/2 -translate-y-1/2 border p-6 shadow-lg backdrop:bg-black/80"
+  >
+    <div class="mb-4 flex items-start justify-between">
+      <h2 id="dialog-title" class="text-xl font-semibold"></h2>
+      <button
+        id="close-dialog"
+        class="text-muted-foreground hover:text-foreground -mt-2 -mr-2 p-2"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          class="h-4 w-4"
+        >
+          <path d="M18 6 6 18"></path>
+          <path d="m6 6 12 12"></path>
+        </svg>
+      </button>
+    </div>
+    <p id="dialog-description" class="text-muted-foreground mb-4"></p>
+    <div id="dialog-content" class="space-y-3"></div>
+  </dialog>
 </Layout>
+
+<script>
+  import type { NodeInfo } from '@/lib/graph-data'
+  import { edgeData, nodeData } from '@/lib/graph-data'
+
+  interface GraphNode extends NodeInfo {
+    x: number
+    y: number
+    vx: number
+    vy: number
+    radius: number
+    isDragging: boolean
+  }
+
+  interface Edge {
+    source: number
+    target: number
+  }
+
+  class ForceGraph {
+    private canvas: HTMLCanvasElement
+    private ctx: CanvasRenderingContext2D
+    private nodes: GraphNode[] = []
+    private edges: Edge[] = []
+    private selectedNode: GraphNode | null = null
+    private hoveredNode: GraphNode | null = null
+    private animationId: number | null = null
+    private dialog: HTMLDialogElement
+
+    constructor(canvas: HTMLCanvasElement, dialog: HTMLDialogElement) {
+      this.canvas = canvas
+      this.dialog = dialog
+      const context = canvas.getContext('2d')
+      if (!context) throw new Error('Could not get canvas context')
+      this.ctx = context
+      this.setupCanvas()
+      this.initializeGraph()
+      this.setupEventListeners()
+      this.animate()
+    }
+
+    private setupCanvas() {
+      const rect = this.canvas.getBoundingClientRect()
+      this.canvas.width = rect.width * window.devicePixelRatio
+      this.canvas.height = rect.height * window.devicePixelRatio
+      this.ctx.scale(window.devicePixelRatio, window.devicePixelRatio)
+    }
+
+    private initializeGraph() {
+      const rect = this.canvas.getBoundingClientRect()
+      const centerX = rect.width / 2
+      const centerY = rect.height / 2
+      const radius = Math.min(rect.width, rect.height) * 0.35
+
+      for (let i = 0; i < nodeData.length; i++) {
+        const angle = (i * Math.PI * 2) / nodeData.length
+        const info = nodeData[i]
+        this.nodes.push({
+          ...info,
+          x: centerX + Math.cos(angle) * radius,
+          y: centerY + Math.sin(angle) * radius,
+          vx: 0,
+          vy: 0,
+          radius: 30,
+          isDragging: false,
+        })
+      }
+
+      this.edges = [...edgeData]
+    }
+
+    private setupEventListeners() {
+      this.canvas.addEventListener('mousedown', this.handleMouseDown.bind(this))
+      this.canvas.addEventListener('mousemove', this.handleMouseMove.bind(this))
+      this.canvas.addEventListener('mouseup', this.handleMouseUp.bind(this))
+      this.canvas.addEventListener('mouseleave', this.handleMouseUp.bind(this))
+      this.canvas.addEventListener('click', this.handleClick.bind(this))
+
+      window.addEventListener('resize', () => {
+        this.setupCanvas()
+      })
+    }
+
+    private getNodeAtPosition(x: number, y: number): GraphNode | null {
+      for (let i = this.nodes.length - 1; i >= 0; i--) {
+        const node = this.nodes[i]
+        const dx = x - node.x
+        const dy = y - node.y
+        const distance = Math.sqrt(dx * dx + dy * dy)
+        if (distance < node.radius) {
+          return node
+        }
+      }
+      return null
+    }
+
+    private handleMouseDown(e: MouseEvent) {
+      const rect = this.canvas.getBoundingClientRect()
+      const x = e.clientX - rect.left
+      const y = e.clientY - rect.top
+
+      const node = this.getNodeAtPosition(x, y)
+      if (node) {
+        node.isDragging = true
+        this.selectedNode = node
+      }
+    }
+
+    private handleMouseMove(e: MouseEvent) {
+      const rect = this.canvas.getBoundingClientRect()
+      const x = e.clientX - rect.left
+      const y = e.clientY - rect.top
+
+      if (this.selectedNode && this.selectedNode.isDragging) {
+        this.selectedNode.x = x
+        this.selectedNode.y = y
+        this.selectedNode.vx = 0
+        this.selectedNode.vy = 0
+      } else {
+        const prevHovered = this.hoveredNode
+        this.hoveredNode = this.getNodeAtPosition(x, y)
+        if (prevHovered !== this.hoveredNode) {
+          this.canvas.style.cursor = this.hoveredNode ? 'pointer' : 'grab'
+        }
+      }
+    }
+
+    private handleMouseUp() {
+      if (this.selectedNode) {
+        this.selectedNode.isDragging = false
+        this.selectedNode = null
+      }
+    }
+
+    private handleClick(e: MouseEvent) {
+      const rect = this.canvas.getBoundingClientRect()
+      const x = e.clientX - rect.left
+      const y = e.clientY - rect.top
+
+      const node = this.getNodeAtPosition(x, y)
+      if (node && !node.isDragging) {
+        this.openDialog(node)
+      }
+    }
+
+    private openDialog(node: GraphNode) {
+      const titleEl = document.getElementById('dialog-title')
+      const descEl = document.getElementById('dialog-description')
+      const contentEl = document.getElementById('dialog-content')
+
+      if (titleEl) titleEl.textContent = node.title
+      if (descEl) descEl.textContent = node.description
+
+      if (contentEl) {
+        contentEl.innerHTML = node.content
+          .map(
+            (item) =>
+              `<div class="text-sm text-muted-foreground">${item}</div>`,
+          )
+          .join('')
+      }
+
+      this.dialog.showModal()
+    }
+
+    private applyForces() {
+      const rect = this.canvas.getBoundingClientRect()
+
+      for (const edge of this.edges) {
+        const source = this.nodes[edge.source]
+        const target = this.nodes[edge.target]
+
+        if (source.isDragging || target.isDragging) continue
+
+        const dx = target.x - source.x
+        const dy = target.y - source.y
+        const distance = Math.sqrt(dx * dx + dy * dy)
+        const force = (distance - 200) * 0.01
+
+        const fx = (dx / distance) * force
+        const fy = (dy / distance) * force
+
+        source.vx += fx
+        source.vy += fy
+        target.vx -= fx
+        target.vy -= fy
+      }
+
+      for (let i = 0; i < this.nodes.length; i++) {
+        for (let j = i + 1; j < this.nodes.length; j++) {
+          const a = this.nodes[i]
+          const b = this.nodes[j]
+
+          if (a.isDragging || b.isDragging) continue
+
+          const dx = b.x - a.x
+          const dy = b.y - a.y
+          const distance = Math.sqrt(dx * dx + dy * dy)
+
+          if (distance > 0) {
+            const force = 800 / (distance * distance)
+            const fx = (dx / distance) * force
+            const fy = (dy / distance) * force
+
+            a.vx -= fx
+            a.vy -= fy
+            b.vx += fx
+            b.vy += fy
+          }
+        }
+      }
+
+      for (const node of this.nodes) {
+        if (node.isDragging) continue
+
+        node.vx *= 0.85
+        node.vy *= 0.85
+
+        node.x += node.vx
+        node.y += node.vy
+
+        node.x = Math.max(
+          node.radius,
+          Math.min(rect.width - node.radius, node.x),
+        )
+        node.y = Math.max(
+          node.radius,
+          Math.min(rect.height - node.radius, node.y),
+        )
+      }
+    }
+
+    private draw() {
+      const rect = this.canvas.getBoundingClientRect()
+      this.ctx.clearRect(0, 0, rect.width, rect.height)
+
+      this.ctx.strokeStyle = 'oklch(0.4 0.02 286)'
+      this.ctx.lineWidth = 1
+
+      for (const edge of this.edges) {
+        const source = this.nodes[edge.source]
+        const target = this.nodes[edge.target]
+
+        this.ctx.beginPath()
+        this.ctx.moveTo(source.x, source.y)
+        this.ctx.lineTo(target.x, target.y)
+        this.ctx.stroke()
+      }
+
+      for (const node of this.nodes) {
+        const isHovered = this.hoveredNode === node
+
+        this.ctx.fillStyle = 'oklch(0.25 0.01 286)'
+        this.ctx.strokeStyle = isHovered
+          ? 'oklch(0.6 0.02 286)'
+          : 'oklch(0.4 0.02 286)'
+        this.ctx.lineWidth = 1
+
+        this.ctx.beginPath()
+        this.ctx.arc(node.x, node.y, node.radius, 0, Math.PI * 2)
+        this.ctx.fill()
+        this.ctx.stroke()
+
+        this.ctx.fillStyle = 'oklch(0.7 0.02 286)'
+        this.ctx.font = '12px system-ui, -apple-system, sans-serif'
+        this.ctx.textAlign = 'center'
+        this.ctx.textBaseline = 'middle'
+
+        const lines = node.label.split('\n')
+        const lineHeight = 14
+        const startY = node.y - ((lines.length - 1) * lineHeight) / 2
+
+        for (let i = 0; i < lines.length; i++) {
+          this.ctx.fillText(lines[i], node.x, startY + i * lineHeight)
+        }
+      }
+    }
+
+    private animate() {
+      this.applyForces()
+      this.draw()
+      this.animationId = requestAnimationFrame(this.animate.bind(this))
+    }
+
+    public destroy() {
+      if (this.animationId) {
+        cancelAnimationFrame(this.animationId)
+      }
+    }
+  }
+
+  let graph: ForceGraph | null = null
+
+  document.addEventListener('astro:page-load', () => {
+    const canvas = document.getElementById('graph-canvas') as HTMLCanvasElement
+    const dialog = document.getElementById('node-dialog') as HTMLDialogElement
+
+    if (canvas && dialog) {
+      graph = new ForceGraph(canvas, dialog)
+
+      const closeBtn = document.getElementById('close-dialog')
+      if (closeBtn) {
+        closeBtn.addEventListener('click', () => {
+          dialog.close()
+        })
+      }
+
+      dialog.addEventListener('click', (e) => {
+        if (e.target === dialog) {
+          dialog.close()
+        }
+      })
+    }
+  })
+
+  document.addEventListener('astro:before-swap', () => {
+    if (graph) {
+      graph.destroy()
+      graph = null
+    }
+  })
+</script>
