@@ -43,24 +43,24 @@
 }
 
 :root {
-  --background: oklch(0.97 0.02 308);
-  --foreground: oklch(0.2 0.05 295);
-  --primary: oklch(0.21 0.04 266);
+  --background: oklch(0.98 0.01 320);
+  --foreground: oklch(0.18 0.12 330);
+  --primary: oklch(0.18 0.12 330);
   --primary-foreground: oklch(0.985 0 0);
   --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.1 0.05 295);
+  --muted-foreground: oklch(0.28 0.1 330);
   --destructive: oklch(0.577 0.245 27.325);
   --border: oklch(0.922 0 0);
   --ring: oklch(0.708 0 0);
 }
 
 [data-theme='dark'] {
-  --background: oklch(0.97 0.02 308);
-  --foreground: oklch(0.145 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
+  --background: oklch(0.98 0.02 320);
+  --foreground: oklch(0.18 0.12 330);
+  --primary: oklch(0.18 0.12 330);
+  --primary-foreground: oklch(0.985 0 0);
   --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
+  --muted-foreground: oklch(0.28 0.1 330);
   --destructive: oklch(0.704 0.191 22.216);
   --border: oklch(1 0 0 / 10%);
   --ring: oklch(0.556 0 0);
@@ -68,7 +68,7 @@
 
 @layer base {
   html {
-    font-size: 120%;
+    font-size: 100%;
   }
 
   *,

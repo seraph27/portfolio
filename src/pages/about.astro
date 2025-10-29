@@ -1,0 +1,135 @@
+---
+import Link from '@/components/Link.astro'
+import PageHead from '@/components/PageHead.astro'
+import { ScrollArea } from '@/components/ui/scroll-area'
+import Layout from '@/layouts/Layout.astro'
+---
+
+<style>
+  .gradient-text {
+    background: linear-gradient(90deg, #a78bfa 0%, #f0abfc 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    transition: background 0.3s ease;
+  }
+
+  a:hover .gradient-text {
+    background: linear-gradient(90deg, #9333ea 0%, #e879f9 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .no-underline-prose :where(a):not(:where(.not-prose, .not-prose *)) {
+    text-decoration: none;
+  }
+</style>
+
+<Layout>
+  <PageHead slot="head" title="About" />
+  <section class="mx-auto flex max-w-3xl flex-col gap-4 px-4 py-6">
+    <div class="flex flex-col gap-4">
+      <div class="flex flex-col gap-y-4">
+        <h1 class="text-2xl font-semibold">About Me</h1>
+
+        <div
+          class="prose dark:prose-invert text-muted-foreground no-underline-prose max-w-none"
+        >
+          <p>
+            Hi~ I go by the alias <span class="gradient-text">seraph</span> online
+            (and in person at this point). This website lets you peek into what I've
+            learned and worked on for the past 2 years. I didn't truly commit to
+            cs and coding seriously until 2024, so I'm currently on an endless grind
+            to bridge the gap between my interests and my skills.
+          </p>
+
+          <p>
+            I'm a final-year <span class="gradient-text">math-cs student</span> at
+            UC San Diego (UCSD). My current interests broadly lie in algorithmic
+            reasoning, ML for structured problem solving and recommender systems.
+          </p>
+
+          <p>
+            I'm currently a founding software engineer at <Link
+              href="https://lunabill.com/"
+              external><span class="gradient-text">LunaBill</span></Link
+            >
+            (Y Combinator F25), working on automating medical-insurance call and
+            claim pipelines. Previously, I was an MLE Intern at <Link
+              href="https://www.foxconn.com"
+              external><span class="gradient-text">Foxconn</span></Link
+            >, where I worked on latency optimization for multilingual voice
+            agents.
+          </p>
+
+          <p>
+            Outside of academics, I'm a <Link
+              href="https://codeforces.com/profile/shiinamashiro_"
+              external
+              ><span class="gradient-text">competitive programming</span></Link
+            > enjoyer; in particular puzzles that force you to come up with elegant
+            solutions (i.e. constructives, graphs, interactives). I also run a small
+            (but active!) problem-solving <Link
+              href="https://discord.gg/9kSBNvXVwC"
+              external
+              class="text-foreground"
+              ><span class="gradient-text">server</span></Link
+            > with 100+ members.
+          </p>
+
+          <p>
+            In my free time, I play rhythm games, piano, and listen to jpop,
+            kpop, metal, classical and many more. <br />
+            I also like hunting for good cafes and hidden gems.
+          </p>
+
+          <div class="mt-8">
+            <h3 class="text-foreground mb-3 text-sm font-semibold">News</h3>
+            <ScrollArea
+              className="h-[150px] w-full rounded-md border"
+              client:load
+            >
+              <div class="space-y-2 p-4 text-sm">
+                <div class="grid grid-cols-[110px_1fr] gap-x-2">
+                  <span class="text-foreground">[2025/11]</span>
+                  <span>Upcoming ICPC SoCal Regionals 2025</span>
+                </div>
+                <div class="grid grid-cols-[110px_1fr] gap-x-2">
+                  <span class="text-foreground">[2025/09]</span>
+                  <span
+                    >Joined <Link
+                      href="https://lunabill.com/"
+                      external
+                      underline
+                      class="text-foreground">Lunabill</Link
+                    ></span
+                  >
+                </div>
+                <div class="grid grid-cols-[110px_1fr] gap-x-2">
+                  <span class="text-foreground">[2025/06]</span>
+                  <span
+                    >Joined <Link
+                      href="https://www.foxconn.com"
+                      external
+                      underline
+                      class="text-foreground">Foxconn</Link
+                    > as MLE</span
+                  >
+                </div>
+                <div class="grid grid-cols-[110px_1fr] gap-x-2">
+                  <span class="text-foreground">[2024/11]</span>
+                  <span>ICPC SoCal Regionals 2024</span>
+                </div>
+                <div class="grid grid-cols-[110px_1fr] gap-x-2">
+                  <span class="text-foreground">[2021/09]</span>
+                  <span>Attended UCSD</span>
+                </div>
+              </div>
+            </ScrollArea>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</Layout>
