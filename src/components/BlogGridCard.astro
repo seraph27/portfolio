@@ -1,0 +1,170 @@
+---
+import {
+  getCombinedReadingTime,
+  getSubpostCount,
+  isSubpost,
+} from '@/lib/data-utils'
+import { formatDate } from '@/lib/utils'
+import { Icon } from 'astro-icon/components'
+import { Image } from 'astro:assets'
+import type { CollectionEntry } from 'astro:content'
+
+interface Props {
+  entry: CollectionEntry<'blog'>
+}
+
+const { entry } = Astro.props
+const formattedDate = formatDate(entry.data.date)
+const readTime = await getCombinedReadingTime(entry.id)
+const subpostCount = !isSubpost(entry.id) ? await getSubpostCount(entry.id) : 0
+const difficulty = entry.data.difficulty || 5
+const views = entry.data.views || Math.floor(Math.random() * 5000) + 500
+const favorites = entry.data.favorites || Math.floor(Math.random() * 100) + 10
+
+// Generate difficulty colors based on difficulty level (1-10 scale)
+const getDifficultyColors = (diff: number) => {
+  const colors = []
+  if (diff >= 1) colors.push('#4A9EFF') // blue
+  if (diff >= 3) colors.push('#4FC0B4') // cyan
+  if (diff >= 5) colors.push('#FFCC22') // yellow
+  if (diff >= 7) colors.push('#FF8C5E') // orange  
+  if (diff >= 9) colors.push('#FF6B9D') // pink
+  if (diff >= 10) colors.push('#C26BFF') // purple
+  return colors
+}
+
+const difficultyColors = getDifficultyColors(difficulty)
+---
+
+<a 
+  href={`/${entry.collection}/${entry.id}`}
+  class="group relative block overflow-hidden rounded-xl w-full max-w-[495px] h-[140px] border border-[#1f1f26] bg-[#2a2d36] shadow-[0_12px_30px_rgba(0,0,0,0.35)] transition-transform duration-150 ease-in-out hover:-translate-y-0.5"
+  data-entry-id={entry.id}
+>
+  <!-- Enlarged Background Image (dimmed, full width, visible through overlay) -->
+  {
+    entry.data.image ? (
+      <div class="absolute inset-0">
+        <Image
+          src={entry.data.image}
+          alt=""
+          width={1000}
+          height={270}
+          class="h-full w-full object-cover opacity-[0.15] blur-[2px] scale-[1.15]"
+        />
+      </div>
+    ) : (
+      <div class="absolute inset-0 bg-gradient-to-br from-purple-500/20 via-pink-500/20 to-orange-500/20" />
+    )
+  }
+
+  <!-- Semi-transparent overlay - darker on right, transparent on left -->
+  <div class="absolute inset-0 bg-gradient-to-r from-transparent via-[#353535]/55 to-[#353535]/80"></div>
+
+  <div class="relative h-full flex items-stretch">
+    <!-- Left: Small visible image (180x135px like osu) -->
+    <div class="relative w-[140px] h-[140px] flex-shrink-0 overflow-hidden">
+      {
+        entry.data.image ? (
+          <Image
+            src={entry.data.image}
+            alt={entry.data.title}
+            width={360}
+            height={270}
+            class="absolute inset-0 w-full h-full object-cover"
+          />
+        ) : (
+          <div class="h-full w-full bg-gradient-to-br from-purple-500/50 via-pink-500/50 to-orange-500/50" />
+        )
+      }
+    </div>
+
+    <!-- Right: Text content over semi-transparent background -->
+    <div class="flex flex-col justify-between px-3 py-3 h-[140px] w-full lg:w-[315px] relative z-10">
+      <!-- Top section -->
+      <div class="flex flex-col gap-0.5">
+        <!-- Title -->
+        <h3 class="text-base font-bold leading-tight text-white group-hover:text-pink-200 transition-colors duration-150 ease-in-out">
+          {entry.data.title}
+        </h3>
+        
+        <!-- Description/Subtitle -->
+        <p class="text-xs text-white/85 leading-tight">
+          {entry.data.description}
+        </p>
+
+        <!-- Mapper/Author Info -->
+        <div class="text-xs tracking-wide uppercase text-white/60 mt-0.5">
+          mapped by <span class="text-white/80">{entry.id.split('/')[0] || 'author'}</span>
+        </div>
+      </div>
+
+      <!-- Bottom section -->
+      <div class="flex flex-col gap-2 mt-1">
+        <!-- Stats Row -->
+        <div class="flex items-center gap-3 text-[11px] text-white/80">
+          <div class="flex items-center gap-1.5">
+            <Icon name="lucide:heart" class="size-3.5" />
+            <span>{favorites}</span>
+          </div>
+          <div class="flex items-center gap-1.5">
+            <Icon name="lucide:calendar" class="size-3.5" />
+            <span>{formattedDate}</span>
+          </div>
+          <div class="flex items-center gap-1.5">
+            <Icon name="lucide:eye" class="size-3.5" />
+            <span>{views.toLocaleString()}</span>
+          </div>
+        </div>
+
+        <!-- Ranked Badge + Difficulty Orbs -->
+        <div class="flex items-center gap-2">
+          <!-- Pill-shaped badge (rounded-full) -->
+          <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-[#3bd671] text-gray-900 uppercase tracking-[0.18em] leading-none">
+            Ranked
+          </span>
+          
+          <!-- Difficulty Indicators - small colored circles (2px) -->
+          <div class="difficulty-orbs flex items-center gap-1 cursor-help relative">
+            {difficultyColors.map((color) => (
+              <div 
+                class="w-2 h-2 rounded-full border border-white/20" 
+                style={`background-color: ${color}`}
+              />
+            ))}
+            
+            <!-- Tooltip on hover over difficulty circles ONLY -->
+            {entry.data.tags && entry.data.tags.length > 0 && (
+              <div class="tags-tooltip absolute bottom-full left-0 mb-2 opacity-0 pointer-events-none transition-opacity duration-150 z-20">
+                <div class="bg-popover border border-border rounded-md shadow-lg px-2 py-1.5 whitespace-nowrap">
+                  <div class="flex gap-1.5">
+                    {entry.data.tags.map((tag) => (
+                      <span class="text-[10px] text-foreground">{tag}</span>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Play Button (centered on left image, appears on hover) -->
+  <button
+    class="play-button absolute left-[90px] top-1/2 -translate-x-1/2 -translate-y-1/2 w-12 h-12 flex items-center justify-center rounded-full bg-white text-gray-900 opacity-0 group-hover:opacity-95 transition-opacity duration-150 ease-in-out z-20 shadow-lg"
+    data-audio-src={entry.data.audio}
+    aria-label="Play preview"
+    onclick="event.preventDefault(); event.stopPropagation();"
+  >
+    <Icon name="lucide:play" class="size-5 ml-0.5" />
+  </button>
+</a>
+
+<style>
+  .difficulty-orbs:hover .tags-tooltip {
+    opacity: 1;
+  }
+</style>
+

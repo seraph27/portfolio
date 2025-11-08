@@ -5,13 +5,17 @@ const blog = defineCollection({
   loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/blog' }),
   schema: ({ image }) =>
     z.object({
-      title: z.string(),
-      description: z.string(),
+      title: z.string().max(60),
+      description: z.string().max(80),
       date: z.coerce.date(),
       order: z.number().optional(),
       image: image().optional(),
       tags: z.array(z.string()).optional(),
       draft: z.boolean().optional(),
+      audio: z.string().optional(),
+      difficulty: z.number().min(1).max(10).optional(),
+      views: z.number().optional(),
+      favorites: z.number().optional(),
     }),
 })
 
