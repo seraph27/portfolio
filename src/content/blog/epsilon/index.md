@@ -6,7 +6,6 @@ description: "Placeholder Epsilon post."
 date: 2025-01-18
 tags: ["placeholder"]
 draft: false
-difficulty: 4
 views: 1100
 favorites: 25
 image: 3-galaxy-waves.jpg

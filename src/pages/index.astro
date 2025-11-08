@@ -1,4 +1,5 @@
 ---
+import AudioPlayer from '@/components/AudioPlayer.astro'
 import BlogGridCard from '@/components/BlogGridCard.astro'
 import PageHead from '@/components/PageHead.astro'
 import Layout from '@/layouts/Layout.astro'
@@ -8,46 +9,11 @@ const allPosts = await getAllPosts()
 const recentPosts = allPosts.slice(0, 12)
 ---
 
-<style>
-  /* Audio Player Styles */
-  .audio-player {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: rgba(0, 0, 0, 0.95);
-    backdrop-filter: blur(20px);
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-    padding: 0.75rem 1rem;
-    transform: translateY(100%);
-    transition: transform 0.3s ease-in-out;
-    z-index: 100;
-  }
-
-  .audio-player.active {
-    transform: translateY(0);
-  }
-
-  .progress-bar {
-    height: 4px;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 2px;
-    overflow: hidden;
-    cursor: pointer;
-  }
-
-  .progress-fill {
-    height: 100%;
-    background: linear-gradient(90deg, #ec4899, #8b5cf6);
-    transition: width 0.1s linear;
-  }
-</style>
-
 <Layout>
   <PageHead
     slot="head"
-    title="Home"
-    description="Rex Chao - Backend/ML Systems Engineer"
+    title="meow"
+    description="give me a github star! right now!"
   />
 
   <div class="mx-auto w-full max-w-[970px]">
@@ -61,156 +27,5 @@ const recentPosts = allPosts.slice(0, 12)
     </div>
   </div>
 
-  <!-- Audio Player -->
-  <div id="audio-player" class="audio-player">
-    <div class="max-w-[1400px] mx-auto flex items-center gap-4">
-      <button id="play-pause-btn" class="text-white hover:text-pink-400 transition-colors">
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" id="play-icon"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-      </button>
-      
-      <div class="flex-1">
-        <div class="flex items-center justify-between text-xs text-gray-400 mb-1">
-          <span id="current-track-title" class="text-white text-sm font-medium">No track playing</span>
-          <div class="flex items-center gap-2">
-            <span id="current-time">0:00</span>
-            <span>/</span>
-            <span id="duration">0:00</span>
-          </div>
-        </div>
-        <div class="progress-bar" id="progress-bar">
-          <div class="progress-fill" id="progress-fill"></div>
-        </div>
-      </div>
-
-      <button id="close-player-btn" class="text-gray-400 hover:text-white transition-colors">
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg>
-      </button>
-    </div>
-  </div>
+  <AudioPlayer />
 </Layout>
-
-<script>
-  class AudioPlayer {
-    private audio: HTMLAudioElement
-    private playerEl: HTMLElement | null
-    private playPauseBtn: HTMLElement | null
-    private playIcon: HTMLElement | null
-    private progressBar: HTMLElement | null
-    private progressFill: HTMLElement | null
-    private currentTimeEl: HTMLElement | null
-    private durationEl: HTMLElement | null
-    private titleEl: HTMLElement | null
-    private currentTrack: string | null = null
-
-    constructor() {
-      this.audio = new Audio()
-      this.audio.volume = 0.5 // Set default volume to 50% (not too loud)
-      this.playerEl = document.getElementById('audio-player')
-      this.playPauseBtn = document.getElementById('play-pause-btn')
-      this.playIcon = document.getElementById('play-icon')
-      this.progressBar = document.getElementById('progress-bar')
-      this.progressFill = document.getElementById('progress-fill')
-      this.currentTimeEl = document.getElementById('current-time')
-      this.durationEl = document.getElementById('duration')
-      this.titleEl = document.getElementById('current-track-title')
-
-      this.init()
-    }
-
-    private init() {
-      document.querySelectorAll('.play-button').forEach((btn) => {
-        btn.addEventListener('click', (e) => {
-          e.preventDefault()
-          e.stopPropagation()
-          const audioSrc = (btn as HTMLElement).dataset.audioSrc
-          const entryId = (btn.closest('[data-entry-id]') as HTMLElement)?.dataset.entryId
-          if (audioSrc) {
-            this.loadTrack(audioSrc, entryId || 'Unknown Track')
-          }
-        })
-      })
-
-      this.playPauseBtn?.addEventListener('click', () => this.togglePlayPause())
-      document.getElementById('close-player-btn')?.addEventListener('click', () => this.close())
-      
-      this.progressBar?.addEventListener('click', (e) => {
-        const rect = this.progressBar!.getBoundingClientRect()
-        const percent = (e.clientX - rect.left) / rect.width
-        this.audio.currentTime = percent * this.audio.duration
-      })
-
-      this.audio.addEventListener('timeupdate', () => this.updateProgress())
-      this.audio.addEventListener('loadedmetadata', () => this.updateDuration())
-      this.audio.addEventListener('ended', () => this.onTrackEnd())
-    }
-
-    private loadTrack(src: string, title: string) {
-      if (this.currentTrack === src && !this.audio.paused) {
-        this.togglePlayPause()
-        return
-      }
-
-      this.currentTrack = src
-      this.audio.src = src
-      this.audio.volume = 0.5 // Ensure volume is set to 50% when loading new track
-      this.audio.load()
-      this.audio.play()
-      
-      if (this.titleEl) this.titleEl.textContent = title
-      this.playerEl?.classList.add('active')
-      this.updatePlayPauseIcon(true)
-    }
-
-    private togglePlayPause() {
-      if (this.audio.paused) {
-        this.audio.play()
-        this.updatePlayPauseIcon(true)
-      } else {
-        this.audio.pause()
-        this.updatePlayPauseIcon(false)
-      }
-    }
-
-    private updatePlayPauseIcon(isPlaying: boolean) {
-      if (this.playIcon) {
-        this.playIcon.innerHTML = isPlaying 
-          ? '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>'
-          : '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>'
-      }
-    }
-
-    private updateProgress() {
-      const percent = (this.audio.currentTime / this.audio.duration) * 100
-      if (this.progressFill) {
-        this.progressFill.style.width = `${percent}%`
-      }
-      if (this.currentTimeEl) {
-        this.currentTimeEl.textContent = this.formatTime(this.audio.currentTime)
-      }
-    }
-
-    private updateDuration() {
-      if (this.durationEl) {
-        this.durationEl.textContent = this.formatTime(this.audio.duration)
-      }
-    }
-
-    private formatTime(seconds: number): string {
-      const mins = Math.floor(seconds / 60)
-      const secs = Math.floor(seconds % 60)
-      return `${mins}:${secs.toString().padStart(2, '0')}`
-    }
-
-    private onTrackEnd() {
-      this.updatePlayPauseIcon(false)
-    }
-
-    private close() {
-      this.audio.pause()
-      this.playerEl?.classList.remove('active')
-      this.currentTrack = null
-    }
-  }
-
-  new AudioPlayer()
-</script>

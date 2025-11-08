@@ -1,0 +1,271 @@
+---
+---
+
+<style>
+  /* Audio Player Styles */
+  .audio-player {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.95);
+    backdrop-filter: blur(20px);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 0.75rem 1rem;
+    transform: translateY(100%);
+    transition: transform 0.3s ease-in-out;
+    z-index: 100;
+  }
+
+  .audio-player.active {
+    transform: translateY(0);
+  }
+
+  .progress-bar {
+    height: 4px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 2px;
+    overflow: hidden;
+    cursor: pointer;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #ec4899, #8b5cf6);
+    transition: width 0.1s linear;
+  }
+
+  .volume-slider {
+    width: 80px;
+    height: 4px;
+    -webkit-appearance: none;
+    appearance: none;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 2px;
+    outline: none;
+    cursor: pointer;
+  }
+
+  .volume-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 12px;
+    height: 12px;
+    background: #ec4899;
+    border-radius: 50%;
+    cursor: pointer;
+  }
+
+  .volume-slider::-moz-range-thumb {
+    width: 12px;
+    height: 12px;
+    background: #ec4899;
+    border-radius: 50%;
+    cursor: pointer;
+    border: none;
+  }
+</style>
+
+<!-- Audio Player -->
+<div id="audio-player" class="audio-player">
+  <div class="max-w-[1400px] mx-auto flex items-center gap-4">
+    <button id="play-pause-btn" class="text-white hover:text-pink-400 transition-colors">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" id="play-icon"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+    </button>
+    
+    <div class="flex-1">
+      <div class="flex items-center justify-between text-xs text-gray-400 mb-1">
+        <span id="current-track-title" class="text-white text-sm font-medium">No track playing</span>
+        <div class="flex items-center gap-2">
+          <span id="current-time">0:00</span>
+          <span>/</span>
+          <span id="duration">0:00</span>
+        </div>
+      </div>
+      <div class="progress-bar" id="progress-bar">
+        <div class="progress-fill" id="progress-fill"></div>
+      </div>
+    </div>
+
+    <!-- Volume Control -->
+    <div class="flex items-center gap-2">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-gray-400"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
+      <input type="range" id="volume-slider" min="0" max="100" value="5" class="volume-slider" />
+    </div>
+
+    <button id="close-player-btn" class="text-gray-400 hover:text-white transition-colors">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg>
+    </button>
+  </div>
+</div>
+
+<script>
+  class AudioPlayer {
+    private audio: HTMLAudioElement
+    private playerEl: HTMLElement | null
+    private playPauseBtn: HTMLElement | null
+    private playIcon: HTMLElement | null
+    private progressBar: HTMLElement | null
+    private progressFill: HTMLElement | null
+    private currentTimeEl: HTMLElement | null
+    private durationEl: HTMLElement | null
+    private titleEl: HTMLElement | null
+    private volumeSlider: HTMLInputElement | null
+    private currentTrack: string | null = null
+
+    constructor() {
+      this.audio = new Audio()
+      this.audio.volume = 0.05 // Set default volume to 5%
+      this.playerEl = document.getElementById('audio-player')
+      this.playPauseBtn = document.getElementById('play-pause-btn')
+      this.playIcon = document.getElementById('play-icon')
+      this.progressBar = document.getElementById('progress-bar')
+      this.progressFill = document.getElementById('progress-fill')
+      this.currentTimeEl = document.getElementById('current-time')
+      this.durationEl = document.getElementById('duration')
+      this.titleEl = document.getElementById('current-track-title')
+      this.volumeSlider = document.getElementById('volume-slider') as HTMLInputElement
+
+      this.init()
+    }
+
+    private init() {
+      document.querySelectorAll('.play-button').forEach((btn) => {
+        btn.addEventListener('click', (e) => {
+          e.preventDefault()
+          e.stopPropagation()
+          const audioSrc = (btn as HTMLElement).dataset.audioSrc
+          const entryTitle = (btn as HTMLElement).dataset.entryTitle || 'Unknown Track'
+          if (audioSrc) {
+            this.loadTrack(audioSrc, entryTitle)
+          }
+        })
+      })
+
+      this.playPauseBtn?.addEventListener('click', () => this.togglePlayPause())
+      document.getElementById('close-player-btn')?.addEventListener('click', () => this.close())
+      
+      this.progressBar?.addEventListener('click', (e) => {
+        const rect = this.progressBar!.getBoundingClientRect()
+        const percent = (e.clientX - rect.left) / rect.width
+        this.audio.currentTime = percent * this.audio.duration
+      })
+
+      this.volumeSlider?.addEventListener('input', (e) => {
+        const volume = parseInt((e.target as HTMLInputElement).value) / 100
+        this.audio.volume = volume
+      })
+
+      this.audio.addEventListener('timeupdate', () => this.updateProgress())
+      this.audio.addEventListener('loadedmetadata', () => this.updateDuration())
+      this.audio.addEventListener('ended', () => this.onTrackEnd())
+    }
+
+    private async loadTrack(src: string, title: string) {
+      if (!src) {
+        console.error('No audio source provided')
+        return
+      }
+
+      if (this.currentTrack === src && !this.audio.paused) {
+        this.togglePlayPause()
+        return
+      }
+
+      // Audio path is already resolved in the component (e.g., /blog/alpha/audio.mp3)
+      // Just use it directly
+      let audioUrl = src
+      
+      // If it's a relative path starting with /, it's already absolute
+      // If it starts with http/https, use as-is
+      // Otherwise, try to resolve it
+      if (!src.startsWith('/') && !src.startsWith('http')) {
+        // Fallback: try relative to current page
+        const basePath = window.location.pathname.split('/').slice(0, -1).join('/') || '/'
+        audioUrl = `${basePath}/${src}`
+      }
+
+      this.currentTrack = src
+      this.audio.src = audioUrl
+      this.audio.volume = 0.05
+      
+      // Add error handler
+      this.audio.addEventListener('error', (e) => {
+        console.error('Audio load error:', e)
+        console.error('Audio URL attempted:', audioUrl)
+        console.error('Audio element error:', this.audio.error)
+      }, { once: true })
+      
+      this.audio.load()
+      
+      try {
+        await this.audio.play()
+        if (this.titleEl) this.titleEl.textContent = title
+        this.playerEl?.classList.add('active')
+        this.updatePlayPauseIcon(true)
+      } catch (error) {
+        console.error('Error playing audio:', error)
+        console.error('Audio URL attempted:', audioUrl)
+        console.error('Audio element readyState:', this.audio.readyState)
+        console.error('Audio element networkState:', this.audio.networkState)
+      }
+    }
+
+    private async togglePlayPause() {
+      if (this.audio.paused) {
+        try {
+          await this.audio.play()
+          this.updatePlayPauseIcon(true)
+        } catch (error) {
+          console.error('Error playing audio:', error)
+        }
+      } else {
+        this.audio.pause()
+        this.updatePlayPauseIcon(false)
+      }
+    }
+
+    private updatePlayPauseIcon(isPlaying: boolean) {
+      if (this.playIcon) {
+        this.playIcon.innerHTML = isPlaying 
+          ? '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>'
+          : '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>'
+      }
+    }
+
+    private updateProgress() {
+      const percent = (this.audio.currentTime / this.audio.duration) * 100
+      if (this.progressFill) {
+        this.progressFill.style.width = `${percent}%`
+      }
+      if (this.currentTimeEl) {
+        this.currentTimeEl.textContent = this.formatTime(this.audio.currentTime)
+      }
+    }
+
+    private updateDuration() {
+      if (this.durationEl) {
+        this.durationEl.textContent = this.formatTime(this.audio.duration)
+      }
+    }
+
+    private formatTime(seconds: number): string {
+      const mins = Math.floor(seconds / 60)
+      const secs = Math.floor(seconds % 60)
+      return `${mins}:${secs.toString().padStart(2, '0')}`
+    }
+
+    private onTrackEnd() {
+      this.updatePlayPauseIcon(false)
+    }
+
+    private close() {
+      this.audio.pause()
+      this.playerEl?.classList.remove('active')
+      this.currentTrack = null
+    }
+  }
+
+  new AudioPlayer()
+</script>
+

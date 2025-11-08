@@ -38,16 +38,15 @@ import Layout from '@/layouts/Layout.astro'
         >
           <p>
             Hi~ I go by the alias <span class="gradient-text">seraph</span> online
-            (and in person at this point). This website lets you peek into what I've
-            learned and worked on for the past 2 years. I didn't truly commit to
-            cs and coding seriously until 2024, so I'm currently on an endless grind
+            (and in person lol). I've only been programming seriously for less than 2 years, so I'm on a relentless grind
             to bridge the gap between my interests and my skills.
           </p>
 
           <p>
             I'm a final-year <span class="gradient-text">math-cs student</span> at
-            UC San Diego (UCSD). My current interests broadly lie in algorithmic
-            reasoning, ML for structured problem solving and recommender systems.
+            UC San Diego (UCSD). My interests lie in algorithm design and optimization, low-level AI systems (CUDA, Triton, PyTorch internals), and recommender systems. 
+            I have been daily driving <Link href="https://omarchy.org/" external><span class="gradient-text">Omarchy</span></Link>, 
+            an opinionated Arch Linux distro, and my preferred IDE is <span class="gradient-text">neovim + tmux</span>.
           </p>
 
           <p>
@@ -64,12 +63,9 @@ import Layout from '@/layouts/Layout.astro'
           </p>
 
           <p>
-            Outside of academics, I'm a <Link
-              href="https://codeforces.com/profile/shiinamashiro_"
-              external
-              ><span class="gradient-text">competitive programming</span></Link
-            > enjoyer; in particular puzzles that force you to come up with elegant
-            solutions (i.e. constructives, graphs, interactives). I also run a small
+            Outside of academics, I'm a <span class="gradient-text">competitive programming</span>
+            enjoyer; in particular puzzles that force you to come up with elegant
+            solutions (i.e. atcoder style problems). I also run a small
             (but active!) problem-solving <Link
               href="https://discord.gg/9kSBNvXVwC"
               external
@@ -79,15 +75,14 @@ import Layout from '@/layouts/Layout.astro'
           </p>
 
           <p>
-            In my free time, I play rhythm games, piano, and listen to jpop,
-            kpop, metal, classical and many more. <br />
+            In my free time, I play rhythm games, piano, and listen to a plethora of music genres. <br />
             I also like hunting for good cafes and hidden gems.
           </p>
 
           <div class="mt-8">
             <h3 class="text-foreground mb-3 text-sm font-semibold">News</h3>
             <ScrollArea
-              className="h-[150px] w-full rounded-md border"
+              className="h-auto w-full rounded-md border"
               client:load
             >
               <div class="space-y-2 p-4 text-sm">
@@ -103,7 +98,7 @@ import Layout from '@/layouts/Layout.astro'
                       external
                       underline
                       class="text-foreground">Lunabill</Link
-                    ></span
+                    > as a founding software engineer</span
                   >
                 </div>
                 <div class="grid grid-cols-[110px_1fr] gap-x-2">

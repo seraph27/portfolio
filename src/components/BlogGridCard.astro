@@ -1,10 +1,4 @@
 ---
-import {
-  getCombinedReadingTime,
-  getSubpostCount,
-  isSubpost,
-} from '@/lib/data-utils'
-import { formatDate } from '@/lib/utils'
 import { Icon } from 'astro-icon/components'
 import { Image } from 'astro:assets'
 import type { CollectionEntry } from 'astro:content'
@@ -14,79 +8,41 @@ interface Props {
 }
 
 const { entry } = Astro.props
-const formattedDate = formatDate(entry.data.date)
-const readTime = await getCombinedReadingTime(entry.id)
-const subpostCount = !isSubpost(entry.id) ? await getSubpostCount(entry.id) : 0
-const difficulty = entry.data.difficulty || 5
+const shortDate = new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric', year: 'numeric' }).format(entry.data.date)
 const views = entry.data.views || Math.floor(Math.random() * 5000) + 500
 const favorites = entry.data.favorites || Math.floor(Math.random() * 100) + 10
 
-// Group difficulties by gamemode (default to osu if not specified)
+// Group difficulties by gamemode
 const groupedDifficulties = new Map<string, Array<{ rating: number; mode: string }>>()
 if (entry.data.difficulties && entry.data.difficulties.length > 0) {
   entry.data.difficulties.forEach((diff) => {
-    const mode = diff.mode || 'osu'
+    const mode = diff.mode
     if (!groupedDifficulties.has(mode)) {
       groupedDifficulties.set(mode, [])
     }
     groupedDifficulties.get(mode)!.push({ rating: diff.rating, mode })
   })
-} else {
-  // Fallback: use difficulty field as single osu dot
-  const osuRating = ((difficulty - 1) / 9) * 8.9 + 0.1
-  groupedDifficulties.set('osu', [{ rating: osuRating, mode: 'osu' }])
 }
 
-// Convert hex to OKLCH (approximate conversions)
-const hexToOklch = (hex: string): string => {
-  const rgb = {
-    r: parseInt(hex.slice(1, 3), 16) / 255,
-    g: parseInt(hex.slice(3, 5), 16) / 255,
-    b: parseInt(hex.slice(5, 7), 16) / 255,
-  }
-  
-  // Simple RGB to OKLCH approximation
-  // For exact conversion, we'd need a proper color library
-  // Using approximate values based on the color
-  const colorMap: Record<string, string> = {
-    '#4290FB': 'oklch(0.7 0.15 250)', // light blue
-    '#4FC0FF': 'oklch(0.75 0.12 220)', // cyan
-    '#4FFFD5': 'oklch(0.85 0.1 180)', // turquoise
-    '#7CFF4F': 'oklch(0.8 0.2 140)', // lime green
-    '#F6F05C': 'oklch(0.9 0.15 100)', // yellow
-    '#FF8068': 'oklch(0.75 0.15 40)', // orange
-    '#FF4E6F': 'oklch(0.65 0.2 10)', // pink
-    '#C645B8': 'oklch(0.6 0.2 320)', // purple
-    '#6563DE': 'oklch(0.55 0.15 280)', // indigo
-    '#18158E': 'oklch(0.3 0.15 270)', // dark blue
-    '#000000': 'oklch(0.2 0 0)', // black
-  }
-  
-  return colorMap[hex] || hex
-}
-
-// Get difficulty color based on osu's color spectrum (using OKLCH where possible)
+// Get difficulty color based on osu's color spectrum
 const getDifficultyColor = (rating: number): string => {
   const domain = [0.1, 1.25, 2, 2.5, 3.3, 4.2, 4.9, 5.8, 6.7, 7.7, 9]
-  // Using OKLCH colors
   const range = [
-    'oklch(0.7 0.15 250)', // #4290FB light blue
-    'oklch(0.75 0.12 220)', // #4FC0FF cyan
-    'oklch(0.85 0.1 180)', // #4FFFD5 turquoise
-    'oklch(0.8 0.2 140)', // #7CFF4F lime green
-    'oklch(0.9 0.15 100)', // #F6F05C yellow
-    'oklch(0.75 0.15 40)', // #FF8068 orange
-    'oklch(0.65 0.2 10)', // #FF4E6F pink
-    'oklch(0.6 0.2 320)', // #C645B8 purple
-    'oklch(0.55 0.15 280)', // #6563DE indigo
-    'oklch(0.3 0.15 270)', // #18158E dark blue
-    'oklch(0.2 0 0)', // #000000 black
+    'oklch(0.7 0.15 250)', // light blue
+    'oklch(0.75 0.12 220)', // cyan
+    'oklch(0.85 0.1 180)', // turquoise
+    'oklch(0.8 0.2 140)', // lime green
+    'oklch(0.9 0.15 100)', // yellow
+    'oklch(0.75 0.15 40)', // orange
+    'oklch(0.65 0.2 10)', // pink
+    'oklch(0.6 0.2 320)', // purple
+    'oklch(0.55 0.15 280)', // indigo
+    'oklch(0.3 0.15 270)', // dark blue
+    'oklch(0.2 0 0)', // black
   ]
   
-  // Clamp rating
   const clampedRating = Math.max(0.1, Math.min(9, rating))
   
-  // Find the two colors to interpolate between
   let lowerIdx = 0
   let upperIdx = domain.length - 1
   
@@ -98,7 +54,6 @@ const getDifficultyColor = (rating: number): string => {
     }
   }
   
-  // Return the closest color (full interpolation would need proper color library)
   const lowerVal = domain[lowerIdx]
   const upperVal = domain[upperIdx]
   const t = (clampedRating - lowerVal) / (upperVal - lowerVal)
@@ -119,29 +74,29 @@ const getGamemodeIconClass = (mode: string) => {
 
 <a 
   href={`/${entry.collection}/${entry.id}`}
-  class="group relative block overflow-hidden w-full max-w-[495px] h-[140px] border border-[#1f1f26] bg-[#2a2d36] shadow-[0_12px_30px_rgba(0,0,0,0.35)] torus-font rounded-[10px]"
+  class="beatmapset-panel"
   data-entry-id={entry.id}
 >
-  <!-- Enlarged Background Image (dimmed, full width, visible through overlay) -->
+  <!-- Enlarged Background Image -->
   {
     entry.data.image ? (
-      <div class="absolute inset-0">
+      <div class="beatmapset-panel__bg-image">
         <Image
           src={entry.data.image}
           alt=""
           width={1000}
           height={270}
-          class="h-full w-full object-cover opacity-30 blur-[2px] scale-[1.15]"
+          class="beatmapset-panel__bg-image-inner"
         />
       </div>
     ) : (
-      <div class="absolute inset-0 bg-gradient-to-br from-purple-500/20 via-pink-500/20 to-orange-500/20" />
+      <div class="beatmapset-panel__bg-fallback" />
     )
   }
 
-  <div class="relative h-full flex items-stretch">
-    <!-- Left: Small visible image (180x135px like osu) -->
-    <div class="relative w-[140px] h-[140px] flex-shrink-0 overflow-hidden">
+  <div class="beatmapset-panel__content-wrapper">
+    <!-- Left: Small visible image -->
+    <div class="beatmapset-panel__cover-col beatmapset-panel__cover-col--play">
       {
         entry.data.image ? (
           <Image
@@ -149,147 +104,580 @@ const getGamemodeIconClass = (mode: string) => {
             alt={entry.data.title}
             width={360}
             height={270}
-            class="absolute inset-0 w-full h-full object-cover"
+            class="beatmapset-panel__cover-image"
           />
         ) : (
-          <div class="h-full w-full bg-gradient-to-br from-purple-500/50 via-pink-500/50 to-orange-500/50" />
+          <div class="beatmapset-panel__cover-fallback" />
         )
       }
     </div>
 
-    <!-- Right: Text content over semi-transparent background -->
-    <div class="flex flex-col justify-between h-[140px] w-full lg:w-[315px] relative z-10 card-right-bg pt-1 pr-[10px] pb-1.5 pl-[10px] rounded-l-[9px]">
-      <!-- Title row with badge container (matches beatmapset-panel__info-row--title) -->
-      <div class="flex items-center justify-between gap-2 mb-0.5">
-        <h3 class="flex-1 min-w-0 truncate text-white text-[18px] font-semibold [text-shadow:0_1px_3px_rgba(0,0,0,0.75)]">
+    <!-- Right: Text content -->
+    <div class="beatmapset-panel__info">
+      <!-- Title row -->
+      <div class="beatmapset-panel__info-row beatmapset-panel__info-row--title">
+        <h3 class="beatmapset-panel__title">
           {entry.data.title}
         </h3>
-        <div class="flex items-center gap-1 flex-shrink-0 ml-auto">
-          <!-- Badge container (matches beatmapset-panel__badge-container) -->
-        </div>
       </div>
 
-      <!-- Artist/Description row (matches beatmapset-panel__info-row--artist) -->
-      <div class="flex items-center justify-between gap-2 mb-0.5">
-        <p class="flex-1 min-w-0 truncate text-white text-sm font-semibold [text-shadow:0_1px_3px_rgba(0,0,0,0.75)]">
+      <!-- Artist/Description row -->
+      <div class="beatmapset-panel__info-row beatmapset-panel__info-row--artist">
+        <p class="beatmapset-panel__description">
           {entry.data.description}
         </p>
-        <div class="flex items-center gap-1 flex-shrink-0 ml-auto">
-          <!-- Badge container -->
-        </div>
       </div>
 
-      <!-- Mapper row (matches beatmapset-panel__info-row--mapper) -->
-      <div class="truncate mb-1 text-xs font-semibold text-[#E6E6E6]">
-        mapped by <span class="text-[#E6E6E6]">{entry.id.split('/')[0] || 'author'}</span>
+      <!-- Mapper row -->
+      <div class="beatmapset-panel__info-row beatmapset-panel__info-row--mapper">
+        <span class="beatmapset-panel__mapper">
+          authored by <span class="beatmapset-panel__author-name">seraph</span>
+        </span>
       </div>
 
-      <!-- Stats row (matches beatmapset-panel__info-row--stats) -->
-      <div class="flex items-center gap-2.5 mb-1">
-        <div class="flex items-center gap-1 text-white text-xs font-normal" title={`${favorites.toLocaleString()} favourites`}>
-          <span class="flex-shrink-0 flex items-center justify-center mr-1 text-[8px] text-[#E6E6E6]">
-            <Icon name="lucide:heart" class="size-2" />
+      <!-- Stats row -->
+      <div class="beatmapset-panel__info-row beatmapset-panel__info-row--stats">
+        <div class="beatmapset-panel__stats-item" title={`${favorites.toLocaleString()} favourites`}>
+          <span class="beatmapset-panel__stats-icon">
+            <Icon name="lucide:heart" class="beatmapset-panel__stats-icon-inner" />
           </span>
           <span>{favorites.toLocaleString()}</span>
         </div>
-        <div class="flex items-center gap-1 text-white text-xs font-normal" title={`${views.toLocaleString()} plays`}>
-          <span class="flex-shrink-0 flex items-center justify-center mr-1 text-[8px] text-[#E6E6E6]">
-            <Icon name="lucide:play-circle" class="size-2" />
+        <div class="beatmapset-panel__stats-item" title={`${views.toLocaleString()} plays`}>
+          <span class="beatmapset-panel__stats-icon">
+            <Icon name="lucide:play-circle" class="beatmapset-panel__stats-icon-inner" />
           </span>
           <span>{views.toLocaleString()}</span>
         </div>
-        <div class="flex items-center gap-1 text-white text-xs font-normal">
-          <span class="flex-shrink-0 flex items-center justify-center mr-1 text-[8px] text-[#E6E6E6]">
-            <Icon name="lucide:calendar" class="size-2" />
+      </div>
+
+      <!-- Date row -->
+      <div class="beatmapset-panel__info-row beatmapset-panel__info-row--date">
+        <div class="beatmapset-panel__stats-item">
+          <span class="beatmapset-panel__stats-icon">
+            <Icon name="lucide:calendar" class="beatmapset-panel__stats-icon-inner" />
           </span>
-          <span>{formattedDate}</span>
+          <span>{shortDate}</span>
         </div>
       </div>
 
-      <!-- Extra row: Status badge + Difficulty dots (matches beatmapset-panel__info-row--extra) -->
-      <div class="flex items-center gap-2 mt-auto">
-        <div class="flex items-center">
-          <span class="px-[5px] py-0 rounded-full bg-[#3bd671] text-white uppercase text-xs font-extrabold leading-[14px]">
+      <!-- Extra row: Status badge + Difficulty dots -->
+      <div class="beatmapset-panel__info-row beatmapset-panel__info-row--extra extra-row" data-entry-id={entry.id}>
+        <div class="beatmapset-panel__extra-item">
+          <span class="beatmapset-panel__status-badge">
             Ranked
           </span>
         </div>
-        <!-- Difficulty dots containers (one per gamemode, matches beatmapset-panel__extra-item--dots) -->
+        <!-- Difficulty dots containers -->
         {[...groupedDifficulties].map(([mode, difficulties]) => (
-          <div class="flex items-center relative mx-[3px]">
-            <!-- Gamemode icon (matches beatmapset-panel__beatmap-icon) -->
-            <div class="flex mr-0.5 text-sm" title={`${mode} mode`}>
+          <div class="beatmapset-panel__extra-item beatmapset-panel__extra-item--dots">
+            <!-- Gamemode icon -->
+            <div class="beatmapset-panel__beatmap-icon" title={`${mode} mode`}>
               <i class={getGamemodeIconClass(mode)}></i>
             </div>
-            <!-- Difficulty dots for this gamemode -->
-            <div class="flex items-center cursor-help relative">
+            <!-- Difficulty dots -->
+            <div class="beatmapset-panel__beatmap-dots">
               {difficulties.map((diff) => (
                 <div 
-                  class="rounded-full flex-shrink-0 w-[6px] h-3 mr-[1px]" 
+                  class="beatmapset-panel__beatmap-dot" 
                   style={`background-color: ${getDifficultyColor(diff.rating)};`}
                 />
               ))}
-              
-              <!-- Tooltip on hover over difficulty dots -->
-              {entry.data.tags && entry.data.tags.length > 0 && (
-                <div class="difficulty-tooltip absolute bottom-full left-0 mb-2 opacity-0 pointer-events-none transition-opacity duration-150 z-20">
-                  <div class="bg-popover border border-border rounded-md shadow-lg px-2 py-1.5 whitespace-nowrap">
-                    <div class="flex gap-1.5">
-                      {entry.data.tags.map((tag) => (
-                        <span class="text-[10px] text-foreground">{tag}</span>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              )}
             </div>
           </div>
         ))}
+        
+        <!-- Difficulty Popup -->
+        <div class="difficulty-popup" data-popup-id={entry.id}>
+          <div class="difficulty-popup__content">
+            <div class="difficulty-popup__title">Difficulties</div>
+            <div class="difficulty-popup__list">
+              {[...groupedDifficulties].map(([mode, difficulties]) => (
+                <div class="difficulty-popup__item">
+                  <i class={getGamemodeIconClass(mode)}></i>
+                  <span class="difficulty-popup__mode">{mode}</span>
+                  <span class="difficulty-popup__count">({difficulties.length})</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Menu Container (expands on hover) -->
+    <div class="beatmapset-panel__menu-container">
+      <div class="beatmapset-panel__menu">
+        <!-- Menu items would go here (love/download buttons) -->
+        <!-- Not implementing buttons, just the container logic -->
       </div>
     </div>
   </div>
 
-  <!-- Play Button (centered on left image, appears on hover) -->
+  <!-- Play Button -->
   <button
-    class="play-button absolute left-[70px] top-1/2 -translate-x-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white opacity-0 group-hover:opacity-95 transition-opacity duration-150 ease-in-out z-20 shadow-lg flex items-center justify-center"
-    data-audio-src={entry.data.audio}
+    class="beatmapset-panel__play-button play-button"
+    data-audio-src={entry.data.audio ? `/blog/${entry.id}/${entry.data.audio.replace('./', '')}` : ''}
+    data-entry-title={entry.data.title}
     aria-label="Play preview"
     onclick="event.preventDefault(); event.stopPropagation();"
   >
-    <Icon name="lucide:play" class="size-5 ml-0.5 text-gray-900" />
+    <Icon name="lucide:play" class="beatmapset-panel__play-icon" />
   </button>
 </a>
 
+<script>
+  // Difficulty popup hover logic (matches osu's delayed show/hide)
+  document.addEventListener('DOMContentLoaded', () => {
+    const timeouts: Record<string, number> = {}
+    
+    document.querySelectorAll('.extra-row').forEach((row) => {
+      const entryId = (row as HTMLElement).dataset.entryId
+      const popup = document.querySelector(`[data-popup-id="${entryId}"]`) as HTMLElement
+      
+      if (!popup) return
+      
+      const updatePopupPosition = () => {
+        const cardRect = row.closest('.beatmapset-panel')?.getBoundingClientRect()
+        if (cardRect) {
+          popup.style.left = `${cardRect.left + window.scrollX}px`
+          popup.style.top = `${cardRect.bottom + window.scrollY}px`
+          popup.style.width = `${cardRect.width}px`
+        }
+      }
+      
+      const delayedShow = () => {
+        window.clearTimeout(timeouts[entryId!])
+        if (popup.style.opacity === '1') return
+        
+        updatePopupPosition()
+        timeouts[entryId!] = window.setTimeout(() => {
+          popup.style.opacity = '1'
+          popup.style.pointerEvents = 'auto'
+        }, 100)
+      }
+      
+      const delayedHide = () => {
+        window.clearTimeout(timeouts[entryId!])
+        if (popup.style.opacity === '0') return
+        
+        timeouts[entryId!] = window.setTimeout(() => {
+          popup.style.opacity = '0'
+          popup.style.pointerEvents = 'none'
+        }, 500)
+      }
+      
+      const keepOpen = () => {
+        window.clearTimeout(timeouts[entryId!])
+        popup.style.opacity = '1'
+        popup.style.pointerEvents = 'auto'
+      }
+      
+      row.addEventListener('mouseenter', delayedShow)
+      row.addEventListener('mouseleave', delayedHide)
+      popup.addEventListener('mouseenter', keepOpen)
+      popup.addEventListener('mouseleave', delayedHide)
+      
+      window.addEventListener('scroll', updatePopupPosition, true)
+      window.addEventListener('resize', updatePopupPosition)
+    })
+  })
+</script>
+
 <style>
-  /* Tooltip hover */
-  .cursor-help:hover .difficulty-tooltip {
-    opacity: 1;
-  }
-  
-  /* Apply Torus font to all text in blog cards (osu-style) */
-  .torus-font,
-  .torus-font * {
+  /* Beatmapset Panel - Main Container */
+  .beatmapset-panel {
+    --info-bg: linear-gradient(0.25turn, hsla(270, 12%, 35%, 0.5), hsla(270, 12%, 35%, 0.5));
+    --menu-container-width: 10px;
+    --menu-opacity: 0;
+    --menu-bg: hsl(270, 12%, 30%);
+    --play-bg: transparent;
+    --play-icon-opacity: 0;
+    --stats-opacity: 1;
+    --info-padding-right: 4px;
+    
+    position: relative;
+    display: block;
+    overflow: hidden;
+    width: 100%;
+    max-width: 475px;
+    height: 140px;
+    background-color: hsl(270, 12%, 35%);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
+    border-radius: 10px;
     font-family: 'Torus', ui-sans-serif, system-ui, sans-serif;
+    transition: all 150ms ease-in-out;
   }
-  
-  /* Right side background gradient (default) */
-  .card-right-bg {
-    background: linear-gradient(0.25turn, rgba(42, 45, 54, 0.6), rgba(42, 45, 54, 1));
+
+  .beatmapset-panel:hover {
+    --info-bg: linear-gradient(0.25turn, hsla(270, 12%, 25%, 0.5), hsla(270, 12%, 25%, 0.5));
+    --menu-container-width: 30px;
+    --menu-opacity: 1;
+    --play-bg: hsla(313, 44%, 44%, 0.8);
+    --play-icon-opacity: 1;
+    --info-padding-right: 10px;
   }
-  
-  /* Right side background gradient (hover) */
-  .group:hover .card-right-bg {
-    background: linear-gradient(0.25turn, rgba(53, 57, 68, 0.6), rgba(53, 57, 68, 1));
+
+  /* Background Image */
+  .beatmapset-panel__bg-image {
+    position: absolute;
+    inset: 0;
   }
-  
-  /* Mobile: solid background */
+
+  .beatmapset-panel__bg-image-inner {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    opacity: 0.3;
+    filter: blur(2px);
+    transform: scale(1.15);
+  }
+
+  .beatmapset-panel__bg-fallback {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(168, 85, 247, 0.2), rgba(236, 72, 153, 0.2), rgba(249, 115, 22, 0.2));
+  }
+
+  /* Content Wrapper */
+  .beatmapset-panel__content-wrapper {
+    position: relative;
+    height: 100%;
+    display: flex;
+    align-items: stretch;
+  }
+
+  /* Left Cover Column */
+  .beatmapset-panel__cover-col {
+    position: relative;
+    width: 140px;
+    height: 140px;
+    flex-shrink: 0;
+    overflow: hidden;
+    transition: background-color 150ms ease-in-out;
+  }
+
+  .beatmapset-panel:hover .beatmapset-panel__cover-col--play {
+    background-color: var(--play-bg);
+  }
+
+  .beatmapset-panel__cover-image {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .beatmapset-panel__cover-fallback {
+    height: 100%;
+    width: 100%;
+    background: linear-gradient(135deg, rgba(168, 85, 247, 0.5), rgba(236, 72, 153, 0.5), rgba(249, 115, 22, 0.5));
+  }
+
+  /* Right Info Area */
+  .beatmapset-panel__info {
+    flex: 1;
+    min-width: 10px;
+    padding: 4px var(--info-padding-right) 6px 10px;
+    position: relative;
+    background: var(--info-bg);
+    display: flex;
+    flex-direction: column;
+    /* Adjust radius to prevent bleeding of the underneath cover when hover background is active */
+    border-radius: 9px 0 0 9px;
+    transition: padding-right 150ms ease-in-out, background 150ms ease-in-out;
+  }
+
+  /* Info Rows */
+  .beatmapset-panel__info-row {
+    display: flex;
+    align-items: baseline;
+    padding: 0;
+    margin: 0;
+  }
+
+  .beatmapset-panel__info-row--title {
+    margin-bottom: 0px;
+  }
+
+  .beatmapset-panel__info-row--artist {
+    margin-bottom: 2px;
+  }
+
+  .beatmapset-panel__info-row--mapper {
+    margin-bottom: 4px;
+  }
+
+  .beatmapset-panel__info-row--stats {
+    margin-bottom: 0px;
+    gap: 10px;
+    opacity: var(--stats-opacity);
+    transition: opacity 150ms ease-in-out;
+  }
+
+  .beatmapset-panel__info-row--date {
+    margin-bottom: 1px;
+    gap: 10px;
+    opacity: var(--stats-opacity);
+    transition: opacity 150ms ease-in-out;
+  }
+
+  .beatmapset-panel__info-row--extra {
+    margin-top: auto;
+    margin-left: -3px;
+    margin-right: -3px;
+    align-items: center;
+    gap: 4px;
+  }
+
+  /* Title */
+  .beatmapset-panel__title {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: white;
+    font-size: 18px;
+    font-weight: 600;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.75);
+  }
+
+  /* Description */
+  .beatmapset-panel__description {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: white;
+    font-size: 14px;
+    font-weight: 600;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.75);
+  }
+
+  /* Mapper */
+  .beatmapset-panel__mapper {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 12px;
+    font-weight: 600;
+    color: #E6E6E6;
+  }
+
+  .beatmapset-panel__author-name {
+    color: hsl(200, 40%, 75%);
+  }
+
+  /* Stats */
+  .beatmapset-panel__stats-item {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    color: white;
+    font-size: 12px;
+    font-weight: 400;
+  }
+
+  .beatmapset-panel__stats-icon {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 4px;
+    font-size: 8px;
+    color: #E6E6E6;
+  }
+
+  .beatmapset-panel__stats-icon-inner {
+    width: 8px;
+    height: 8px;
+  }
+
+  /* Extra Items */
+  .beatmapset-panel__extra-item {
+    margin: 0 3px;
+    display: flex;
+    align-items: center;
+  }
+
+  .beatmapset-panel__extra-item--dots {
+    align-items: center;
+  }
+
+  /* Status Badge */
+  .beatmapset-panel__status-badge {
+    padding: 0 5px;
+    border-radius: 10000px;
+    background-color: #3bd671;
+    color: hsl(0, 0%, 10%);
+    text-transform: uppercase;
+    font-size: 12px;
+    font-weight: 800;
+    line-height: 14px;
+  }
+
+  /* Beatmap Icon */
+  .beatmapset-panel__beatmap-icon {
+    margin-right: 2px;
+    font-size: 14px;
+    display: flex;
+  }
+
+  /* Beatmap Dots */
+  .beatmapset-panel__beatmap-dots {
+    display: flex;
+    align-items: center;
+    cursor: help;
+    position: relative;
+  }
+
+  .beatmapset-panel__beatmap-dot {
+    margin-right: 1px;
+    width: 6px;
+    height: 12px;
+    border-radius: 10000px;
+    flex-shrink: 0;
+  }
+
+  /* Difficulty Popup */
+  .difficulty-popup {
+    position: fixed;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 150ms ease-in-out;
+    z-index: 50;
+  }
+
+  .difficulty-popup__content {
+    border-radius: 10px;
+    border: 1px solid #1f1f26;
+    background-color: #2a2d36;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    padding: 12px;
+    min-width: 200px;
+  }
+
+  .difficulty-popup__title {
+    font-size: 12px;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.6);
+    margin-bottom: 8px;
+  }
+
+  .difficulty-popup__list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .difficulty-popup__item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    color: white;
+  }
+
+  .difficulty-popup__mode {
+    text-transform: capitalize;
+  }
+
+  .difficulty-popup__count {
+    color: rgba(255, 255, 255, 0.6);
+  }
+
+  /* Play Button */
+  .beatmapset-panel__play-button {
+    position: absolute;
+    left: 70px;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 48px;
+    height: 48px;
+    opacity: var(--play-icon-opacity);
+    transition: opacity 150ms ease-in-out;
+    z-index: 20;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+  }
+
+  .beatmapset-panel__play-icon {
+    width: 32px;
+    height: 32px;
+    color: white;
+    filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.3));
+  }
+
+  /* Menu Container */
+  .beatmapset-panel__menu-container {
+    width: var(--menu-container-width);
+    overflow: hidden;
+    flex: none;
+    background-color: var(--menu-bg);
+    position: relative;
+    border-radius: 0 10px 10px 0;
+    transition: width 150ms ease-in-out;
+  }
+
+  @media (min-width: 1025px) {
+    .beatmapset-panel__menu-container {
+      overflow: visible;
+    }
+  }
+
+  /* Inverted corner paths for smooth connection */
+  .beatmapset-panel__menu-container::before,
+  .beatmapset-panel__menu-container::after {
+    content: "";
+    width: 10px;
+    height: 10px;
+    position: absolute;
+    background-color: inherit;
+    right: 100%;
+  }
+
+  .beatmapset-panel__menu-container::before {
+    top: 0;
+    clip-path: path("M11 -1 L11 10 L10 10 A10 10 0 0 0 0 0 L0 -1 Z");
+  }
+
+  .beatmapset-panel__menu-container::after {
+    bottom: 0;
+    clip-path: path("M11 11 L11 0 L10 0 A10 10 0 0 1 0 10 L 0 11 Z");
+  }
+
+  /* Menu */
+  .beatmapset-panel__menu {
+    width: 100%;
+    height: 100%;
+    opacity: var(--menu-opacity);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    font-size: 12px;
+    color: #E6E6E6;
+    transition: opacity 150ms ease-in-out;
+    pointer-events: auto;
+    overflow: hidden;
+  }
+
+  /* Mobile */
   @media (max-width: 1024px) {
-    .card-right-bg {
-      background-color: rgba(45, 49, 60, 1);
+    .beatmapset-panel__info {
+      background-color: hsla(270, 12%, 30%, 0.5);
+      padding-right: 10px;
     }
     
-    .group:hover .card-right-bg {
-      background-color: rgba(45, 49, 60, 1);
+    .beatmapset-panel:hover .beatmapset-panel__info {
+      background-color: hsla(270, 12%, 30%, 0.5);
     }
   }
 </style>
-

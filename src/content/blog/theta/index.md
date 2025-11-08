@@ -4,7 +4,6 @@ description: "Placeholder Theta post."
 date: 2025-01-15
 tags: ["placeholder"]
 draft: false
-difficulty: 3
 views: 900
 favorites: 18
 image: 2-cat-waves-mocha.png

@@ -4,7 +4,6 @@ description: "Placeholder Iota post."
 date: 2025-01-14
 tags: ["placeholder"]
 draft: false
-difficulty: 3
 views: 820
 favorites: 16
 image: 3-osaka-jade-bg.jpg

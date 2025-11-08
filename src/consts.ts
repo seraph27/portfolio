@@ -3,7 +3,7 @@ import type { IconMap, SocialLink, Site } from '@/types'
 export const SITE: Site = {
   title: 'seraph',
   description:
-    'give me a github star. right now.',
+    'give me a github star! right now!',
   href: 'https://seraph.tw',
   author: 'seraph',
   locale: 'en-US',
