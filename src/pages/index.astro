@@ -16,9 +16,9 @@ const recentPosts = allPosts.slice(0, 12)
     description="give me a github star! right now!"
   />
 
-  <div class="mx-auto w-full max-w-[970px]">
+  <div class="mx-auto w-full max-w-[970px] px-4 lg:px-0">
     <!-- Blog Grid -->
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-2">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-2 place-items-center lg:place-items-stretch">
       {
         recentPosts.map((post) => (
           <BlogGridCard entry={post} />
