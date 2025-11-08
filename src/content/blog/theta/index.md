@@ -7,6 +7,7 @@ draft: false
 difficulty: 3
 views: 900
 favorites: 18
+image: 2-cat-waves-mocha.png
 ---
 
 <!-- markdownlint-disable-file -->

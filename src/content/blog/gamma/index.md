@@ -7,6 +7,7 @@ draft: false
 difficulty: 6
 views: 1300
 favorites: 32
+image: 6-purpled-night.jpg
 ---
 
 <!-- markdownlint-disable-file -->

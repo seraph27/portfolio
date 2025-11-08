@@ -42,6 +42,93 @@
   font-display: swap;
 }
 
+/* Torus Font Family - Used for osu-style blog cards */
+@font-face {
+  font-family: 'Torus';
+  src: url('/fonts/torus/Torus-Thin.otf') format('opentype');
+  font-weight: 100;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Torus';
+  src: url('/fonts/torus/Torus-Light.otf') format('opentype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Torus';
+  src: url('/fonts/torus/Torus-Regular.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Torus';
+  src: url('/fonts/torus/Torus-SemiBold.otf') format('opentype');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Torus';
+  src: url('/fonts/torus/Torus-Bold.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Torus';
+  src: url('/fonts/torus/Torus-Heavy.otf') format('opentype');
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* FontAwesomeExtra font for gamemode icons */
+@font-face {
+  font-family: 'FontAwesomeExtra';
+  src: url('/fonts/extra/extra.woff2') format('woff2'),
+       url('/fonts/extra/extra.woff') format('woff'),
+       url('/fonts/extra/extra.ttf') format('truetype'),
+       url('/fonts/extra/extra.svg#extra') format('svg');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+.fa-extra-mode-osu::before,
+.fa-extra-mode-fruits::before,
+.fa-extra-mode-mania::before,
+.fa-extra-mode-taiko::before {
+  font-family: 'FontAwesomeExtra';
+  font-style: normal;
+  font-weight: normal;
+  color: white;
+}
+
+.fa-extra-mode-osu::before {
+  content: '\e800';
+}
+
+.fa-extra-mode-fruits::before {
+  content: '\e801';
+}
+
+.fa-extra-mode-mania::before {
+  content: '\e802';
+}
+
+.fa-extra-mode-taiko::before {
+  content: '\e803';
+}
+
 :root {
   --background: oklch(0.98 0.01 320);
   --foreground: oklch(0.18 0.12 330);

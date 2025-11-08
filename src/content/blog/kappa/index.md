@@ -7,6 +7,7 @@ draft: false
 difficulty: 2
 views: 760
 favorites: 14
+image: 2-osaka-jade-bg.jpg
 ---
 
 <!-- markdownlint-disable-file -->

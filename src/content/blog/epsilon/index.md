@@ -9,6 +9,7 @@ draft: false
 difficulty: 4
 views: 1100
 favorites: 25
+image: 3-galaxy-waves.jpg
 ---
 
 <!-- markdownlint-disable-file -->

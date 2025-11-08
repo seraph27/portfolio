@@ -1,4 +1,3 @@
-alpha
 ---
 title: "Delta"
 description: "Placeholder Delta post."
@@ -8,6 +7,7 @@ draft: false
 difficulty: 5
 views: 1200
 favorites: 28
+image: screenshot-2025-11-05_12-21-56.png
 ---
 
 <!-- markdownlint-disable-file -->

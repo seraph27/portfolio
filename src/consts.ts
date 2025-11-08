@@ -1,11 +1,11 @@
 import type { IconMap, SocialLink, Site } from '@/types'
 
 export const SITE: Site = {
-  title: 'Rex Chao',
+  title: 'seraph',
   description:
-    'Backend/ML Systems Engineer specializing in machine learning, software development, and scalable systems.',
-  href: 'https://rexchao.dev',
-  author: 'Rex Chao',
+    'give me a github star. right now.',
+  href: 'https://seraph.tw',
+  author: 'seraph',
   locale: 'en-US',
   featuredPostCount: 3,
   postsPerPage: 5,

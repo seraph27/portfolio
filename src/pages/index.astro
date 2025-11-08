@@ -52,7 +52,7 @@ const recentPosts = allPosts.slice(0, 12)
 
   <div class="mx-auto w-full max-w-[970px]">
     <!-- Blog Grid -->
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-[20px]">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-2">
       {
         recentPosts.map((post) => (
           <BlogGridCard entry={post} />
@@ -104,6 +104,7 @@ const recentPosts = allPosts.slice(0, 12)
 
     constructor() {
       this.audio = new Audio()
+      this.audio.volume = 0.5 // Set default volume to 50% (not too loud)
       this.playerEl = document.getElementById('audio-player')
       this.playPauseBtn = document.getElementById('play-pause-btn')
       this.playIcon = document.getElementById('play-icon')
@@ -151,6 +152,7 @@ const recentPosts = allPosts.slice(0, 12)
 
       this.currentTrack = src
       this.audio.src = src
+      this.audio.volume = 0.5 // Ensure volume is set to 50% when loading new track
       this.audio.load()
       this.audio.play()
       

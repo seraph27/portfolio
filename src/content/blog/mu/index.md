@@ -7,6 +7,7 @@ draft: false
 difficulty: 2
 views: 650
 favorites: 10
+image: 1-catppuccin.png
 ---
 
 <!-- markdownlint-disable-file -->

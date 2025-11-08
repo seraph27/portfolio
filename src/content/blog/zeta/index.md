@@ -7,6 +7,7 @@ draft: false
 difficulty: 6
 views: 1000
 favorites: 22
+image: 3-cat-blue-eye-mocha.png
 ---
 
 <!-- markdownlint-disable-file -->
