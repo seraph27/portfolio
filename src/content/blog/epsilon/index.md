@@ -8,7 +8,7 @@ tags: ["placeholder"]
 draft: false
 views: 1100
 favorites: 25
-image: 3-galaxy-waves.jpg
+image: wallhaven-zp85do.png
 ---
 
 <!-- markdownlint-disable-file -->

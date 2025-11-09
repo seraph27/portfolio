@@ -124,6 +124,16 @@ const calloutConfig = {
     textColor: 'text-sky-700 dark:text-sky-300',
     icon: 'lucide:list',
   },
+  question: {
+    style: 'border-blue-400 dark:bg-blue-950/5',
+    textColor: 'text-blue-600 dark:text-blue-300',
+    icon: 'lucide:help-circle',
+  },
+  insight: {
+    style: 'border-pink-500 dark:bg-pink-950/5',
+    textColor: 'text-pink-700 dark:text-pink-300',
+    icon: 'lucide:lightbulb',
+  },
 } as const
 
 const capitalize = (str: string) => str.charAt(0).toUpperCase() + str.slice(1)

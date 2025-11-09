@@ -2,6 +2,7 @@
 import { Icon } from 'astro-icon/components'
 import { Image } from 'astro:assets'
 import type { CollectionEntry } from 'astro:content'
+import DescriptionWithTooltip from '@/components/DescriptionWithTooltip'
 
 interface Props {
   entry: CollectionEntry<'blog'>
@@ -123,9 +124,7 @@ const getGamemodeIconClass = (mode: string) => {
 
       <!-- Artist/Description row -->
       <div class="beatmapset-panel__info-row beatmapset-panel__info-row--artist">
-        <p class="beatmapset-panel__description">
-          {entry.data.description}
-        </p>
+        <DescriptionWithTooltip description={entry.data.description} client:load />
       </div>
 
       <!-- Mapper row -->
@@ -231,6 +230,7 @@ const getGamemodeIconClass = (mode: string) => {
   document.addEventListener('DOMContentLoaded', () => {
     const timeouts: Record<string, number> = {}
     
+    
     document.querySelectorAll('.extra-row').forEach((row) => {
       const entryId = (row as HTMLElement).dataset.entryId
       const popup = document.querySelector(`[data-popup-id="${entryId}"]`) as HTMLElement
@@ -287,10 +287,10 @@ const getGamemodeIconClass = (mode: string) => {
 <style>
   /* Beatmapset Panel - Main Container */
   .beatmapset-panel {
-    --info-bg: linear-gradient(0.25turn, hsla(270, 12%, 35%, 0.5), hsla(270, 12%, 35%, 0.5));
+    --info-bg: linear-gradient(0.25turn, hsla(207, 7%, 37%, 0.4), hsla(207, 7%, 37%, 0.4));
     --menu-container-width: 10px;
     --menu-opacity: 0;
-    --menu-bg: hsl(270, 12%, 30%);
+    --menu-bg: hsl(207, 7%, 32%);
     --play-bg: transparent;
     --play-icon-opacity: 0;
     --stats-opacity: 1;
@@ -302,7 +302,7 @@ const getGamemodeIconClass = (mode: string) => {
     width: 100%;
     max-width: 475px;
     height: 140px;
-    background-color: hsl(270, 12%, 35%);
+    background-color: hsl(207, 7%, 37%);
     box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
     border-radius: 10px;
     font-family: 'Torus', ui-sans-serif, system-ui, sans-serif;
@@ -310,7 +310,7 @@ const getGamemodeIconClass = (mode: string) => {
   }
 
   .beatmapset-panel:hover {
-    --info-bg: linear-gradient(0.25turn, hsla(270, 12%, 25%, 0.5), hsla(270, 12%, 25%, 0.5));
+    --info-bg: linear-gradient(0.25turn, hsla(207, 7%, 27%, 0.4), hsla(207, 7%, 27%, 0.4));
     --menu-container-width: 30px;
     --menu-opacity: 1;
     --play-bg: hsla(313, 44%, 44%, 0.8);
@@ -672,12 +672,12 @@ const getGamemodeIconClass = (mode: string) => {
   /* Mobile */
   @media (max-width: 1024px) {
     .beatmapset-panel__info {
-      background-color: hsla(270, 12%, 30%, 0.5);
+      background-color: hsla(207, 7%, 32%, 0.4);
       padding-right: 10px;
     }
     
     .beatmapset-panel:hover .beatmapset-panel__info {
-      background-color: hsla(270, 12%, 30%, 0.5);
+      background-color: hsla(207, 7%, 32%, 0.4);
     }
   }
 </style>
