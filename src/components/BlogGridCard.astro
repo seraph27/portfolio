@@ -2,7 +2,8 @@
 import { Icon } from 'astro-icon/components'
 import { Image } from 'astro:assets'
 import type { CollectionEntry } from 'astro:content'
-import DescriptionWithTooltip from '@/components/DescriptionWithTooltip'
+import DescriptionWithTooltip from '@/components/DescriptionWithTooltip.astro'
+import BeatmapsetFavouriteButton from '@/components/BeatmapsetFavouriteButton.astro'
 
 interface Props {
   entry: CollectionEntry<'blog'>
@@ -10,8 +11,10 @@ interface Props {
 
 const { entry } = Astro.props
 const shortDate = new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric', year: 'numeric' }).format(entry.data.date)
-const views = entry.data.views || Math.floor(Math.random() * 5000) + 500
-const favorites = entry.data.favorites || Math.floor(Math.random() * 100) + 10
+
+// Load saved stats from localStorage (will be updated by client-side scripts)
+const initialViews = entry.data.views || Math.floor(Math.random() * 5000) + 500
+const initialFavorites = entry.data.favorites || Math.floor(Math.random() * 100) + 10
 
 // Group difficulties by gamemode
 const groupedDifficulties = new Map<string, Array<{ rating: number; mode: string }>>()
@@ -24,6 +27,7 @@ if (entry.data.difficulties && entry.data.difficulties.length > 0) {
     groupedDifficulties.get(mode)!.push({ rating: diff.rating, mode })
   })
 }
+
 
 // Get difficulty color based on osu's color spectrum
 const getDifficultyColor = (rating: number): string => {
@@ -124,7 +128,7 @@ const getGamemodeIconClass = (mode: string) => {
 
       <!-- Artist/Description row -->
       <div class="beatmapset-panel__info-row beatmapset-panel__info-row--artist">
-        <DescriptionWithTooltip description={entry.data.description} client:load />
+        <DescriptionWithTooltip description={entry.data.description} />
       </div>
 
       <!-- Mapper row -->
@@ -136,17 +140,17 @@ const getGamemodeIconClass = (mode: string) => {
 
       <!-- Stats row -->
       <div class="beatmapset-panel__info-row beatmapset-panel__info-row--stats">
-        <div class="beatmapset-panel__stats-item" title={`${favorites.toLocaleString()} favourites`}>
+        <div class="beatmapset-panel__stats-item" title={`${initialFavorites.toLocaleString()} favourites`}>
           <span class="beatmapset-panel__stats-icon">
             <Icon name="lucide:heart" class="beatmapset-panel__stats-icon-inner" />
           </span>
-          <span>{favorites.toLocaleString()}</span>
+          <span data-favourite-count-display data-post-id={entry.id}>{initialFavorites.toLocaleString()}</span>
         </div>
-        <div class="beatmapset-panel__stats-item" title={`${views.toLocaleString()} plays`}>
+        <div class="beatmapset-panel__stats-item" title={`${initialViews.toLocaleString()} plays`}>
           <span class="beatmapset-panel__stats-icon">
             <Icon name="lucide:play-circle" class="beatmapset-panel__stats-icon-inner" />
           </span>
-          <span>{views.toLocaleString()}</span>
+          <span data-view-count-display data-post-id={entry.id}>{initialViews.toLocaleString()}</span>
         </div>
       </div>
 
@@ -207,8 +211,11 @@ const getGamemodeIconClass = (mode: string) => {
     <!-- Menu Container (expands on hover) -->
     <div class="beatmapset-panel__menu-container">
       <div class="beatmapset-panel__menu">
-        <!-- Menu items would go here (love/download buttons) -->
-        <!-- Not implementing buttons, just the container logic -->
+        <BeatmapsetFavouriteButton
+          beatmapsetId={entry.id}
+          initialFavourited={false}
+          favouriteCount={initialFavorites}
+        />
       </div>
     </div>
   </div>
@@ -226,8 +233,8 @@ const getGamemodeIconClass = (mode: string) => {
 </a>
 
 <script>
-  // Difficulty popup hover logic (matches osu's delayed show/hide)
-  document.addEventListener('DOMContentLoaded', () => {
+  // All card interactions
+  document.addEventListener('astro:page-load', () => {
     const timeouts: Record<string, number> = {}
     
     
@@ -238,12 +245,13 @@ const getGamemodeIconClass = (mode: string) => {
       if (!popup) return
       
       const updatePopupPosition = () => {
-        const cardRect = row.closest('.beatmapset-panel')?.getBoundingClientRect()
-        if (cardRect) {
-          popup.style.left = `${cardRect.left + window.scrollX}px`
-          popup.style.top = `${cardRect.bottom + window.scrollY}px`
-          popup.style.width = `${cardRect.width}px`
-        }
+        const card = row.closest('.beatmapset-panel') as HTMLElement
+        if (!card) return
+        
+        const cardRect = card.getBoundingClientRect()
+        popup.style.left = `${cardRect.left}px`
+        popup.style.top = `${cardRect.bottom}px`
+        popup.style.width = `${cardRect.width}px`
       }
       
       const delayedShow = () => {
@@ -280,6 +288,44 @@ const getGamemodeIconClass = (mode: string) => {
       
       window.addEventListener('scroll', updatePopupPosition, true)
       window.addEventListener('resize', updatePopupPosition)
+    })
+
+    // Load and display saved stats
+    const viewDisplays = document.querySelectorAll<HTMLElement>('[data-view-count-display]')
+    const favouriteDisplays = document.querySelectorAll<HTMLElement>('[data-favourite-count-display]')
+
+    // Load view counts
+    viewDisplays.forEach((display) => {
+      const postId = display.dataset.postId
+      if (!postId) return
+
+      try {
+        const saved = localStorage.getItem(`views-${postId}`)
+        if (saved) {
+          const data = JSON.parse(saved)
+          display.textContent = data.count.toLocaleString()
+        }
+      } catch (e) {
+        // Ignore errors
+      }
+    })
+
+    // Load favourite counts
+    favouriteDisplays.forEach((display) => {
+      const postId = display.dataset.postId
+      if (!postId) return
+
+      try {
+        const saved = localStorage.getItem(`favourite-${postId}`)
+        if (saved) {
+          const data = JSON.parse(saved)
+          if (data.count !== undefined) {
+            display.textContent = data.count.toLocaleString()
+          }
+        }
+      } catch (e) {
+        // Ignore errors
+      }
     })
   })
 </script>
@@ -403,6 +449,7 @@ const getGamemodeIconClass = (mode: string) => {
 
   .beatmapset-panel__info-row--artist {
     margin-bottom: 2px;
+    min-width: 0;
   }
 
   .beatmapset-panel__info-row--mapper {
@@ -554,10 +601,11 @@ const getGamemodeIconClass = (mode: string) => {
   .difficulty-popup__content {
     border-radius: 10px;
     border: 1px solid #1f1f26;
-    background-color: #2a2d36;
+    background-color: hsl(207, 7%, 32%);
     box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
     padding: 12px;
     min-width: 200px;
+    width: 100%;
   }
 
   .difficulty-popup__title {

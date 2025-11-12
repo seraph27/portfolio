@@ -35,8 +35,9 @@ export async function getStaticPaths() {
 }
 
 const post = Astro.props
-const currentPostId = Astro.params.id
+const currentPostId = Astro.params.id || ''
 const { Content, headings } = await render(post)
+const initialPostViews = post.data.views || 0
 
 const isCurrentSubpost = isSubpost(currentPostId)
 const navigation = await getAdjacentPosts(currentPostId)
@@ -229,7 +230,7 @@ const tocSections = await getTOCSections(currentPostId)
     />
   </Button>
 
-  <script>
+  <script define:vars={{ currentPostId, initialPostViews }}>
     document.addEventListener('astro:page-load', () => {
       const scrollToTopButton = document.getElementById('scroll-to-top')
       const footer = document.querySelector('footer')
@@ -248,6 +249,46 @@ const tocSections = await getTOCSections(currentPostId)
             window.scrollY <= 300 || isFooterVisible,
           )
         })
+      }
+
+      // Track view for this post
+      const postId = currentPostId
+      const initialViews = initialPostViews
+      
+      if (postId) {
+        const viewKey = `viewed-${postId}`
+        const today = new Date().toDateString()
+        const lastViewed = localStorage.getItem(viewKey)
+
+        // Only count view once per day
+        if (lastViewed !== today) {
+          try {
+            const viewsKey = `views-${postId}`
+            const savedViews = localStorage.getItem(viewsKey)
+            let viewCount = savedViews ? JSON.parse(savedViews).count : initialViews
+            
+            viewCount += 1
+            
+            localStorage.setItem(viewsKey, JSON.stringify({ count: viewCount }))
+            localStorage.setItem(viewKey, today)
+
+            // Update all view count displays on the page
+            const viewDisplays = document.querySelectorAll(`[data-view-count-display][data-post-id="${postId}"]`)
+            viewDisplays.forEach((display) => {
+              display.textContent = viewCount.toLocaleString()
+            })
+
+            // Also call API to track server-side
+            fetch(`/api/beatmapsets/${postId}/view`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+            }).catch(() => {
+              // Ignore errors
+            })
+          } catch (e) {
+            console.error('Error tracking view:', e)
+          }
+        }
       }
     })
   </script>

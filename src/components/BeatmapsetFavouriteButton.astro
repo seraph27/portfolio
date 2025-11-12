@@ -1,0 +1,169 @@
+---
+// Based on osu-web beatmapset-panel favorite button implementation
+// Reference: https://github.com/ppy/osu-web/blob/master/resources/js/components/beatmapset-panel.tsx
+
+interface Props {
+  beatmapsetId: string
+  initialFavourited?: boolean
+  favouriteCount?: number
+}
+
+const {
+  beatmapsetId,
+  initialFavourited = false,
+  favouriteCount = 0,
+} = Astro.props
+
+const uniqueId = `favourite-${beatmapsetId}`
+---
+
+<button
+  class="beatmapset-panel__menu-item"
+  type="button"
+  data-favourite-button
+  data-beatmapset-id={beatmapsetId}
+  data-initial-favourited={initialFavourited}
+  data-favourite-count={favouriteCount}
+  data-favourite-id={uniqueId}
+  title={initialFavourited ? 'Unfavourite this beatmap' : 'Favourite this beatmap'}
+  aria-label={initialFavourited ? 'Unfavourite' : 'Favourite'}
+>
+  <svg
+    class="size-4 favourite-icon"
+    data-favourite-icon
+    fill={initialFavourited ? 'currentColor' : 'none'}
+    stroke="currentColor"
+    stroke-width="2"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    viewBox="0 0 24 24"
+    style={initialFavourited ? 'color: #ff6b9d;' : ''}
+  >
+    <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.29 1.51 4.04 3 5.5l7 7Z" />
+  </svg>
+</button>
+
+<script>
+  document.addEventListener('astro:page-load', () => {
+    const buttons = document.querySelectorAll<HTMLButtonElement>('[data-favourite-button]')
+    
+    buttons.forEach((button) => {
+      const beatmapsetId = button.dataset.beatmapsetId
+      const favouriteId = button.dataset.favouriteId
+      if (!beatmapsetId || !favouriteId) return
+
+      let isFavourited = button.dataset.initialFavourited === 'true'
+      let favouriteCount = parseInt(button.dataset.favouriteCount || '0', 10)
+      let isLoading = false
+
+      // Find the corresponding count display
+      const panel = button.closest('.beatmapset-panel')
+      const countDisplay = panel?.querySelector('[data-favourite-count-display]')
+
+      const updateButton = () => {
+        const icon = button.querySelector('[data-favourite-icon]') as SVGElement
+        if (icon) {
+          icon.setAttribute('fill', isFavourited ? 'currentColor' : 'none')
+          icon.style.color = isFavourited ? '#ff6b9d' : 'currentColor'
+        }
+        button.title = isFavourited ? 'Unfavourite this beatmap' : 'Favourite this beatmap'
+        button.setAttribute('aria-label', isFavourited ? 'Unfavourite' : 'Favourite')
+      }
+
+      const updateCount = () => {
+        if (countDisplay) {
+          countDisplay.textContent = favouriteCount.toLocaleString()
+        }
+      }
+
+      // Load saved state from localStorage
+      const loadSavedState = () => {
+        try {
+          const saved = localStorage.getItem(`favourite-${beatmapsetId}`)
+          if (saved) {
+            const data = JSON.parse(saved)
+            isFavourited = data.favourited || false
+            // Use saved count if available, otherwise keep initial
+            if (data.count !== undefined) {
+              favouriteCount = data.count
+              updateCount()
+            }
+            updateButton()
+          }
+        } catch (e) {
+          // Ignore errors
+        }
+      }
+
+      // Save state to localStorage
+      const saveState = () => {
+        try {
+          localStorage.setItem(
+            `favourite-${beatmapsetId}`,
+            JSON.stringify({ favourited: isFavourited, count: favouriteCount }),
+          )
+          // Also update all other instances of this post on the page
+          const allCountDisplays = document.querySelectorAll(`[data-favourite-count-display][data-post-id="${beatmapsetId}"]`)
+          allCountDisplays.forEach((display) => {
+            display.textContent = favouriteCount.toLocaleString()
+          })
+        } catch (e) {
+          console.error('Error saving to localStorage:', e)
+        }
+      }
+
+      // Load saved state on init
+      loadSavedState()
+
+      button.addEventListener('click', async (e) => {
+        e.preventDefault()
+        e.stopPropagation()
+
+        if (isLoading) return
+
+        isLoading = true
+        const previousFavourited = isFavourited
+        const previousCount = favouriteCount
+
+        // Optimistic update
+        isFavourited = !previousFavourited
+        favouriteCount = isFavourited ? previousCount + 1 : previousCount - 1
+        updateButton()
+        updateCount()
+        saveState()
+
+        try {
+          const response = await fetch(`/api/beatmapsets/${beatmapsetId}/favourite`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ action: isFavourited ? 'favourite' : 'unfavourite' }),
+          })
+
+          if (response.ok) {
+            const data = await response.json()
+            // State already updated optimistically, just save
+            saveState()
+          } else {
+            // Revert on error
+            isFavourited = previousFavourited
+            favouriteCount = previousCount
+            updateButton()
+            updateCount()
+            saveState()
+          }
+        } catch (error) {
+          // Revert on error
+          isFavourited = previousFavourited
+          favouriteCount = previousCount
+          updateButton()
+          updateCount()
+          saveState()
+          console.error('Error toggling favourite:', error)
+        } finally {
+          isLoading = false
+        }
+      })
+    })
+  })
+</script>
+

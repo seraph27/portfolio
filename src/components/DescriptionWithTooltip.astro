@@ -1,0 +1,114 @@
+---
+interface Props {
+  description: string
+}
+
+const { description } = Astro.props
+const uniqueId = `tooltip-${Math.random().toString(36).substring(7)}`
+---
+
+<div class="tooltip-container" data-tooltip-container>
+  <p
+    class="flex-1 min-w-0 overflow-hidden text-ellipsis whitespace-nowrap text-white text-sm font-semibold [text-shadow:0_1px_3px_rgba(0,0,0,0.75)] cursor-help max-w-full"
+    data-tooltip-trigger
+    id={`trigger-${uniqueId}`}
+    style="max-width: 100%;"
+  >
+    {description}
+  </p>
+  <div
+    class="tooltip-content"
+    data-tooltip-content
+    id={`tooltip-${uniqueId}`}
+    role="tooltip"
+  >
+    {description}
+  </div>
+</div>
+
+<style>
+  .tooltip-container {
+    position: relative;
+    width: 100%;
+    min-width: 0;
+  }
+
+  .tooltip-container p {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .tooltip-content {
+    position: fixed;
+    background-color: #2a2d36;
+    border: 1px solid #1f1f26;
+    border-radius: 10px;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    color: white;
+    padding: 4px 8px;
+    font-size: 11px;
+    white-space: normal;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 200ms ease-in-out;
+    z-index: 99999;
+    width: 200px;
+    text-align: center;
+    word-wrap: break-word;
+  }
+
+  .tooltip-content::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 4px solid transparent;
+    border-top-color: #2a2d36;
+  }
+
+  [data-tooltip-trigger]:hover ~ [data-tooltip-content],
+  [data-tooltip-trigger]:focus ~ [data-tooltip-content] {
+    opacity: 1;
+  }
+
+  /* Position tooltip dynamically on hover */
+  .tooltip-container:hover .tooltip-content {
+    opacity: 1;
+  }
+</style>
+
+<script>
+  document.addEventListener('astro:page-load', () => {
+    const containers = document.querySelectorAll('[data-tooltip-container]')
+    
+    containers.forEach((container) => {
+      const trigger = container.querySelector('[data-tooltip-trigger]') as HTMLElement
+      const tooltip = container.querySelector('[data-tooltip-content]') as HTMLElement
+      
+      if (!trigger || !tooltip) return
+
+      const updateTooltipPosition = () => {
+        const rect = trigger.getBoundingClientRect()
+        // Center tooltip on the visible text (which may be truncated)
+        tooltip.style.left = `${rect.left + rect.width / 2}px`
+        tooltip.style.top = `${rect.top - 8}px`
+        tooltip.style.transform = 'translate(-50%, -100%)'
+      }
+
+      trigger.addEventListener('mouseenter', () => {
+        updateTooltipPosition()
+        tooltip.style.opacity = '1'
+      })
+
+      trigger.addEventListener('mouseleave', () => {
+        tooltip.style.opacity = '0'
+      })
+    })
+  })
+</script>
+

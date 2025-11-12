@@ -5,7 +5,7 @@ date: 2025-01-22
 image: "GClJ5NZbUAEIdSH.jpg"
 audio: "./audio.mp3"
 tags: ["competitive-programming", "leetcode"]
-draft: true
+draft: false
 difficulties:
   - rating: 2.5
     mode: osu
@@ -25,12 +25,12 @@ import copiumImg from './copium.png'
 Leetcode and DSA technical interviews within the software field might be one of the most debated topics within the software field. This is my philosophy on how to
 approach things like Leetcode and problem solving in general.
 
-To start, why should you care? Because as much as people want to cope <img src={copiumImg.src} alt="copium" class="inline h-5 w-5 align-middle" />
-and say that companies are moving away from Leetcode style interviews...
+To start, why should you care? Every three months I see a coping post saying 
+that companies are moving away from Leetcode style interviews--
 
 ![Reddit posts about companies moving away from LC interviews](./reddit_cope.png)
 
-They're not. Aside from Meta and Stripe and a few companies that's "experimenting" with non-lc interviews. 
+Unfortunately, they're not. And I don't expect this style of interviews to be eliminated anytime soon. Aside from Meta and Stripe and a few companies that's experimenting with non-lc interviews. 
 As of now in 2025, 2/3 of companies and the majority of big tech still uses DSA to filter candidates. Why?
 
 <Callout variant="question" title="Why do companies still use DSA interviews?">
@@ -39,34 +39,82 @@ As of now in 2025, 2/3 of companies and the majority of big tech still uses DSA 
 
 1. **Equal playing field** — In 2025, there's more demand than supply for engineers. These companies only need people who are "competent" enough or pass the bar. And the bar isn't high. For companies, it's also easy to conduct such interviews at scale. Leetcode is a skill where everyone essentially starts with the same playing field. It's like a game. It shows you're willing to put the bare minimum effort, and that you could learn a new skill.
 
-2. **It's relevant** — One common argument is that Leetcode is utterly "irrelevant" to any SWE job and it's a waste of time. This is just untrue. Ask yourself why top quant companies, AI labs, and big tech hire specifically ICPC or IOI medalists. 
-So why are companies hiring people who spend thousands of hours in arbitary puzzles if it has "nothing" to do with 
-the job? Maybe because it does has something to do with the job.
+2. **It's relevant** — One common argument is that Leetcode is utterly "irrelevant"
+ to any SWE job and it's a waste of time. This is just untrue. Ask yourself why top quant companies, 
+ AI labs, and big tech hire specifically ICPC or IOI medalists. 
+Why is it such a signal for prestige, if these people are just sinking thousands
+ of hours in arbitary puzzles that has "nothing" to do with the job? 
+ Well, maybe because it does help: debugging skills, critical thinking skills,
+ability to break complex problems down.
 
-3. **Merit** — If you don't conduct DSA interviews, you're essentially asking companies to hire only from top universities.
-That's even more gatekeeping. I've had many friends who couldn't afford top unis but still got good SWE positions due to being strong at DSA.
+{/* 3. **Merit** — If you don't conduct DSA interviews, you're essentially asking companies to only hire from top universities.
+They have nothing to go off of. I've seen people argue that they have the skill
+for projects, but with all the AI slop in 2025, 
+I think that's even harder to prove your own skill. */}
 
-4. **"Real-life" interviews aren't easier** — People who think they'll magically pass non-LC interviews if companies switch to 
-"real-life" work are delusional. If they give you AI assistance and web search, that's an **even stronger demand on fundamentals**. 
-You'd be expected to know more: operating systems, networking, multiple languages deeply, system design, all that shit. It's not easier. 
+3. **"Real-life" interviews aren't easier** — People who think they'll pass non-LC interviews if companies switch to 
+"real-life" work style interviews are delusional. If they give you AI assistance and web search, there WILL be an **even stronger demand on fundamentals**. 
+You'd be expected to know more: operating systems, networking, multiple languages deeply, 
+system design, ambiguious problems, etc... It's not easier. 
 
 </Callout>
 
-I'm not suggesting that such interviews don't have it's flaws. Of course it does. But there has to be a compromise, and I think it's much easier
+I'm not suggesting that such interviews don't have it's flaws. Of course it does. 
+But there has to be a compromise, and I think it's much easier
 to prepare for than the alternative people are pushing for (the so-called "real-life" work and take home projects).
 
-The reason why most people struggle with Leetcode, is simply because they're approaching it wrong. This is not me coming from a high horse. There is
-a stark difference between what top problems solvers are doing, and what the average "advice" suggest people to do, from random 
-people on the internet. I believe that
-if you learn from shit people, you'll be shit. I'm not strong, so I'm not going to come up with advice. Instead, this blog will 
-be a compilation of tips and resources from everything I've learned within my limited experience, from IOI medalists and ICPC finalists, LGMs on codeforces,
+So what even is the purpose of this post? I've noticed that the general consensus around Leetcode
+is that people simply hate it. I hope to share some different perspectives to shift that notion or at least
+make the journey more tolerable. I believe the reason why most people struggle with Leetcode, is simply because they're approaching it wrong. 
+This is not me coming from a high horse. There is a stark difference between what top problems solvers are doing, and what the average "advice" suggest people to do, from random 
+people on the internet. 
+
+### Where I'm at
+
+I will first show my current progress, albeit by my own standards I improved
+quite slowly, but objectively it has worked with great success for general technical
+interviews and OAs (i.e. FAANG, quant firms, etc...). I have never needed to study 
+specifically for such interviews.
+
+<Callout variant="note" title="My current profiles">
+For context, I first learned about leetcode in my freshman year, but I was clueless. I was told the same thing as 
+many others. "Start with Neetcode 150 and just use python!". I quit after $\le$ 50 problems. 
+
+I've only really started again in April of 2024, and I had 4 months (Jan 2025 - Apr 2025) where I didn't study at all due to mandatory military conscription.
+Overall, I've only been studying for less than 1.5 years, averaging less than 2 problems a day. 
+
+[Leetcode](https://leetcode.com/mod998244353)
+![LeetCode Profile](./leetcode.png)
+
+
+[Codeforces](https://codeforces.com/profile/shiinamashiro_)
+![Codeforces Profile](./cf.png)
+
+
+
+</Callout>
+
+## The Echo Chamber
+I believe that if you learn from weak people, you'll be weak.  I'm not strong either, so I'm not going to come up with my own advice. Instead, this blog will 
+be a compilation of tips and resources from everything I've learned within my limited experience, from IOI medalists to ICPC finalists, LGMs on codeforces,
 and all my friends that are stronger than me.  
 
-## Misconceptions
-//guide claude what to write here, delete this comment when after u fix: 
-// 1. say u dont need an insane effort show my progress first (also write like my style) so proof of certificate. show my leetcode and cf profiles. put them in callouts
+There is a severe disconnect between Leetcode-only users and people who's
+been properly exposed to the entire problem solving community. What do I mean by that?
+Here's a couple points to think about:
 
-// 2. 
+
+
+
+## Misconceptions
+
+### "You need to grind 8 hours a day for years"
+
+This is probably the biggest misconception. You don't need to sacrifice your entire life to get good at problem solving.
+
+The key isn't the hours — it's the **quality** and **consistency**. I've seen people solve 2000+ problems on LeetCode and still struggle with medium problems. I've also seen people solve 500 problems properly and become strong.
+
+**You don't need insane effort. You need consistent, focused effort.** 
 ## How to Improve
 
 I think many people overthink this. The formula is simple:
