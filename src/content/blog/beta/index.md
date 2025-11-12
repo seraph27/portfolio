@@ -1,17 +1,17 @@
 ---
-title: "Beta"
+title: "β"
 description: "Placeholder Beta post."
 date: 2025-01-21
-tags: ["placeholder"]
+tags: ["Easy", "Arrays", "Strings", "Hash Tables"]
 draft: false
 difficulties:
-  - rating: 1.25
+  - rating: 0.8
     mode: catch
-  - rating: 2.5
+  - rating: 1.6
     mode: catch
-  - rating: 4.2
+  - rating: 2.3
     mode: catch
-  - rating: 6.7
+  - rating: 3.1
     mode: catch
 views: 1400
 favorites: 35

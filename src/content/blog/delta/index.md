@@ -1,9 +1,16 @@
 ---
-title: "Delta"
+title: "δ"
 description: "Placeholder Delta post."
 date: 2025-01-19
-tags: ["placeholder"]
+tags: ["Hard", "Advanced DP", "Segment Trees"]
 draft: false
+difficulties:
+  - rating: 6.2
+    mode: mania
+  - rating: 7.4
+    mode: mania
+  - rating: 8.6
+    mode: mania
 views: 1200
 favorites: 28
 image: screenshot-2025-11-05_12-21-56.png

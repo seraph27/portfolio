@@ -3,7 +3,6 @@ import { Icon } from 'astro-icon/components'
 import { Image } from 'astro:assets'
 import type { CollectionEntry } from 'astro:content'
 import DescriptionWithTooltip from '@/components/DescriptionWithTooltip.astro'
-import BeatmapsetFavouriteButton from '@/components/BeatmapsetFavouriteButton.astro'
 
 interface Props {
   entry: CollectionEntry<'blog'>
@@ -11,10 +10,23 @@ interface Props {
 
 const { entry } = Astro.props
 const shortDate = new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric', year: 'numeric' }).format(entry.data.date)
+const views = entry.data.views || Math.floor(Math.random() * 5000) + 500
+const favorites = entry.data.favorites || Math.floor(Math.random() * 100) + 10
+const status = entry.data.status || 'ranked'
 
-// Load saved stats from localStorage (will be updated by client-side scripts)
-const initialViews = entry.data.views || Math.floor(Math.random() * 5000) + 500
-const initialFavorites = entry.data.favorites || Math.floor(Math.random() * 100) + 10
+// Badge colors based on status
+const statusConfig = {
+  ranked: {
+    bg: 'hsl(90, 100%, 70%)',
+    color: 'hsl(0, 0%, 30%)',
+    label: 'Ranked'
+  },
+  loved: {
+    bg: 'hsl(333, 100%, 70%)',
+    color: 'hsl(0, 0%, 30%)',
+    label: 'Loved'
+  }
+}
 
 // Group difficulties by gamemode
 const groupedDifficulties = new Map<string, Array<{ rating: number; mode: string }>>()
@@ -140,17 +152,17 @@ const getGamemodeIconClass = (mode: string) => {
 
       <!-- Stats row -->
       <div class="beatmapset-panel__info-row beatmapset-panel__info-row--stats">
-        <div class="beatmapset-panel__stats-item" title={`${initialFavorites.toLocaleString()} favourites`}>
+        <div class="beatmapset-panel__stats-item" title={`${favorites.toLocaleString()} favourites`}>
           <span class="beatmapset-panel__stats-icon">
             <Icon name="lucide:heart" class="beatmapset-panel__stats-icon-inner" />
           </span>
-          <span data-favourite-count-display data-post-id={entry.id}>{initialFavorites.toLocaleString()}</span>
+          <span>{favorites.toLocaleString()}</span>
         </div>
-        <div class="beatmapset-panel__stats-item" title={`${initialViews.toLocaleString()} plays`}>
+        <div class="beatmapset-panel__stats-item" title={`${views.toLocaleString()} plays`}>
           <span class="beatmapset-panel__stats-icon">
             <Icon name="lucide:play-circle" class="beatmapset-panel__stats-icon-inner" />
           </span>
-          <span data-view-count-display data-post-id={entry.id}>{initialViews.toLocaleString()}</span>
+          <span>{views.toLocaleString()}</span>
         </div>
       </div>
 
@@ -167,8 +179,11 @@ const getGamemodeIconClass = (mode: string) => {
       <!-- Extra row: Status badge + Difficulty dots -->
       <div class="beatmapset-panel__info-row beatmapset-panel__info-row--extra extra-row" data-entry-id={entry.id}>
         <div class="beatmapset-panel__extra-item">
-          <span class="beatmapset-panel__status-badge">
-            Ranked
+          <span 
+            class="beatmapset-panel__status-badge"
+            style={`background-color: ${statusConfig[status].bg}; color: ${statusConfig[status].color};`}
+          >
+            {statusConfig[status].label}
           </span>
         </div>
         <!-- Difficulty dots containers -->
@@ -193,13 +208,24 @@ const getGamemodeIconClass = (mode: string) => {
         <!-- Difficulty Popup -->
         <div class="difficulty-popup" data-popup-id={entry.id}>
           <div class="difficulty-popup__content">
-            <div class="difficulty-popup__title">Difficulties</div>
             <div class="difficulty-popup__list">
               {[...groupedDifficulties].map(([mode, difficulties]) => (
-                <div class="difficulty-popup__item">
-                  <i class={getGamemodeIconClass(mode)}></i>
-                  <span class="difficulty-popup__mode">{mode}</span>
-                  <span class="difficulty-popup__count">({difficulties.length})</span>
+                <div class="difficulty-popup__group">
+                  <div class="difficulty-popup__difficulties">
+                    {difficulties.map((diff, idx) => (
+                      <div class="difficulty-popup__diff-item">
+                        <span 
+                          class="difficulty-popup__diff-badge"
+                          style={`background-color: ${getDifficultyColor(diff.rating)}; color: ${diff.rating >= 6.0 ? 'white' : 'hsl(0, 0%, 15%)'};`}
+                        >
+                          ★{diff.rating.toFixed(2)}
+                        </span>
+                        <span class="difficulty-popup__diff-name">
+                          {entry.data.tags?.[idx] || `Difficulty ${idx + 1}`}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               ))}
             </div>
@@ -211,11 +237,7 @@ const getGamemodeIconClass = (mode: string) => {
     <!-- Menu Container (expands on hover) -->
     <div class="beatmapset-panel__menu-container">
       <div class="beatmapset-panel__menu">
-        <BeatmapsetFavouriteButton
-          beatmapsetId={entry.id}
-          initialFavourited={false}
-          favouriteCount={initialFavorites}
-        />
+        <!-- Menu items would go here (love/download buttons) -->
       </div>
     </div>
   </div>
@@ -233,10 +255,36 @@ const getGamemodeIconClass = (mode: string) => {
 </a>
 
 <script>
-  // All card interactions
+  // Difficulty popup hover logic
   document.addEventListener('astro:page-load', () => {
     const timeouts: Record<string, number> = {}
     
+    // Tooltip for descriptions
+    const tooltip = document.createElement('div')
+    tooltip.className = 'custom-tooltip'
+    tooltip.innerHTML = '<div class="custom-tooltip-content"></div><div class="custom-tooltip-arrow"></div>'
+    document.body.appendChild(tooltip)
+    const tooltipContent = tooltip.querySelector('.custom-tooltip-content')
+    
+    document.querySelectorAll('.beatmapset-panel__description').forEach((el) => {
+      el.addEventListener('mouseenter', (e) => {
+        const target = e.currentTarget as HTMLElement
+        const fullText = target?.textContent
+        
+        if (fullText && tooltipContent && target.offsetWidth < target.scrollWidth) {
+          tooltipContent.textContent = fullText
+          tooltip.style.opacity = '1'
+          
+          const rect = target.getBoundingClientRect()
+          tooltip.style.left = (rect.left + rect.width / 2) + 'px'
+          tooltip.style.top = (rect.top + window.scrollY - 10) + 'px'
+        }
+      })
+      
+      el.addEventListener('mouseleave', () => {
+        tooltip.style.opacity = '0'
+      })
+    })
     
     document.querySelectorAll('.extra-row').forEach((row) => {
       const entryId = (row as HTMLElement).dataset.entryId
@@ -288,44 +336,6 @@ const getGamemodeIconClass = (mode: string) => {
       
       window.addEventListener('scroll', updatePopupPosition, true)
       window.addEventListener('resize', updatePopupPosition)
-    })
-
-    // Load and display saved stats
-    const viewDisplays = document.querySelectorAll<HTMLElement>('[data-view-count-display]')
-    const favouriteDisplays = document.querySelectorAll<HTMLElement>('[data-favourite-count-display]')
-
-    // Load view counts
-    viewDisplays.forEach((display) => {
-      const postId = display.dataset.postId
-      if (!postId) return
-
-      try {
-        const saved = localStorage.getItem(`views-${postId}`)
-        if (saved) {
-          const data = JSON.parse(saved)
-          display.textContent = data.count.toLocaleString()
-        }
-      } catch (e) {
-        // Ignore errors
-      }
-    })
-
-    // Load favourite counts
-    favouriteDisplays.forEach((display) => {
-      const postId = display.dataset.postId
-      if (!postId) return
-
-      try {
-        const saved = localStorage.getItem(`favourite-${postId}`)
-        if (saved) {
-          const data = JSON.parse(saved)
-          if (data.count !== undefined) {
-            display.textContent = data.count.toLocaleString()
-          }
-        }
-      } catch (e) {
-        // Ignore errors
-      }
     })
   })
 </script>
@@ -558,8 +568,6 @@ const getGamemodeIconClass = (mode: string) => {
   .beatmapset-panel__status-badge {
     padding: 0 5px;
     border-radius: 10000px;
-    background-color: #3bd671;
-    color: hsl(0, 0%, 10%);
     text-transform: uppercase;
     font-size: 12px;
     font-weight: 800;
@@ -608,33 +616,80 @@ const getGamemodeIconClass = (mode: string) => {
     width: 100%;
   }
 
-  .difficulty-popup__title {
-    font-size: 12px;
-    font-weight: 600;
-    color: rgba(255, 255, 255, 0.6);
-    margin-bottom: 8px;
-  }
-
   .difficulty-popup__list {
     display: flex;
     flex-direction: column;
     gap: 8px;
   }
 
-  .difficulty-popup__item {
+  .difficulty-popup__group {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .difficulty-popup__difficulties {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .difficulty-popup__diff-item {
     display: flex;
     align-items: center;
     gap: 8px;
-    font-size: 12px;
+    font-size: 11px;
+  }
+
+  .difficulty-popup__diff-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1px 6px;
+    border-radius: 3px;
+    font-weight: 700;
+    font-size: 10px;
+    min-width: 50px;
+    line-height: 1.2;
+  }
+
+  .difficulty-popup__diff-name {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 11px;
+  }
+
+  /* Custom tooltip */
+  .custom-tooltip {
+    position: fixed;
+    opacity: 0;
+    z-index: 100;
+    pointer-events: none;
+    transform: translate(-50%, -100%);
+    transition: opacity 150ms;
+  }
+
+  .custom-tooltip-content {
+    background-color: hsl(207, 7%, 37%);
     color: white;
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-size: 11px;
+    line-height: 1.3;
+    max-width: 300px;
+    text-align: center;
+    word-wrap: break-word;
   }
 
-  .difficulty-popup__mode {
-    text-transform: capitalize;
-  }
-
-  .difficulty-popup__count {
-    color: rgba(255, 255, 255, 0.6);
+  .custom-tooltip-arrow {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 8px solid hsl(207, 7%, 37%);
   }
 
   /* Play Button */

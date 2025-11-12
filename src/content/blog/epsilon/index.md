@@ -1,11 +1,18 @@
 
 
 ---
-title: "Epsilon"
+title: "ε"
 description: "Placeholder Epsilon post."
 date: 2025-01-18
-tags: ["placeholder"]
+tags: ["Linked Lists", "Trees", "Simulation"]
 draft: false
+difficulties:
+  - rating: 1.5
+    mode: osu
+  - rating: 2.8
+    mode: osu
+  - rating: 4.1
+    mode: osu
 views: 1100
 favorites: 25
 image: wallhaven-zp85do.png

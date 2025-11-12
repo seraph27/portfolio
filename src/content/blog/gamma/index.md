@@ -1,17 +1,21 @@
 ---
-title: "Gamma"
+title: "γ"
 description: "Placeholder Gamma post."
 date: 2025-01-20
-tags: ["placeholder"]
+tags: ["Medium", "Dynamic Programming", "Graphs", "Trees", "Backtracking", "Math"]
 draft: false
 difficulties:
-  - rating: 3.3
+  - rating: 3.5
     mode: taiko
-  - rating: 4.2
+  - rating: 4.3
     mode: taiko
-  - rating: 5.8
+  - rating: 5.1
     mode: taiko
-  - rating: 7.7
+  - rating: 5.9
+    mode: taiko
+  - rating: 6.7
+    mode: taiko
+  - rating: 7.5
     mode: taiko
 views: 1300
 favorites: 32

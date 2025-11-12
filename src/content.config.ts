@@ -17,6 +17,7 @@ const blog = defineCollection({
         rating: z.number().min(0.1).max(9),
         mode: z.enum(['osu', 'taiko', 'catch', 'mania']),
       })).optional(),
+      status: z.enum(['ranked', 'loved']).optional().default('ranked'),
       views: z.number().optional(),
       favorites: z.number().optional(),
     }),

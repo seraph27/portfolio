@@ -1,0 +1,58 @@
+---
+import BlogCard from '@/components/BlogCard.astro'
+import Breadcrumbs from '@/components/Breadcrumbs.astro'
+import PageHead from '@/components/PageHead.astro'
+import Layout from '@/layouts/Layout.astro'
+import { SITE } from '@/consts'
+import { getAllPosts } from '@/lib/data-utils'
+
+export async function getStaticPaths() {
+  // For now, just create a page for 'seraph'
+  const allPosts = await getAllPosts()
+  
+  return [
+    {
+      params: { author: 'seraph' },
+      props: {
+        author: 'seraph',
+        authorName: SITE.author,
+        posts: allPosts,
+      },
+    },
+  ]
+}
+
+const { author, authorName, posts } = Astro.props
+---
+
+<Layout class="max-w-3xl">
+  <PageHead
+    slot="head"
+    title={`Posts by ${authorName}`}
+    description={`A collection of posts written by ${authorName}.`}
+  />
+  <Breadcrumbs
+    items={[
+      { href: '/blog', label: 'Blog', icon: 'lucide:library-big' },
+      { label: authorName, icon: 'lucide:user' },
+    ]}
+  />
+
+  <div class="mb-8">
+    <h1 class="text-3xl font-bold mb-2">{authorName}</h1>
+    <p class="text-muted-foreground">
+      All posts by {authorName}
+    </p>
+  </div>
+
+  <ul class="flex flex-col gap-y-4">
+    {
+      posts.map((post) => (
+        <li>
+          <BlogCard entry={post} />
+        </li>
+      ))
+    }
+  </ul>
+</Layout>
+
