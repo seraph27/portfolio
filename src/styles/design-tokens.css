@@ -1,0 +1,66 @@
+/* Design Tokens - CSS Custom Properties for theming */
+
+:root {
+  /* Colors - Panel */
+  --panel-bg: hsl(207, 7%, 37%);
+  --panel-bg-hover: hsl(207, 7%, 27%);
+  --panel-info-bg: linear-gradient(0.25turn, hsla(207, 7%, 37%, 0.4), hsla(207, 7%, 37%, 0.4));
+  --panel-info-bg-hover: linear-gradient(0.25turn, hsla(207, 7%, 27%, 0.4), hsla(207, 7%, 27%, 0.4));
+  --panel-info-bg-mobile: hsla(207, 7%, 32%, 0.4);
+  
+  /* Colors - Menu */
+  --menu-bg: hsl(207, 7%, 32%);
+  --menu-container-width-collapsed: 10px;
+  --menu-container-width-expanded: 30px;
+  --menu-opacity-collapsed: 0;
+  --menu-opacity-expanded: 1;
+  
+  /* Colors - Play Button */
+  --play-bg: transparent;
+  --play-bg-hover: hsla(313, 44%, 44%, 0.8);
+  --play-icon-opacity-collapsed: 0;
+  --play-icon-opacity-expanded: 1;
+  
+  /* Colors - Text */
+  --text-primary: white;
+  --text-secondary: #E6E6E6;
+  --text-author: hsl(200, 40%, 75%);
+  --text-muted: rgba(255, 255, 255, 0.6);
+  
+  /* Colors - Accents */
+  --accent-pink: #ff6b9d;
+  --accent-green: #3bd671;
+  --accent-green-text: hsl(0, 0%, 10%);
+  
+  /* Colors - Borders & Shadows */
+  --border-dark: #1f1f26;
+  --popup-bg: hsl(207, 7%, 32%);
+  --tooltip-bg: #2a2d36;
+  --shadow-panel: 0 12px 30px rgba(0, 0, 0, 0.35);
+  --shadow-popup: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --text-shadow: 0 1px 3px rgba(0, 0, 0, 0.75);
+  
+  /* Spacing */
+  --panel-radius: 10px;
+  --panel-height: 140px;
+  --panel-max-width: 475px;
+  --cover-width: 140px;
+  --info-padding-right-collapsed: 4px;
+  --info-padding-right-expanded: 10px;
+  
+  /* Typography */
+  --font-osu: 'Torus', ui-sans-serif, system-ui, sans-serif;
+  
+  /* Transitions */
+  --transition-base: 150ms ease-in-out;
+  --transition-tooltip: 200ms ease-in-out;
+  
+  /* Z-index */
+  --z-play-button: 30;
+  --z-popup: 50;
+  --z-tooltip: 99999;
+  
+  /* Stats opacity */
+  --stats-opacity: 1;
+}
+

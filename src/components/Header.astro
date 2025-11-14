@@ -2,7 +2,7 @@
 import Link from '@/components/Link.astro'
 import { NAV_LINKS } from '@/consts'
 import { Image } from 'astro:assets'
-import icon from '../../public/icon.png'
+import avatar from '../../public/avatar.jpg'
 ---
 
 <div>
@@ -11,17 +11,16 @@ import icon from '../../public/icon.png'
   >
     <Link href="/" class="flex shrink-0 items-center justify-center">
       <Image
-        src={icon}
+        src={avatar}
         alt="Rex Chao"
         class="size-10 rounded-full object-cover"
         width={80}
         height={80}
         quality={95}
-        style="image-rendering: -webkit-optimize-contrast; image-rendering: crisp-edges;"
       />
     </Link>
     <div class="flex items-center gap-4">
-      <nav class="flex items-center gap-4 text-sm sm:gap-6">
+      <nav class="flex items-center gap-4 text-sm sm:gap-6" style="font-family: 'Torus', ui-sans-serif, system-ui, sans-serif;">
         {
           NAV_LINKS.map((item) => (
             <Link

@@ -129,39 +129,76 @@
       this.init()
     }
 
-    private init() {
+    public init() {
+      // Remove existing listeners to prevent duplicates
+      const existingButtons = document.querySelectorAll('.play-button[data-audio-listener]')
+      existingButtons.forEach((btn) => {
+        btn.removeEventListener('click', this.handlePlayButtonClick)
+        btn.removeAttribute('data-audio-listener')
+      })
+
+      // Attach listeners to all play buttons
       document.querySelectorAll('.play-button').forEach((btn) => {
-        btn.addEventListener('click', (e) => {
-          e.preventDefault()
-          e.stopPropagation()
-          const audioSrc = (btn as HTMLElement).dataset.audioSrc
-          const entryTitle = (btn as HTMLElement).dataset.entryTitle || 'Unknown Track'
-          if (audioSrc) {
-            this.loadTrack(audioSrc, entryTitle)
-          }
-        })
+        if (!(btn as HTMLElement).dataset.audioListener) {
+          btn.addEventListener('click', this.handlePlayButtonClick.bind(this))
+          ;(btn as HTMLElement).dataset.audioListener = 'true'
+        }
       })
 
-      this.playPauseBtn?.addEventListener('click', () => this.togglePlayPause())
-      document.getElementById('close-player-btn')?.addEventListener('click', () => this.close())
+      // Only attach these once (they're on the persistent player)
+      if (!this.playPauseBtn?.hasAttribute('data-audio-listener')) {
+        this.playPauseBtn?.addEventListener('click', () => this.togglePlayPause())
+        this.playPauseBtn?.setAttribute('data-audio-listener', 'true')
+      }
+
+      const closeBtn = document.getElementById('close-player-btn')
+      if (closeBtn && !closeBtn.hasAttribute('data-audio-listener')) {
+        closeBtn.addEventListener('click', () => this.close())
+        closeBtn.setAttribute('data-audio-listener', 'true')
+      }
       
-      this.progressBar?.addEventListener('click', (e) => {
-        const rect = this.progressBar!.getBoundingClientRect()
-        const percent = (e.clientX - rect.left) / rect.width
-        this.audio.currentTime = percent * this.audio.duration
-      })
+      if (this.progressBar && !this.progressBar.hasAttribute('data-audio-listener')) {
+        this.progressBar.addEventListener('click', (e) => {
+          const rect = this.progressBar!.getBoundingClientRect()
+          const percent = (e.clientX - rect.left) / rect.width
+          this.audio.currentTime = percent * this.audio.duration
+        })
+        this.progressBar.setAttribute('data-audio-listener', 'true')
+      }
 
-      this.volumeSlider?.addEventListener('input', (e) => {
-        const volume = parseInt((e.target as HTMLInputElement).value) / 100
-        this.audio.volume = volume
-      })
+      if (this.volumeSlider && !this.volumeSlider.hasAttribute('data-audio-listener')) {
+        this.volumeSlider.addEventListener('input', (e) => {
+          const volume = parseInt((e.target as HTMLInputElement).value) / 100
+          this.audio.volume = volume
+        })
+        this.volumeSlider.setAttribute('data-audio-listener', 'true')
+      }
 
-      this.audio.addEventListener('timeupdate', () => this.updateProgress())
-      this.audio.addEventListener('loadedmetadata', () => this.updateDuration())
-      this.audio.addEventListener('ended', () => this.onTrackEnd())
+      // Audio event listeners (only attach once)
+      if (!this.audio.hasAttribute('data-audio-listener')) {
+        this.audio.addEventListener('timeupdate', () => this.updateProgress())
+        this.audio.addEventListener('loadedmetadata', () => {
+          this.updateDuration()
+        })
+        this.audio.addEventListener('ended', () => this.onTrackEnd())
+        this.audio.setAttribute('data-audio-listener', 'true')
+      }
     }
 
-    private async loadTrack(src: string, title: string) {
+    private handlePlayButtonClick = (e: Event) => {
+      e.preventDefault()
+      e.stopPropagation()
+      const btn = e.currentTarget as HTMLElement
+      const audioSrc = btn.dataset.audioSrc
+      const entryTitle = btn.dataset.entryTitle || 'Unknown Track'
+      const startTime = parseFloat(btn.dataset.audioStart || '0')
+      const volume = parseFloat(btn.dataset.audioVolume || '5')
+      if (audioSrc) {
+        this.loadTrack(audioSrc, entryTitle, startTime, volume)
+      }
+    }
+
+    private async loadTrack(src: string, title: string, startTime: number = 0, volume: number = 5) {
       if (!src) {
         console.error('No audio source provided')
         return
@@ -187,13 +224,31 @@
 
       this.currentTrack = src
       this.audio.src = audioUrl
-      this.audio.volume = 0.05
+      
+      // Set volume (convert from 0-100 to 0-1)
+      const normalizedVolume = Math.max(0, Math.min(1, volume / 100))
+      this.audio.volume = normalizedVolume
+      
+      // Update volume slider to match
+      if (this.volumeSlider) {
+        this.volumeSlider.value = volume.toString()
+      }
+      
+      // Store start time for this track
+      const trackStartTime = startTime
       
       // Add error handler
       this.audio.addEventListener('error', (e) => {
         console.error('Audio load error:', e)
         console.error('Audio URL attempted:', audioUrl)
         console.error('Audio element error:', this.audio.error)
+      }, { once: true })
+      
+      // Set start time after metadata loads (one-time listener)
+      this.audio.addEventListener('loadedmetadata', () => {
+        if (trackStartTime > 0 && this.audio.duration && trackStartTime < this.audio.duration) {
+          this.audio.currentTime = trackStartTime
+        }
       }, { once: true })
       
       this.audio.load()
@@ -266,6 +321,23 @@
     }
   }
 
-  new AudioPlayer()
+  let audioPlayerInstance: AudioPlayer | null = null
+
+  function initAudioPlayer() {
+    if (!audioPlayerInstance) {
+      audioPlayerInstance = new AudioPlayer()
+    } else {
+      // Re-initialize listeners for new page content
+      audioPlayerInstance.init()
+    }
+  }
+
+  // Initialize on page load
+  initAudioPlayer()
+
+  // Re-initialize on Astro page navigation
+  document.addEventListener('astro:page-load', () => {
+    initAudioPlayer()
+  })
 </script>
 

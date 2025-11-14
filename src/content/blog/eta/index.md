@@ -11,7 +11,10 @@ difficulties:
     mode: taiko
 views: 950
 favorites: 20
-image: 4-dark-waves.jpg
+image: himawari.jpg
+audio: "audio.mp3"
+audioStartTime: 0
+audioVolume: 10
 ---
 
 <!-- markdownlint-disable-file -->

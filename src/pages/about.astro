@@ -31,7 +31,7 @@ import Layout from '@/layouts/Layout.astro'
   <section class="mx-auto flex max-w-3xl flex-col gap-4 px-4 py-6">
     <div class="flex flex-col gap-4">
       <div class="flex flex-col gap-y-4">
-        <h1 class="text-2xl font-semibold">About Me</h1>
+        <h1 class="text-2xl font-semibold text-muted-foreground/80">About Me</h1>
 
         <div
           class="prose dark:prose-invert text-muted-foreground no-underline-prose max-w-none"
@@ -75,8 +75,13 @@ import Layout from '@/layouts/Layout.astro'
           </p>
 
           <p>
-            In my free time, I play rhythm games, piano, and listen to a plethora of music genres. <br />
-            I also like hunting for good cafes and hidden gems.
+            In my free time, I play rhythm games (my home page is strongly inspired by <Link
+            href="https://osu.ppy.sh/users/13370667"
+            external
+            class="text-foreground"
+            ><span class="gradient-text">osu!</span></Link
+          >), piano, and all sorts of music such as jpop, kpop, rock, metal and classical.
+           I also like hunting for good cafes and hidden gems.
           </p>
 
           <div class="mt-8">
@@ -88,7 +93,7 @@ import Layout from '@/layouts/Layout.astro'
               <div class="space-y-2 p-4 text-sm">
                 <div class="grid grid-cols-[110px_1fr] gap-x-2">
                   <span class="text-foreground">[2025/11]</span>
-                  <span>Upcoming ICPC SoCal Regionals 2025</span>
+                  <span>ICPC SoCal Regionals 2025</span>
                 </div>
                 <div class="grid grid-cols-[110px_1fr] gap-x-2">
                   <span class="text-foreground">[2025/09]</span>

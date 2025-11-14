@@ -1,0 +1,58 @@
+@layer components {
+  .tooltip-container {
+    @apply relative flex-1;
+    min-width: 0;
+    width: 100%;
+  }
+
+  .tooltip-trigger {
+    @apply block overflow-hidden text-ellipsis whitespace-nowrap cursor-help;
+    min-width: 0;
+    width: 100%;
+    max-width: 100%;
+    color: var(--text-primary);
+    font-size: 14px;
+    font-weight: 600;
+    text-shadow: var(--text-shadow);
+  }
+
+  .tooltip-content {
+    @apply fixed;
+    background-color: var(--tooltip-bg);
+    border: 1px solid var(--border-dark);
+    border-radius: var(--panel-radius);
+    box-shadow: var(--shadow-popup);
+    color: var(--text-primary);
+    padding: 4px 8px;
+    font-size: 11px;
+    white-space: normal;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--transition-tooltip);
+    z-index: var(--z-tooltip);
+    width: 200px;
+    text-align: center;
+    word-wrap: break-word;
+  }
+
+  .tooltip-content::after {
+    content: '';
+    @apply absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 4px solid transparent;
+    border-top-color: var(--tooltip-bg);
+  }
+
+  [data-tooltip-trigger]:hover ~ [data-tooltip-content],
+  [data-tooltip-trigger]:focus ~ [data-tooltip-content] {
+    opacity: 1;
+  }
+
+  /* Position tooltip dynamically on hover */
+  .tooltip-container:hover .tooltip-content {
+    opacity: 1;
+  }
+}
+

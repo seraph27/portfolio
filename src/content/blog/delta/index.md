@@ -14,6 +14,9 @@ difficulties:
 views: 1200
 favorites: 28
 image: screenshot-2025-11-05_12-21-56.png
+audio: "no12.mp3"
+audioStartTime: 0
+audioVolume: 100
 ---
 
 <!-- markdownlint-disable-file -->

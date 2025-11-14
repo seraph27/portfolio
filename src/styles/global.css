@@ -1,4 +1,7 @@
 @import 'tailwindcss';
+@import './design-tokens.css';
+@import './components/beatmapset-panel.css';
+@import './components/tooltip.css';
 
 @custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
 

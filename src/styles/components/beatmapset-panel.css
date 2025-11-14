@@ -1,0 +1,392 @@
+@layer components {
+  /* Beatmapset Panel - Main Container */
+  .beatmapset-panel {
+    /* CSS Custom Properties for dynamic theming */
+    --info-bg: var(--panel-info-bg);
+    --menu-container-width: var(--menu-container-width-collapsed);
+    --menu-opacity: var(--menu-opacity-collapsed);
+    --play-bg: var(--play-bg);
+    --play-icon-opacity: var(--play-icon-opacity-collapsed);
+    --info-padding-right: var(--info-padding-right-collapsed);
+    
+    @apply relative block overflow-hidden w-full;
+    
+    max-width: var(--panel-max-width);
+    height: var(--panel-height);
+    background-color: var(--panel-bg);
+    box-shadow: var(--shadow-panel);
+    border-radius: var(--panel-radius);
+    font-family: var(--font-osu);
+    transition: all var(--transition-base);
+  }
+
+  .beatmapset-panel:hover {
+    --info-bg: var(--panel-info-bg-hover);
+    --menu-container-width: var(--menu-container-width-expanded);
+    --menu-opacity: var(--menu-opacity-expanded);
+    --play-bg: var(--play-bg-hover);
+    --play-icon-opacity: var(--play-icon-opacity-expanded);
+    --info-padding-right: var(--info-padding-right-expanded);
+  }
+
+  /* Background Image */
+  .beatmapset-panel__bg-image {
+    @apply absolute;
+    inset: 0;
+  }
+
+  .beatmapset-panel__bg-image-inner {
+    @apply h-full w-full;
+    object-fit: cover;
+    opacity: 0.3;
+    filter: blur(2px);
+    transform: scale(1.15);
+  }
+
+  .beatmapset-panel__bg-fallback {
+    @apply absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(168, 85, 247, 0.2), rgba(236, 72, 153, 0.2), rgba(249, 115, 22, 0.2));
+  }
+
+  /* Content Wrapper */
+  .beatmapset-panel__content-wrapper {
+    @apply relative h-full flex items-stretch;
+  }
+
+  /* Left Cover Column */
+  .beatmapset-panel__cover-col {
+    @apply relative flex-shrink-0 overflow-hidden;
+    width: var(--cover-width);
+    height: var(--panel-height);
+    transition: background-color var(--transition-base);
+  }
+
+  .beatmapset-panel:hover .beatmapset-panel__cover-col--play {
+    background-color: var(--play-bg);
+  }
+
+  .beatmapset-panel__cover-image {
+    @apply absolute w-full h-full;
+    inset: 0;
+    object-fit: cover;
+  }
+
+  .beatmapset-panel__cover-fallback {
+    @apply h-full w-full;
+    background: linear-gradient(135deg, rgba(168, 85, 247, 0.5), rgba(236, 72, 153, 0.5), rgba(249, 115, 22, 0.5));
+  }
+
+  /* Right Info Area */
+  .beatmapset-panel__info {
+    @apply flex-1 relative flex flex-col;
+    min-width: 10px;
+    padding: 4px var(--info-padding-right) 6px 10px;
+    background: var(--info-bg);
+    /* Adjust radius to prevent bleeding of the underneath cover when hover background is active */
+    border-radius: 9px 0 0 9px;
+    transition: padding-right var(--transition-base), background var(--transition-base);
+  }
+
+  /* Info Rows */
+  .beatmapset-panel__info-row {
+    @apply flex items-baseline;
+    padding: 0;
+    margin: 0;
+  }
+
+  .beatmapset-panel__info-row--title {
+    margin-bottom: 0;
+  }
+
+  .beatmapset-panel__info-row--artist {
+    margin-bottom: 2px;
+    min-width: 0;
+  }
+
+  .beatmapset-panel__info-row--mapper {
+    margin-bottom: 4px;
+  }
+
+  .beatmapset-panel__info-row--stats {
+    margin-bottom: 0;
+    gap: 10px;
+    opacity: var(--stats-opacity);
+    transition: opacity var(--transition-base);
+  }
+
+  .beatmapset-panel__info-row--date {
+    margin-bottom: 1px;
+    gap: 10px;
+    opacity: var(--stats-opacity);
+    transition: opacity var(--transition-base);
+  }
+
+  .beatmapset-panel__info-row--extra {
+    @apply items-center;
+    margin-top: auto;
+    margin-left: -3px;
+    margin-right: -3px;
+    gap: 4px;
+  }
+
+  /* Title */
+  .beatmapset-panel__title {
+    @apply flex-1 overflow-hidden text-ellipsis whitespace-nowrap;
+    min-width: 0;
+    color: var(--text-primary);
+    font-size: 18px;
+    font-weight: 600;
+    text-shadow: var(--text-shadow);
+  }
+
+  /* Description */
+  .beatmapset-panel__description {
+    @apply flex-1 overflow-hidden text-ellipsis whitespace-nowrap;
+    min-width: 0;
+    color: var(--text-primary);
+    font-size: 14px;
+    font-weight: 600;
+    text-shadow: var(--text-shadow);
+  }
+
+  /* Mapper */
+  .beatmapset-panel__mapper {
+    @apply overflow-hidden text-ellipsis whitespace-nowrap;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-secondary);
+  }
+
+  .beatmapset-panel__author-name {
+    color: var(--text-author);
+  }
+
+  /* Stats */
+  .beatmapset-panel__stats-item {
+    @apply flex items-center;
+    gap: 4px;
+    color: var(--text-primary);
+    font-size: 12px;
+    font-weight: 400;
+  }
+
+  .beatmapset-panel__stats-icon {
+    @apply flex-shrink-0 flex items-center justify-center;
+    margin-right: 4px;
+    font-size: 8px;
+    color: var(--text-secondary);
+  }
+
+  .beatmapset-panel__stats-icon-inner {
+    width: 8px;
+    height: 8px;
+  }
+
+  /* Extra Items */
+  .beatmapset-panel__extra-item {
+    @apply flex items-center;
+    margin: 0 3px;
+  }
+
+  .beatmapset-panel__extra-item--dots {
+    @apply items-center;
+  }
+
+  /* Status Badge */
+  .beatmapset-panel__status-badge {
+    @apply uppercase;
+    padding: 0 5px;
+    border-radius: 10000px;
+    background-color: var(--accent-green);
+    color: var(--accent-green-text);
+    font-size: 12px;
+    font-weight: 800;
+    line-height: 14px;
+  }
+
+  /* Beatmap Icon */
+  .beatmapset-panel__beatmap-icon {
+    @apply flex;
+    margin-right: 2px;
+    font-size: 14px;
+  }
+
+  /* Beatmap Dots */
+  .beatmapset-panel__beatmap-dots {
+    @apply flex items-center;
+    cursor: help;
+    position: relative;
+  }
+
+  .beatmapset-panel__beatmap-dot {
+    @apply flex-shrink-0;
+    margin-right: 1px;
+    width: 6px;
+    height: 12px;
+    border-radius: 10000px;
+  }
+
+  /* Difficulty Popup */
+  .difficulty-popup {
+    @apply fixed;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--transition-base);
+    z-index: var(--z-popup);
+  }
+
+  .difficulty-popup__content {
+    @apply w-full;
+    border-radius: var(--panel-radius);
+    border: 1px solid var(--border-dark);
+    background-color: var(--popup-bg);
+    box-shadow: var(--shadow-popup);
+    padding: 12px;
+    min-width: 200px;
+  }
+
+  .difficulty-popup__title {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+  }
+
+  .difficulty-popup__list {
+    @apply flex flex-col;
+    gap: 8px;
+  }
+
+  .difficulty-popup__group {
+    @apply flex flex-col;
+    gap: 4px;
+  }
+
+  .difficulty-popup__difficulties {
+    @apply flex flex-col;
+    gap: 4px;
+  }
+
+  .difficulty-popup__diff-item {
+    @apply flex items-center;
+    gap: 8px;
+    font-size: 11px;
+  }
+
+  .difficulty-popup__diff-badge {
+    @apply inline-flex items-center justify-center;
+    padding: 1px 6px;
+    border-radius: 3px;
+    font-weight: 700;
+    font-size: 10px;
+    min-width: 50px;
+    line-height: 1.2;
+  }
+
+  .difficulty-popup__diff-name {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 11px;
+  }
+
+  /* Play Button */
+  .beatmapset-panel__play-button {
+    @apply absolute flex items-center justify-center;
+    left: 70px;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 56px;
+    height: 56px;
+    min-width: 56px;
+    min-height: 56px;
+    opacity: var(--play-icon-opacity);
+    transition: opacity var(--transition-base), transform var(--transition-base), background-color var(--transition-base);
+    z-index: var(--z-play-button);
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(8px);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    cursor: pointer;
+    padding: 0;
+    pointer-events: auto;
+  }
+
+  .beatmapset-panel__play-button:hover {
+    background: var(--play-bg-hover);
+    transform: translate(-50%, -50%) scale(1.1);
+    border-color: rgba(255, 255, 255, 0.4);
+  }
+
+  .beatmapset-panel__play-button:active {
+    transform: translate(-50%, -50%) scale(1.05);
+  }
+
+  .beatmapset-panel__play-icon {
+    width: 24px;
+    height: 24px;
+    color: var(--text-primary);
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5));
+    margin-left: 2px; /* Slight offset to center the play icon visually */
+    pointer-events: none;
+  }
+
+  /* Menu Container */
+  .beatmapset-panel__menu-container {
+    @apply overflow-hidden flex-none relative;
+    width: var(--menu-container-width);
+    background-color: var(--menu-bg);
+    border-radius: 0 var(--panel-radius) var(--panel-radius) 0;
+    transition: width var(--transition-base);
+  }
+
+  @media (min-width: 1025px) {
+    .beatmapset-panel__menu-container {
+      overflow: visible;
+    }
+  }
+
+  /* Inverted corner paths for smooth connection */
+  .beatmapset-panel__menu-container::before,
+  .beatmapset-panel__menu-container::after {
+    content: "";
+    width: 10px;
+    height: 10px;
+    position: absolute;
+    background-color: inherit;
+    right: 100%;
+  }
+
+  .beatmapset-panel__menu-container::before {
+    top: 0;
+    clip-path: path("M11 -1 L11 10 L10 10 A10 10 0 0 0 0 0 L0 -1 Z");
+  }
+
+  .beatmapset-panel__menu-container::after {
+    bottom: 0;
+    clip-path: path("M11 11 L11 0 L10 0 A10 10 0 0 1 0 10 L 0 11 Z");
+  }
+
+  /* Menu */
+  .beatmapset-panel__menu {
+    @apply w-full h-full flex flex-col justify-evenly items-center;
+    opacity: var(--menu-opacity);
+    font-size: 12px;
+    color: var(--text-secondary);
+    transition: opacity var(--transition-base);
+    pointer-events: auto;
+    overflow: hidden;
+  }
+
+  /* Mobile */
+  @media (max-width: 1024px) {
+    .beatmapset-panel__info {
+      background-color: var(--panel-info-bg-mobile);
+      padding-right: var(--info-padding-right-expanded);
+    }
+    
+    .beatmapset-panel:hover .beatmapset-panel__info {
+      background-color: var(--panel-info-bg-mobile);
+    }
+  }
+}
+

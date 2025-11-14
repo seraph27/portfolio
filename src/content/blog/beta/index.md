@@ -16,6 +16,9 @@ difficulties:
 views: 1400
 favorites: 35
 image: screenshot-2025-10-31_22-27-43.png
+audio: "no11.mp3"
+audioStartTime: 0
+audioVolume: 100
 ---
 
 <!-- markdownlint-disable-file -->

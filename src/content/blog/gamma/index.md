@@ -19,7 +19,10 @@ difficulties:
     mode: taiko
 views: 1300
 favorites: 32
-image: 6-purpled-night.jpg
+image: wallhaven-jexmpm.jpg
+audio: "in_the_pool.mp3"
+audioStartTime: 10
+audioVolume: 50
 ---
 
 <!-- markdownlint-disable-file -->

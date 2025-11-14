@@ -13,6 +13,8 @@ const blog = defineCollection({
       tags: z.array(z.string()).optional(),
       draft: z.boolean().optional(),
       audio: z.string().optional(),
+      audioStartTime: z.number().optional(),
+      audioVolume: z.number().min(0).max(100).optional(),
       difficulties: z.array(z.object({
         rating: z.number().min(0.1).max(9),
         mode: z.enum(['osu', 'taiko', 'catch', 'mania']),
