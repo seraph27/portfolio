@@ -25,7 +25,7 @@ difficulties:
     mode: catch
 views: 650
 favorites: 10
-image: 1-catppuccin.png
+image: 3-cat-blue-eye-mocha.png
 ---
 
 <!-- markdownlint-disable-file -->

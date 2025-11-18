@@ -11,7 +11,7 @@ difficulties:
     mode: taiko
 views: 1000
 favorites: 22
-image: 3-cat-blue-eye-mocha.png
+image: 1-catppuccin.png
 ---
 
 <!-- markdownlint-disable-file -->

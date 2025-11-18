@@ -130,14 +130,7 @@
     }
 
     public init() {
-      // Remove existing listeners to prevent duplicates
-      const existingButtons = document.querySelectorAll('.play-button[data-audio-listener]')
-      existingButtons.forEach((btn) => {
-        btn.removeEventListener('click', this.handlePlayButtonClick)
-        btn.removeAttribute('data-audio-listener')
-      })
-
-      // Attach listeners to all play buttons
+      // Attach listeners directly to play buttons
       document.querySelectorAll('.play-button').forEach((btn) => {
         if (!(btn as HTMLElement).dataset.audioListener) {
           btn.addEventListener('click', this.handlePlayButtonClick.bind(this))
@@ -210,16 +203,21 @@
       }
 
       // Audio path is already resolved in the component (e.g., /blog/alpha/audio.mp3)
-      // Just use it directly
+      // Encode the URL properly to handle spaces and special characters in filenames
       let audioUrl = src
       
-      // If it's a relative path starting with /, it's already absolute
-      // If it starts with http/https, use as-is
-      // Otherwise, try to resolve it
-      if (!src.startsWith('/') && !src.startsWith('http')) {
+      // If it's a relative path starting with /, encode only the filename part
+      if (src.startsWith('/')) {
+        const lastSlashIndex = src.lastIndexOf('/')
+        if (lastSlashIndex !== -1) {
+          const dirPath = src.substring(0, lastSlashIndex + 1)
+          const filename = src.substring(lastSlashIndex + 1)
+          audioUrl = dirPath + encodeURIComponent(filename)
+        }
+      } else if (!src.startsWith('http')) {
         // Fallback: try relative to current page
         const basePath = window.location.pathname.split('/').slice(0, -1).join('/') || '/'
-        audioUrl = `${basePath}/${src}`
+        audioUrl = `${basePath}/${encodeURIComponent(src)}`
       }
 
       this.currentTrack = src
@@ -321,23 +319,11 @@
     }
   }
 
-  let audioPlayerInstance: AudioPlayer | null = null
+  const audioPlayer = new AudioPlayer()
 
-  function initAudioPlayer() {
-    if (!audioPlayerInstance) {
-      audioPlayerInstance = new AudioPlayer()
-    } else {
-      // Re-initialize listeners for new page content
-      audioPlayerInstance.init()
-    }
-  }
-
-  // Initialize on page load
-  initAudioPlayer()
-
-  // Re-initialize on Astro page navigation
+  // Re-attach listeners on Astro page navigation
   document.addEventListener('astro:page-load', () => {
-    initAudioPlayer()
+    audioPlayer.init()
   })
 </script>
 

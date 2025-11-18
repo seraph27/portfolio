@@ -15,7 +15,8 @@ difficulties:
     mode: osu
 views: 820
 favorites: 16
-image: 3-osaka-jade-bg.jpg
+image: wallpaperflare.com_wallpaper.jpg
+audio: "SubaHibi OST_ Yoru no Himawari.mp3"
 ---
 
 <!-- markdownlint-disable-file -->

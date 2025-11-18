@@ -14,6 +14,7 @@ difficulties:
 views: 760
 favorites: 14
 image: 2-osaka-jade-bg.jpg
+audio: "月曜日戦争.mp3"
 ---
 
 <!-- markdownlint-disable-file -->

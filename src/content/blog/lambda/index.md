@@ -11,7 +11,7 @@ difficulties:
     mode: osu
 views: 700
 favorites: 12
-image: 1-osaka-jade-bg.jpg
+image: wallhaven-ly87kp.png
 ---
 
 <!-- markdownlint-disable-file -->
