@@ -1,0 +1,24 @@
+---
+import CodeBlock from './CodeBlock.astro'
+
+interface Props {
+  content: string
+  language?: string
+  title?: string
+  fileName?: string
+  skipLines?: [number, number][]
+  showLineNumbers?: boolean
+}
+
+const { content, language = 'cpp', title, fileName, skipLines, showLineNumbers = true } = Astro.props
+---
+
+<CodeBlock
+  content={content}
+  language={language}
+  title={title}
+  fileName={fileName}
+  skipLines={skipLines}
+  showLineNumbers={showLineNumbers}
+/>
+

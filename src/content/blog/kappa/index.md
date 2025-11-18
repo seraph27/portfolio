@@ -1,7 +1,7 @@
 ---
 title: "κ"
 description: "Placeholder Kappa post."
-date: 2025-01-13
+date: 2025-10-27
 tags: ["Bit Manipulation", "Math", "Number Theory"]
 draft: false
 difficulties:

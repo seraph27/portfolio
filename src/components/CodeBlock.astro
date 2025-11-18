@@ -1,0 +1,206 @@
+---
+interface Props {
+  content: string
+  language?: string
+  title?: string
+  fileName?: string
+  skipLines?: [number, number][]
+  showLineNumbers?: boolean
+  className?: string
+}
+
+const {
+  content,
+  language = 'text',
+  title,
+  fileName,
+  skipLines = [],
+  showLineNumbers = true,
+  className = '',
+} = Astro.props
+
+const lines = content.split('\n')
+const processedLines: Array<{ line: string; lineNumber: number; skipped: boolean; skipRange?: [number, number] }> = []
+let displayLineNumber = 0
+
+lines.forEach((line, index) => {
+  const actualLineNumber = index + 1
+  const isSkipped = skipLines.some(
+    ([start, end]) => actualLineNumber >= start && actualLineNumber <= end
+  )
+  const isSkipBoundary = skipLines.some(
+    ([start, end]) => actualLineNumber === end
+  )
+
+  if (isSkipped && !isSkipBoundary) {
+    return
+  }
+
+  if (isSkipBoundary) {
+    const skipRange = skipLines.find(
+      ([start, end]) => actualLineNumber === end
+    )
+    if (skipRange) {
+      const [startSkip, endSkip] = skipRange
+      displayLineNumber++
+      processedLines.push({
+        line: `... omitted ${startSkip}-${endSkip} lines ...`,
+        lineNumber: displayLineNumber,
+        skipped: true,
+        skipRange: [startSkip, endSkip],
+      })
+    }
+    return
+  }
+
+  displayLineNumber++
+  processedLines.push({
+    line,
+    lineNumber: displayLineNumber,
+    skipped: false,
+  })
+})
+
+const blockId = `code-block-${Math.random().toString(36).substring(7)}`
+---
+
+<div
+  class={`relative my-6 overflow-hidden rounded-lg border border-border ${className}`}
+  data-code-block={blockId}
+>
+  {(fileName || title) && (
+    <div class="flex items-center justify-between gap-3 border-b border-border bg-muted/30 px-4 py-2">
+      <div class="flex items-center gap-2">
+        {fileName && (
+          <span class="text-sm font-medium text-foreground">{fileName}</span>
+        )}
+        {language && (
+          <span class="rounded bg-muted px-2 py-0.5 text-xs text-muted-foreground">
+            {language}
+          </span>
+        )}
+      </div>
+      {title && <span class="text-sm text-muted-foreground">{title}</span>}
+    </div>
+  )}
+
+  <button
+    class="code-block-copy-button absolute right-2 top-2 z-10 flex items-center gap-1.5 rounded-md border border-border bg-background px-2 py-1.5 text-xs opacity-0 transition-opacity hover:opacity-100 focus:opacity-100"
+    data-copy-button={blockId}
+    aria-label="Copy code"
+  >
+    <svg
+      class="h-3.5 w-3.5"
+      fill="none"
+      stroke="currentColor"
+      viewBox="0 0 24 24"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"
+      />
+    </svg>
+    <span class="copy-text">Copy</span>
+  </button>
+
+  <pre
+    class="overflow-x-auto bg-muted/25 p-4 text-sm"
+    data-language={language}
+  >
+    <code class="block font-mono">
+      {processedLines.map(({ line, lineNumber, skipped }) => (
+        <div
+          class={`flex ${
+            skipped
+              ? 'my-1 items-center justify-center rounded-sm bg-muted/50 py-1 text-xs text-muted-foreground'
+              : ''
+          }`}
+        >
+          {showLineNumbers && !skipped && (
+            <span class="inline-block min-w-[2.75em] select-none pr-4 text-right text-muted-foreground">
+              {lineNumber}
+            </span>
+          )}
+          <span
+            class={`block whitespace-pre ${skipped ? 'text-center' : 'flex-1'}`}
+          >
+            {line || ' '}
+          </span>
+        </div>
+      ))}
+    </code>
+  </pre>
+</div>
+
+<script define:vars={{ blockId, content }}>
+  function initCodeBlock() {
+    const button = document.querySelector(`[data-copy-button="${blockId}"]`)
+    const container = document.querySelector(`[data-code-block="${blockId}"]`)
+    
+    if (!button || !container || button.hasAttribute('data-code-listener')) return
+
+    const copyText = button.querySelector('.copy-text')
+    if (!copyText) return
+
+    // Show button on hover
+    container.addEventListener('mouseenter', () => {
+      button.classList.remove('opacity-0')
+      button.classList.add('opacity-100')
+    })
+
+    container.addEventListener('mouseleave', () => {
+      if (!button.classList.contains('copied')) {
+        button.classList.remove('opacity-100')
+        button.classList.add('opacity-0')
+      }
+    })
+
+    button.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(content)
+        copyText.textContent = 'Copied'
+        button.classList.add('copied')
+        
+        // Change icon to checkmark
+        const svg = button.querySelector('svg')
+        if (svg) {
+          svg.innerHTML = `
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+          `
+        }
+
+        setTimeout(() => {
+          copyText.textContent = 'Copy'
+          button.classList.remove('copied')
+          if (svg) {
+            svg.innerHTML = `
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+            `
+          }
+          if (!container.matches(':hover')) {
+            button.classList.remove('opacity-100')
+            button.classList.add('opacity-0')
+          }
+        }, 2000)
+      } catch (err) {
+        console.error('Failed to copy:', err)
+      }
+    })
+
+    button.setAttribute('data-code-listener', 'true')
+  }
+
+  // Initialize on page load
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initCodeBlock)
+  } else {
+    initCodeBlock()
+  }
+
+  // Re-initialize on Astro page navigation
+  document.addEventListener('astro:page-load', initCodeBlock)
+</script>
+

@@ -1,7 +1,7 @@
 ---
 title: "γ"
 description: "Placeholder Gamma post."
-date: 2025-01-20
+date: 2025-11-12
 tags: ["Medium", "Dynamic Programming", "Graphs", "Trees", "Backtracking", "Math"]
 draft: false
 difficulties:
