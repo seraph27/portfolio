@@ -1,0 +1,16 @@
+/home/cgroup/icpc124/CLionProjects/socal2025/cmake-build-debug/CMakeFiles/socal2025.dir
+/home/cgroup/icpc124/CLionProjects/socal2025/cmake-build-debug/CMakeFiles/A.dir
+/home/cgroup/icpc124/CLionProjects/socal2025/cmake-build-debug/CMakeFiles/B.dir
+/home/cgroup/icpc124/CLionProjects/socal2025/cmake-build-debug/CMakeFiles/C.dir
+/home/cgroup/icpc124/CLionProjects/socal2025/cmake-build-debug/CMakeFiles/D.dir
+/home/cgroup/icpc124/CLionProjects/socal2025/cmake-build-debug/CMakeFiles/E.dir
+/home/cgroup/icpc124/CLionProjects/socal2025/cmake-build-debug/CMakeFiles/F.dir
+/home/cgroup/icpc124/CLionProjects/socal2025/cmake-build-debug/CMakeFiles/G.dir
+/home/cgroup/icpc124/CLionProjects/socal2025/cmake-build-debug/CMakeFiles/H.dir
+/home/cgroup/icpc124/CLionProjects/socal2025/cmake-build-debug/CMakeFiles/I.dir
+/home/cgroup/icpc124/CLionProjects/socal2025/cmake-build-debug/CMakeFiles/J.dir
+/home/cgroup/icpc124/CLionProjects/socal2025/cmake-build-debug/CMakeFiles/K.dir
+/home/cgroup/icpc124/CLionProjects/socal2025/cmake-build-debug/CMakeFiles/L.dir
+/home/cgroup/icpc124/CLionProjects/socal2025/cmake-build-debug/CMakeFiles/M.dir
+/home/cgroup/icpc124/CLionProjects/socal2025/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/cgroup/icpc124/CLionProjects/socal2025/cmake-build-debug/CMakeFiles/rebuild_cache.dir

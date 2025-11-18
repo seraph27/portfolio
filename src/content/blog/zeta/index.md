@@ -1,7 +1,7 @@
 ---
 title: "ζ"
 description: "Placeholder Zeta post."
-date: 2025-01-17
+date: 2025-11-05
 tags: ["Binary Search", "Two Pointers"]
 draft: false
 difficulties:

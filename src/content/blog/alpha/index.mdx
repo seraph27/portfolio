@@ -1,7 +1,7 @@
 ---
-title: "α"
-description: "My philosophy on leetcode interviews, competitive programming, and problem solving"
-date: 2025-01-22
+title: "α - leetcode"
+description: "opinion on how to study for leetcode interviews, problem solving and competitive programming"
+date: 2025-11-17
 image: "GClJ5NZbUAEIdSH.jpg"
 audio: "audio.mp3"
 audioStartTime: 60
@@ -27,36 +27,46 @@ difficulties:
 views: 1500
 favorites: 40
 ---
-
+import Table from '@/components/Table.astro'
 import Callout from '@/components/Callout.astro'
 import copiumImg from './copium.png'
 
 ## Preface
 
-Leetcode and DSA technical interviews within the software field might be one of the most debated topics within the software field. This is my philosophy on how to
-approach things like Leetcode and problem solving in general.
+Leetcode and DSA technical interviews for software engineer roles might be one of 
+the most debated and controversial topics within the software field. This post will outline my 
+opinions on how to study for such interviews, problem solving and competitive programming 
+in general, coming from someone that did NOT follow the "advice" that is commonly seen.
 
-To start, why should you care? Every three months I see a coping post saying 
-that companies are moving away from Leetcode style interviews--
+To start, why should you care about improving in arbitary algorithmic problems? 
+People seems to be averse to grinding leetcode problems, for all sorts of reasons, but a key one being
+that it's useless for the job (which I'll explain why I disagree with later).
 
-![Reddit posts about companies moving away from LC interviews](./reddit_cope.png)
-
-Unfortunately, they're not. And I don't expect this style of interviews to be eliminated anytime soon. Aside from Meta and Stripe and a few companies that's experimenting with non-lc interviews. 
+The reality is, if you want a job at a big tech company, you will be expected to pass such an interview,
+and I don't expect this style of interviews to be eliminated anytime soon.
+Aside from Meta and Stripe and startups that's experimenting with non-lc interviews. 
 As of now in 2025, 2/3 of companies and the majority of big tech still uses DSA to filter candidates. Why?
 
-<Callout variant="question" title="Why do companies still use DSA interviews?">
+<Callout variant="question" title="Why do companies still use DSA interviews?" defaultOpen={false}>
 
 ⚠️ **Warning:** might be controversial takes
 
-1. **Equal playing field** — In 2025, there's more demand than supply for engineers. These companies only need people who are "competent" enough or pass the bar. And the bar isn't high. For companies, it's also easy to conduct such interviews at scale. Leetcode is a skill where everyone essentially starts with the same playing field. It's like a game. It shows you're willing to put the bare minimum effort, and that you could learn a new skill.
+1. **Equal playing field** — In 2025, there's more demand than supply for engineers.
+These companies only need people who are "competent" enough or pass the bar. And the 
+bar isn't high, so Leetcode is an easy method to filter out candidates at scale. 
+Leetcode is a skill where everyone starts with the same playing field.
+It's akin to a college degree which shows you're able to navigate an ambigious environment for 4 years 
+and get a degree. It shows you're willing to put the bare minimum effort.
+ It's also a signal of conformity and willingness to learn.
 
-2. **It's relevant** — One common argument is that Leetcode is utterly "irrelevant"
+2. **It's relevant** — One common argument is that DSA interviews are utterly "irrelevant"
  to any SWE job and it's a waste of time. This is just untrue. Ask yourself why top quant companies, 
  AI labs, and big tech hire specifically ICPC or IOI medalists. 
-Why is it such a signal for prestige, if these people are just sinking thousands
- of hours in arbitary puzzles that has "nothing" to do with the job? 
- Well, maybe because it does help: debugging skills, critical thinking skills,
-ability to break complex problems down.
+Why is it such a strong hiring signal, if these people are just sinking thousands
+of hours in arbitary puzzles that has "nothing" to do with the job? 
+From personal experience, every strong competitive programmer I've ever met, also turns out 
+to become a strong software engineer. They're able to solve problems under pressure, 
+think critically, and are generally more competent in the software field.
 
 {/* 3. **Merit** — If you don't conduct DSA interviews, you're essentially asking companies to only hire from top universities.
 They have nothing to go off of. I've seen people argue that they have the skill
@@ -71,27 +81,28 @@ system design, ambiguious problems, etc... It's not easier.
 </Callout>
 
 I'm not suggesting that such interviews don't have it's flaws. Of course it does. 
-But there has to be a compromise, and I think it's much easier
-to prepare for than the alternative people are pushing for (the so-called "real-life" work and take home projects).
+But there has to be a compromise, and I think it's actually much easier
+to prepare for than the alternative people are pushing for 
+(the so-called "real-life" work and take home projects).
 
 So what even is the purpose of this post? I've noticed that the general consensus around Leetcode
 is that people simply hate it. I hope to share some different perspectives to shift that notion or at least
 make the journey more tolerable. I believe the reason why most people struggle with Leetcode, is simply because they're approaching it wrong. 
 This is not me coming from a high horse. There is a stark difference between what top problems solvers are doing, and what the average "advice" suggest people to do, from random 
-people on the internet. 
+people on the internet.
 
-### Where I'm at
+### My current skill level
 
 I will first show my current progress, albeit by my own standards I improved
 quite slowly, but objectively it has worked with great success for general technical
 interviews and OAs (i.e. FAANG, quant firms, etc...). I have never needed to study 
 specifically for such interviews.
 
-<Callout variant="note" title="My current profiles">
+<Callout variant="note" title="">
 For context, I first learned about leetcode in my freshman year, but I was clueless. I was told the same thing as 
-many others. "Start with Neetcode 150 and just use python!". I quit after $\le$ 50 problems. 
+many others. "Start with Neetcode 150 and use python!". I quit after $\le$ 50 problems. 
 
-I've only really started again in April of 2024, and I had 4 months (Jan 2025 - Apr 2025) where I didn't study at all due to mandatory military conscription.
+I've only really started again in April of 2024, and I had 4 months (Jan 2025 - Apr 2025) where I didn't study at all due to military.
 Overall, I've only been studying for less than 1.5 years, averaging less than 2 problems a day. 
 
 [Leetcode](https://leetcode.com/mod998244353)
@@ -101,132 +112,155 @@ Overall, I've only been studying for less than 1.5 years, averaging less than 2 
 [Codeforces](https://codeforces.com/profile/shiinamashiro_)
 ![Codeforces Profile](./cf.png)
 
-
-
 </Callout>
 
 ## The Echo Chamber
-I believe that if you learn from weak people, you'll be weak.  I'm not strong either, so I'm not going to come up with my own advice. Instead, this blog will 
-be a compilation of tips and resources from everything I've learned within my limited experience, from IOI medalists to ICPC finalists, LGMs on codeforces,
-and all my friends that are stronger than me.  
+I believe that if you learn from weak people, you'll also be weak.  I'm not strong either,
+so I'm not going to come up with my own advice. Instead, this post will 
+be a compilation of tips and resources from everyone I've ever met and seen that is stronger than me.
 
-There is a severe disconnect between Leetcode-only users and people who's
-been properly exposed to the entire problem solving community. What do I mean by that?
-Here's a couple points to think about:
+The Leetcode community is a bubble. There is a severe disconnect between Leetcode-only users
+ and people who've been properly exposed to the entire problem solving community. What do I mean by that?
 
 **1. The advice you commonly see is from people who haven't succeeded themselves**
 
-Think about it: most leetcode advice on Reddit or random blogs comes from people who are stuck at the same level as you. They're regurgitating what they read from someone else who also never got good. It's blind leading the blind.
+Most advice on Reddit or random blogs comes from people who are stuck at
+ the same level as you. They're regurgitating what they read from someone else
+  who also never got good. It's blind leading the blind.
 
 **2. The echo chamber reinforces memorization over understanding**
 
-The most upvoted advice is always some variation of:
-- "Just do Blind 75 three times"
-- "Use Python, it's easier"
-- "Memorize these 14 patterns"
-- "Do Neetcode 150"
+There's advice like this with a lot of upvotes which can completely ruin your chances of success
+as a beginner.
 
-This creates a cycle where people think problem solving is about **recognition** instead of **thinking**. They never learn to solve problems they haven't seen before.
+<Callout variant="warning">
+![](./thrice.png)
+![](./flashcards.png)
+</Callout>
+
+This creates a cycle where people think problem solving is about
+memorizing patterns instead of **understanding**. They never learn to solve problems 
+ they haven't seen before. Let me be very clear because a lot of people take this the wrong way.
+There is a difference between recognizing a pattern and memorizing a pattern. Take binary search 
+for example. You should be able to explain exactly why `r = mid - 1` and `l = mid + 1` 
+or whether to use `while (l <= r)` instead of `while (l < r)`. No one is asking your to "invent"
+things on the spot, but having an immaculate understanding to the point where you barely
+have to think about the details when implementing is what you should be aiming for.
 
 **3. There's a fundamental misunderstanding of what "practice" means**
 
-In the competitive programming community, no one tells you to "redo the same 150 problems until you memorize them." That would be insane. But somehow in the Leetcode space, this is normalized and even encouraged.
+In the broader problem solving community, no one tells you to "redo the same 150 problems until you memorize them." That would be insane. But somehow in the Leetcode space, this is normalized and even encouraged.
 
-**Real practice means:**
+**Real practice is:**
 - Solving new problems consistently
-- Learning from mistakes
 - Generalizing patterns across different problem types
 - Building actual problem-solving skills
 
+I will elaborate more on this in the next section.
+
 **4. The platforms matter more than people realize**
 
-Most people stick to Leetcode exclusively because it's what everyone talks about. But the competitive programming community has been around much longer and has **significantly better resources**:
+Most people stick to Leetcode exclusively because it's what everyone talks about.
+ But the competitive programming community has been around much longer and has
+  **significantly better resources**:
 
-- Atcoder's beginner contests are more structured than any LC learning path
-- USACO has the best topic-based training
-- Codeforces editorials are usually better than LC solutions tab
-- These platforms force you to actually think, not just pattern match
+- Atcoder's beginner contests are easier to get started than LC easies
+- USACO and CSES have much better topic-based training than any "roadmap" you can ever find
+- Editorials from competitive programming sites are written by authors, often master+ rated. Leetcode
+solutions are often written by troglodytes or AI generated farming upvotes.
+- A lot of problems forces you to think more and apply patterns in creative ways. 
+It's less standard, which helps you build problem solving skills.
+
+To me, Leetcode is a subset of competitive programming. Competitive programming has both a lower 
+floor and a higher ceiling. 
+
+There's a LOT of misconceptions about competitive programming, and I'll address some of them later. 
+
+- It's not only math
+- It's not for geniuses, chinese elementary and middle schoolers are doing codeforces 
+- It translates to leetcode very well, but not vice versa
+- It's not a waste of time, it's a skill that will help you in your career
+- It does not take more time
+- You can use python... any language you want
+
 
 **5. The metrics people care about are wrong**
 
 Leetcode users obsess over:
 - Total problems solved
-- Streak counts
-- Company tags
-- Premium subscription features
+- Streak counts / Consistency
+- Company tags 
+- Premium subscription features 
 
-Competitive programmers care about:
-- Rating improvements
+<Callout variant="note" title="Questionable metrics" defaultOpen={false}>
+Things like this gets applauded on reddit and youtube.
+
+Shouldn't the goal be to achieve more with less effort? I would be ashamed if I solved 3000 problems 
+and is not guardian rating. btw, this guy is a cheater and still did not get banned.
+![](./votrubac.png)
+![](./solves_over_rating.png)
+</Callout>
+
+Instead you should care about:
+- Rating / contest performance (not the best but still more accurate than problems solved)
 - Solving progressively harder problems
-- Contest performance
 - Actual skill development
 
-**Which mindset do you think leads to better long-term growth?**
+## How to actually improve
+### Learning from the right sources
 
-### Who Are You Learning From?
-
-This is the most important question you should ask yourself.
-
-<Callout variant="warning" title="Popular Leetcode Influencers vs Their Actual Skill Level">
+<Callout variant="warning" title="Popular Leetcode Influencers vs Competitive Programming Influencers">
 
 Let's look at the hard numbers. These are the people whose tutorials get millions of views:
 
-| Content Creator | LeetCode Rating | Last Active Improvement | Codeforces Rating |
-|----------------|-----------------|------------------------|-------------------|
-| Neetcode | ~1700 | 5+ years ago (stopped improving) | N/A |
-| Most LC YouTubers | 1500-1700 | Stagnant | N/A |
-| Most Top Upvoted Solutions | 1500-1700 | N/A (likely AI-generated farming upvotes) | N/A |
+<Table
+  headers={['Content Creator', 'LeetCode Rating', 'Codeforces Rating', 'Last Active Improvement']}
+  rows={[
+    ['NeetCode', '1700', '~1000', '5+ years ago (stopped improving and sold courses)'],
+    ['Nick White', '~1600', 'N/A', 'Stagnant'],
+    ['TLE Eliminators (Priyansh Agarwal)', '~2500-2900', '~1800-2100', 'Stagnant (only reached 2188 once, and instantly quit to sell courses)'],
+    ['Most other LC YouTubers', '1600-1800', 'N/A', 'N/A'],
+    ['Most Top Upvoted Solutions', '1600-1800', '~800-1000', 'N/A (likely AI-generated farming upvotes)'],
+  ]}
+/>
 
-For context, 1700 on Leetcode is roughly equivalent to 900 on Codeforces (1700 - 800). That's a complete beginner—literally newbie rank.
+For context, the formula for converting CF to LC rating is roughly:
+
+$$lc \approx cf + 800$$
 
 Now compare this to resources from the competitive programming community:
 
-| Resource | Authors | Codeforces Rating | Achievements |
-|----------|---------|------------------|--------------|
-| [USACO Guide](https://usaco.guide) | twwilliamlin, benq, and contributors | LGM (2400+) | benq is literally #1 on Codeforces right now |
-| Codeforces Editorials | Problem setters and LGMs | Often 2400+ | IOI/ICPC medalists |
-| Competitive Programming Handbooks | halim, Laaksonen, etc. | Red+ coders | Decades of CP experience |
-
+<Table
+  headers={['Resource', 'LeetCode Rating', 'Codeforces Rating', 'Achievements']}
+  rows={[
+    [{ text: 'USACO Guide (benq)', href: 'https://usaco.guide' }, '~3800+', '3738', 'Literally #1 on Codeforces.'],
+    [{ text: 'twwilliamlin', href: 'https://youtu.be/bVKHRtafgPc?si=g5cqmIalo95XOPvg' }, '3312', '2931', 'Popular for his interview vid'],
+    [{ text: 'Errichto', href: 'https://www.youtube.com/@Errichto' }, '~3800+', '3053', 'Popular competitive programming YouTube channel.'],
+    ['Codeforces / Atcoder Editorials (Problem setters and LGMs)', '~3000+', 'Often 2400+', 'IOI/ICPC medalists.'],
+  ]}
+/>
 </Callout>
 
-**It's incomprehensible why anyone would choose to learn from people at 1700 rating when there are FREE resources written by the literal #1 ranked competitive programmer in the world.**
+**It's incomprehensible why anyone would choose to learn from people at 1700 rating and buy their courses for hundreds of USD when there are FREE resources written by the literal #1 ranked competitive programmer in the world.**
 
-And it's getting worse. If you click on most highly upvoted Leetcode solutions nowadays, they're clearly AI-generated slop farming upvotes. The people posting them? Check their profiles—1500-1700 rating, every single time.
+A common counterargument is that this is for training "competitive programming", not interviews. 
+Trust me that is not the case as I've mentioned. The problem solving aspect is completely transferrable.
 
-### The Goal: Get Out of Leetcode ASAP
+
+### Get out of leetcode
 
 My study strategy is simple: **get people out of the leetcode grind as fast as possible.**
 
 Don't follow the masses. Don't spend years stuck in the same cycle that everyone else is suffering through.
 
-I've seen people like [coding jesus](https://www.youtube.com/@coding_jesus) who argue you shouldn't do Leetcode at all. I disagree—because that's just the reality of the system right now. Algorithmic interviews exist, and you need to pass them.
+People like [coding jesus](https://www.youtube.com/@coding_jesus) advocate for not doing Leetcode at all.
+ I disagree because that's just the reality of the system right now. Algorithmic interviews exist, and you need to pass them.
 
 **But here's what I do agree with:** People shouldn't be spending MORE than 1/3 of their study time on Leetcode-specific prep, yet I see countless new grads grinding 8 hours a day exclusively on Leetcode. That's insane. That's the problem.
 
 Build the actual skill. Learn from people who are actually strong. Then Leetcode becomes trivial.
 
-<Callout variant="warning">
-
-The echo chamber is comfortable. People want to believe there's a shortcut, that memorizing 150 problems is enough.
-
-**There isn't. And it's not.**
-
-</Callout>
-
-The reason I'm writing this is because I fell into the same trap early on. I listened to the same recycled advice, did Neetcode's list, used Python because "it's shorter," and wondered why I wasn't improving.
-
-It wasn't until I broke out of the echo chamber and started learning from people who were actually strong that things clicked.
-
-## Misconceptions
-
-### "You need to grind 8 hours a day for years"
-
-This is probably the biggest misconception. You don't need to sacrifice your entire life to get good at problem solving.
-
-The key isn't the hours — it's the **quality** and **consistency**. I've seen people solve 2000+ problems on LeetCode and still struggle with medium problems. I've also seen people solve 500 problems properly and become strong.
-
-**You don't need insane effort. You need consistent, focused effort.** 
-## How to Improve
+## How to actually improve
 
 I think many people overthink this. The formula is simple:
 
@@ -236,7 +270,7 @@ I think many people overthink this. The formula is simple:
 
 That's it. You don't need a magic formula or a paid course.
 
-### My Recommendations
+### Recommendations
 
 **Topic Archive:**
 - USACO > CSES
@@ -290,98 +324,28 @@ Don't ask this. No one knows aside from yourself.
 
 </Callout>
 
-### Required Reading
+### Readings
 
 [This post by LGM umnik](https://codeforces.com/blog/entry/98806) includes many things that worked for me. Give it a read.
 
-## How to Avoid Useless Studying
-
-This is **the most important concept** that many people fail on.
-
-### 1. Repetition
-
-<Callout variant="warning">
-
-It's fine to do repetition on the **TOPIC level**, but not on the **PROBLEM level**, unless you completely forgot how to solve it.
-
-</Callout>
-
-I see people recommending:
-- Repeating sheets like "Don't do 450, do 150 thrice"
-- Using flashcards to recall techniques for each problem
-
-**NO!** This is not a memorization game. You should be able to figure out the techniques yourself, without having seen it before. You apply pattern recognition from past standard problems, then apply it to brand new problems.
-
-### 2. Self-Deception
-
+### Self-Deception
 I can't explain it better than is-this-fft. Just read this blog — it will save you **A LOT** of wasted time:
 
 [Stop Self-Deception](https://codeforces.com/blog/entry/98621)
 
-### 3. Efficiency
+### Overkill
+"Competitive programming is overkill for interviews"
 
-**Know how to maximize your time.** Don't spend 5 hours on a problem that's way outside your level.
+It's really not because most average leetcode grinders cannot confidently solve every single 
+interview problem or OA thrown at them. If you can go from a 50% success rate to 90% success rate
+you're essentially doubling your chances of getting an offer.
 
-This is why I think leetcode contests (arguably CF too for Div 2 or higher) are one of the worst places for beginners:
-
-1. Difficulty gaps are too large
-2. You solve the first two problems
-3. Q3 and Q4 are so much harder
-4. You force yourself to upsolve after 4 hours
-5. **You still learned absolutely nothing**
-
-<Callout>
-
-If you can upsolve contests, that's amazing — but solve problems **within reach**. Don't do problems where you don't even have a clue how to start. You're probably not prepared for them yet.
-
-</Callout>
-
-## Common Counterarguments
-
-### "Competitive programming is not needed for interviews"
-
-<Callout variant="warning">
-
-If you think all you need is memorizing leetcode problems, hoping you roll the dice until you get an interview with a problem you memorized, or you believe that problem solving is "dumb and useless" — this isn't for you.
-
-</Callout>
-
-I'm a strong believer that **problem solving is an essential skill**. If you study DSA properly, regardless of how "irrelevant" the material is, the skills you build will translate to a job one way or another.
-
-**I noticed:** People who complain about DSA being useless mostly never got good at DSA themselves and tried memorizing. Of course they felt like they learned nothing.
-
-### The Fairness of Technical Interviews
-
-To me, **leetcode-style interviews are as fair as they get** without undermining the efficiency of hiring.
-
-- No one is good at leetcode at the start
-- It sets an **equal playing field**
-- Those who spend time and effort can rise and prove themselves
-
-<Callout>
-
-Without leetcode, companies like FAANG would **only hire from top 50 US universities**. No one else would have a chance.
-
-</Callout>
-
-Of course companies want the best. If you're not getting into FAANG, it means other people demonstrated **your skill, and more**.
-
-### Why Companies Love Competitive Programmers
-
-I don't think I have to explain why quant firms or FAANG love competitive programmers:
-
-- Extremely competent with software development
-- Great at debugging
-- Fast thinkers
-- Natural tendency to solve problems themselves
-
-**No**, you don't need competitive programming to join these companies. But I personally think it's an amazing tool if you're willing to spend the effort.
-
-### "We don't have that much time due to work or study"
+### Time
+"This advice only works for students and not for working professionals"
 
 <Callout variant="remark">
 
-Trust me, **lack of time is always a personal issue**. If you care about something enough, you will create time for it.
+**Lack of time is almost always a personal issue**. If you care about something enough, you will create time for it.
 
 </Callout>
 
@@ -408,10 +372,6 @@ If you study properly from the start:
 - When you need to interview, you can just... interview
 - No more re-studying the same 150 problems every year
 
-There are people like [coding jesus](https://www.youtube.com/@coding_jesus) who express frustrations about algorithmic interviews in a way that's easy to understand. I don't fully agree with him—I don't think algorithmic puzzles are *completely* useless like he suggests. But he makes valid points about the interview process that resonate with a lot of people.
-
-**The irony is:** the people who complain most about "wasting time on Leetcode" are often the ones stuck in the re-prep cycle, spending MORE cumulative hours over their career than someone who just learned it properly once.
-
 ## Enjoyment
 
 **If you enjoy something, you will learn that thing faster.** You will subconsciously retain information better.
@@ -423,76 +383,6 @@ I get it — not everyone enjoys leetcode or competitive programming. But I thin
 - Getting influenced by negative voices on r/leetcode or peers
 - Not giving different methods a try
 - Only sticking with mainstream study methods (like sheets)
-
-## My Thoughts on Leetcode
-
-I started on Leetcode, so I don't think Leetcode is bad as a website.
-
-**However, there are traps:**
-
-❌ Paying for premium because you think it'll make you motivated  
-❌ Needing autocomplete or company-specific problems  
-❌ Memorizing problems (subconsciously too)  
-❌ Reading AI-generated or terrible solutions  
-❌ Buying courses elsewhere  
-
-**None of the above will make you strong.**
-
-### The "Beginner Cycle"
-
-From experience, I notice **a lot more leetcode-only users get stuck** in the "beginner cycle":
-
-1. Revisit the same problems or topics over and over
-2. Only solve from the top 200 common problems
-3. This type of studying is bland, if not frustrating
-4. Burnout happens
-5. Stop for a couple months
-6. Reality hits — need to study again
-7. Come back and cycle repeats
-
-### How to Avoid This
-
-**Take things slow.** Don't set unrealistic goals or daily quotas and bash yourself for not reaching them.
-
-The journey has to be **comfortable and enjoyable**.
-
-<Callout variant="insight">
-
-The competitiveness of contests and accomplishment of solving difficult problems is what makes this sport fun for me. Not a chore I have to do because I need a job.
-
-**That mindset shift changes everything.**
-
-</Callout>
-
-## My Goal
-
-My goal is **long-term**: to generalize concepts and patterns enough so that any problem thrown at me can be solved easily. Not to treat each problem as an individual entity.
-
-I've heard many stories about people:
-- Getting laid off
-- Having to re-visit neetcode 150 or study every time they need a job hop
-
-<Callout>
-
-**If you're strong, you don't have to do any of that.**
-
-Over the long term, this approach saves time.
-
-</Callout>
-
-## Conclusion
-
-Problem solving is a skill. Like any skill, it requires:
-
-1. **Consistent practice** (not cramming)
-2. **Proper difficulty progression** (not too hard, not too easy)
-3. **Variety** (not memorization)
-4. **Enjoyment** (not torture)
-
-The people who succeed are those who treat this as a long-term investment in their abilities, not a short-term checkbox for interviews.
-
-Build the skill. The interviews will follow.
-
 ---
 
 *What are your thoughts? Reach out if you'd like to discuss — I'm always happy to hear different perspectives.*

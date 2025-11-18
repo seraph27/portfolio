@@ -1,7 +1,7 @@
 ---
 title: "λ"
 description: "Placeholder Lambda post."
-date: 2025-01-12
+date: 2025-10-25
 tags: ["Recursion", "Divide and Conquer"]
 draft: false
 difficulties:

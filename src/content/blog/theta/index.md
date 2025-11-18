@@ -1,7 +1,7 @@
 ---
 title: "θ"
 description: "Placeholder Theta post."
-date: 2025-01-15
+date: 2025-11-01
 tags: ["Sliding Window", "Prefix Sum", "Stack", "Queue", "Greedy"]
 draft: false
 difficulties:

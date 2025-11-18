@@ -1,7 +1,7 @@
 ---
 title: "δ"
 description: "Placeholder Delta post."
-date: 2025-01-19
+date: 2025-11-10
 tags: ["Hard", "Advanced DP", "Segment Trees"]
 draft: false
 difficulties:

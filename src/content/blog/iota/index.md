@@ -1,7 +1,7 @@
 ---
 title: "ι"
 description: "Placeholder Iota post."
-date: 2025-01-14
+date: 2025-10-29
 tags: ["BFS", "DFS", "Union Find", "Shortest Path"]
 draft: false
 difficulties:

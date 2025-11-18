@@ -1,0 +1,1004 @@
+---
+title: "β - ICPC 2025"
+description: "Tapioca Express orz"
+date: 2025-11-15
+tags: ["ICPC", "Competitive Programming"]
+draft: false
+difficulties:
+  - rating: 7.8
+    mode: osu
+views: 1400
+favorites: 35
+image: screenshot-2025-10-31_22-27-43.png
+audio: "no11.mp3"
+audioStartTime: 0
+audioVolume: 100
+---
+
+## ICPC 2025 SoCal Regionals
+
+Our team **Tapioca Express** placed **8th** at ICPC 2025 SoCal Regionals!
+
+{/* TODO: Add leaderboard screenshot */}
+{/* TODO: Add team photo/merch photos */}
+
+## Problems Solved
+
+We solved problems A through M. Here are our solutions:
+
+### Problem A
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+#define int long long
+#define rep(i, a, b) for(int i = a; i < (b); ++i)
+#define all(x) begin(x), end(x)
+#define sz(x) (int)(x).size()
+#define eb emplace_back
+#define pb push_back
+#define vc vector
+#define fs first
+#define sd second
+typedef pair<int, int> pii;
+typedef vector<int> vi;
+
+signed main() {
+    cin.tie(0)->sync_with_stdio(0);
+    cin.exceptions(cin.failbit);
+
+    int n;
+    cin >> n;
+    double total = 0;
+    double extras = 0;
+    rep(i, 0, n) {
+        string s;
+        cin >> s;
+
+        int numericScore = 4 - (s[0] - 'A');
+        total += numericScore;
+
+        if (s[0] <= 'C') {
+            extras += ('3' - s[1]) * 0.025;
+        }
+    }
+
+    cout << fixed << setprecision(9) << ((total / n) + extras) << endl;
+}
+```
+
+### Problem B
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+#define int long long
+#define rep(i, a, b) for(int i = a; i < (b); ++i)
+#define all(x) begin(x), end(x)
+#define sz(x) (int)(x).size()
+#define eb emplace_back
+#define pb push_back
+#define vc vector
+#define fs first
+#define sd second
+typedef pair<int, int> pii;
+typedef vector<int> vi;
+
+vc<vc<char>> read_in() {
+    vc<vc<char>> ret(3, vc<char>(3));
+    string s;
+    rep(i, 0, 3) {
+        cin >> s;
+        rep(j, 0, 3) {
+            ret[i][j] = s[j];
+        }
+    }
+
+    return ret;
+}
+
+signed main() {
+    cin.tie(0)->sync_with_stdio(0);
+    cin.exceptions(cin.failbit);
+
+    vc<vc<vc<char>>> cube(6, vc<vc<char>>(3, vc<char>(3, '?')));
+        // 0 = front, 1 = R, 2 = rear, 3 = L, 4 = top, 5 = bottom
+    vc<vc<char>> in = read_in();
+    rep(i, 0, 3) rep(j, 0, 3) cube[0][i][j] = in[i][j];
+
+    rep(i, 1, 4) {
+        cout << "U" << endl; read_in(); cout << "D'" << endl;
+        in = read_in();
+
+        if (i != 2) {
+            rep(j, 0, 3) cube[i][0][j] = in[0][j];
+            rep(j, 0, 3) cube[i][2][j] = in[2][j];
+        } else {
+            rep(j, 0, 3) cube[i][2][2-j] = in[0][j];
+            rep(j, 0, 3) cube[i][0][2-j] = in[2][j];
+        }
+    }
+
+    // reset cube
+    cout << "U" << endl; read_in(); cout << "D'" << endl; read_in();
+
+    for (auto &i : {4, 2, 5, -1}) {
+        cout << "L" << endl; read_in(); cout << "R'" << endl;
+        in = read_in();
+
+        if (i != -1) {
+            rep(j, 0, 3) cube[i][j][0] = in[j][0];
+            rep(j, 0, 3) cube[i][j][2] = in[j][2];
+        }
+    }
+
+    // top
+    cout << "U" << endl; read_in();
+    cout << "R'" << endl; read_in();
+    cout << "L" << endl;
+    in = read_in();
+    cube[4][2][1] = in[1][0];
+    cube[4][0][1] = in[1][2];
+
+    cout << "R" << endl; read_in();
+    cout << "L'" << endl; read_in();
+    cout << "U'" << endl; read_in();
+
+    // right
+    cout << "R" << endl; read_in();
+    cout << "U" << endl; read_in();
+    cout << "D'" << endl;
+    in = read_in();
+    cube[1][1][0] = in[0][1];
+    cube[1][1][2] = in[2][1];
+
+    cout << "U'" << endl; read_in();
+    cout << "D" << endl; read_in();
+    cout << "R'" << endl; read_in();
+
+    // left
+    cout << "L" << endl; read_in();
+    cout << "U'" << endl; read_in();
+    cout << "D" << endl;
+    in = read_in();
+    cube[3][1][0] = in[0][1];
+    cube[3][1][2] = in[2][1];
+
+    cout << "U" << endl; read_in();
+    cout << "D'" << endl; read_in();
+    cout << "L'" << endl; read_in();
+
+    // bottom
+    cout << "D" << endl; read_in();
+    cout << "R" << endl; read_in();
+    cout << "L'" << endl;
+    in = read_in();
+    cube[5][2][1] = in[1][0];
+    cube[5][0][1] = in[1][2];
+
+    cout << "R'" << endl; read_in();
+    cout << "L" << endl; read_in();
+    cout << "D'" << endl; read_in();
+
+    cout << "A" << endl;
+    rep(i, 0, 3) {
+        cout << "   ";
+        rep(j, 0, 3) cout << cube[4][i][j];
+        cout << "   " << endl;
+    }
+
+    rep(i, 0, 3) {
+        rep(j, 0, 3) cout << cube[3][i][j];
+        rep(j, 0, 3) cout << cube[0][i][j];
+        rep(j, 0, 3) cout << cube[1][i][j];
+        cout << endl;
+    }
+
+    rep(i, 0, 3) {
+        cout << "   ";
+        rep(j, 0, 3) cout << cube[5][i][j];
+        cout << "   " << endl;
+    }
+    rep(i, 0, 3) {
+        cout << "   ";
+        rep(j, 0, 3) cout << cube[2][i][j];
+        cout << "   " << endl;
+    }
+
+}
+```
+
+### Problem C
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+#define int long long
+#define rep(i, a, b) for(int i = a; i < (b); ++i)
+#define all(x) begin(x), end(x)
+#define sz(x) (int)(x).size()
+#define eb emplace_back
+#define pb push_back
+#define vc vector
+#define fs first
+#define sd second
+typedef pair<int, int> pii;
+typedef vector<int> vi;
+
+signed main() {
+    cin.tie(0)->sync_with_stdio(0);
+    cin.exceptions(cin.failbit);
+
+    vc<vc<string>> arr(10, vc<string>(10));
+    rep(i, 0, 10) rep(j, 0, 10) cin >> arr[i][j];
+
+    reverse(all(arr));
+
+    rep(i, 0, 10) {
+        if (i % 2 == 1) {
+            reverse(all(arr[i]));
+        }
+    }
+
+    // row then col
+    priority_queue<pair<int, pii>, vc<pair<int, pii>>, greater<>> pq;
+    pq.push({0, {0, 0}});
+    vc<vi> seen(10, vi(10, 0));
+    while (!pq.empty()) {
+        auto entry = pq.top();
+        pq.pop();
+
+        pii cur = entry.sd;
+
+        // cout << "at square " << cur.fs << " " << cur.sd << endl;
+
+        if (cur.fs >= 10 || (cur.fs == 9 && cur.sd == 9)) {
+            cout << "Win in " << entry.fs << endl;
+            exit(0);
+        }
+
+        if (seen[cur.fs][cur.sd]) continue;
+        seen[cur.fs][cur.sd] = 1;
+
+        // cout << "first time " << cur.fs << " " << cur.sd << endl;
+        // cout << entry.fs << endl;
+
+        string s = arr[cur.fs][cur.sd];
+        if (s[0] == 'S') continue;
+
+        if (s[0] == 'L') {
+            pii target;
+            if (sz(s) == 4) {
+                cout << "Win in " << entry.fs << endl;
+                exit(0);
+            }
+
+            if (sz(s) == 2) {
+                target = {0, s[1] - '0' - 1};
+            } else {
+                target = {s[1] - '0', s[2] - '0' - 1};
+                if (s[2] == '0') {
+                    target = {s[1] - '0' - 1, 9};
+                }
+            }
+            // cout << "climbing ladder to " << target.fs << " " << target.sd << endl;
+            // cout << entry.fs << endl;
+            pq.push({entry.fs, target});
+            continue;
+        }
+
+        pii tmp = cur;
+        rep(i, 0, 6) {
+            tmp.sd++;
+            if (tmp.sd >= 10) {
+                tmp.sd -= 10;
+                tmp.fs++;
+            }
+            // cout << cur.fs << " " << cur.sd << endl;
+            // cout << "move to " << tmp.fs << " " << tmp.sd << endl;
+            pq.push({entry.fs + 1, tmp});
+        }
+    }
+
+    cout << "Snakes awaiting" << endl;
+}
+```
+
+### Problem D
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+#define int long long
+#define rep(i, a, b) for(int i = a; i < (b); ++i)
+#define all(x) begin(x), end(x)
+#define sz(x) (int)(x).size()
+#define eb emplace_back
+#define pb push_back
+#define vc vector
+#define fs first
+#define sd second
+typedef pair<int, int> pii;
+typedef vector<int> vi;
+
+signed main() {
+    cin.tie(0)->sync_with_stdio(0);
+    cin.exceptions(cin.failbit);
+
+    set<int> s;
+    int n; cin >> n;
+    vector<set<int>> adj(10005);
+    for (int i = 0; i < n; i++) {
+        int a, b; cin >> a >> b;
+        s.insert(a);
+        s.insert(b);
+        adj[a].insert(b);
+        adj[b].insert(a);
+    }
+
+    int closed = 0, open = 0;
+
+    for (auto &one : s) {
+        for (auto &two : adj[one]) {
+            for (auto &three : adj[two]) {
+                if (three == one) continue;
+                if (adj[one].count(three)) {
+                    closed++;
+                } else {
+                    open++;
+                }
+            }
+        }
+    }
+    cout << closed / 6 << " " << open / 2 << endl;
+
+
+}
+```
+
+### Problem E
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+#define int long long
+#define rep(i, a, b) for(int i = a; i < (b); ++i)
+#define all(x) begin(x), end(x)
+#define sz(x) (int)(x).size()
+#define eb emplace_back
+#define pb push_back
+#define vc vector
+#define fs first
+#define sd second
+#define ar array
+typedef pair<int, int> pii;
+typedef vector<int> vi;
+
+signed main() {
+    cin.tie(0)->sync_with_stdio(0);
+    cin.exceptions(cin.failbit);
+
+    int a, b, p;
+    cin >> a >> b >> p;
+    //vc<vi> dp(a+1, vi(b+1));
+    int o = min(a, b);
+    vector<ar<int, 2>> dp(o + 1, ar<int, 2>());
+    // rep(i, 0, a+1) dp[i][0] = 0;
+    // rep(i, 0, b+1) dp[0][i] = 0;
+    // dp[1][1] = 1;
+    // rep(i, 1, a+1) {
+    //     rep(j, 1, b+1) {
+    //         if (i == 1 && j == 1) continue;
+    //
+    //         dp[i][j] = (dp[i-1][j] + dp[i][j-1] + dp[i-1][j] * (i + j - 2)) % p;
+    //     }
+    // }
+    dp[0][0] = 0;
+    dp[0][1] = 0;
+    for (int i = 0; i < o; i++) for (int k = 0; k < 2; k++) {
+        (dp[i + 1][1] += dp[i][0]) %= p;
+        (dp[i + 1][1] += dp[i][1]) %= p;
+        (dp[i + 1][0] += dp[i][0]) %= p;
+        (dp[i + 1][0] += dp[i][1]) %= p;
+    }
+
+    cout << (dp[o][0]) % p << endl;
+}
+```
+
+### Problem F
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+#define int long long
+#define rep(i, a, b) for(int i = a; i < (b); ++i)
+#define all(x) begin(x), end(x)
+#define sz(x) (int)(x).size()
+#define eb emplace_back
+#define pb push_back
+#define vc vector
+#define fs first
+#define sd second
+typedef pair<int, int> pii;
+typedef vector<int> vi;
+
+signed main() {
+    cin.tie(0)->sync_with_stdio(0);
+    cin.exceptions(cin.failbit);
+
+    int t;
+    cin >> t;
+    while (t--) {
+        pii a, b, c;
+        cin >> a.fs >> a.sd >> b.fs >> b.sd >> c.fs >> c.sd;
+
+        int aLen = a.fs * a.fs + a.sd * a.sd;
+        int bLen = (b.fs - a.fs) * (b.fs - a.fs) + (b.sd - a.sd) * (b.sd - a.sd);
+        int cLen = (c.fs - a.fs) * (c.fs - a.fs) + (c.sd - a.sd) * (c.sd - a.sd);
+
+        bool possible = true;
+        if (bLen > aLen || cLen > aLen) {
+            possible = false;
+        } else if (bLen < aLen && cLen < aLen) {
+            possible = true;
+        } else {
+            // are A and B on same line, or A and C on same line, AND is equal to length?
+            if (((b.fs == a.fs * 2 && b.sd == a.sd * 2) && aLen == bLen) || ((c.fs == a.fs * 2 && c.sd == a.sd * 2) && aLen == cLen)) {
+                possible = false;
+            } else {
+                if (aLen == cLen && aLen == bLen) {
+                    // are any 2 segments intersecting?
+                    if ((b.fs == 0 && b.sd == 0) || (c.fs == 0 && c.sd == 0) || (b.fs == c.fs && b.sd == c.sd)) {
+                        possible = true;
+                    } else {
+                        possible = false;
+                    }
+                } else {
+                    possible = true;
+                }
+            }
+        }
+
+        cout << (possible ? "YES" : "NO") << endl;
+    }
+}
+```
+
+### Problem G
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+#define int long long
+#define rep(i, a, b) for(int i = a; i < (b); ++i)
+#define all(x) begin(x), end(x)
+#define sz(x) (int)(x).size()
+#define eb emplace_back
+#define pb push_back
+#define vc vector
+#define fs first
+#define sd second
+typedef pair<int, int> pii;
+typedef vector<int> vi;
+
+signed main() {
+    cin.tie(0)->sync_with_stdio(0);
+    cin.exceptions(cin.failbit);
+
+    int result = 0;
+    int n;
+    cin >> n;
+    int prev = -1;
+    rep(i, 0, n) {
+        int x;
+        cin >> x;
+        int larger = max(prev, x), smaller = min(prev, x);
+
+        if (prev != -1)
+            result += larger * larger - smaller * smaller;
+        prev = x;
+
+        result += 4 * x * x;
+
+        if (i == 0) {
+            result += x * x;
+        }
+        if (i == n - 1) {
+            result += x * x;
+        }
+    }
+
+    cout << result << endl;
+}
+```
+
+### Problem H
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+#define int long long
+#define rep(i, a, b) for(int i = a; i < (b); ++i)
+#define all(x) begin(x), end(x)
+#define sz(x) (int)(x).size()
+#define eb emplace_back
+#define pb push_back
+#define vc vector
+#define fs first
+#define sd second
+typedef pair<int, int> pii;
+typedef vector<int> vi;
+
+signed main() {
+    cin.tie(0)->sync_with_stdio(0);
+    cin.exceptions(cin.failbit);
+
+    int m, n, t;
+    cin >> m >> n >> t;
+    map<int, int> counts;
+    counts[t / 2] = 0;
+    counts[0] = 0;
+
+    rep(i, 0, m) {
+        int x;
+        cin >> x;
+        if (counts.count(x)) {
+            counts[x]++;
+        } else {
+            counts[x] = 1;
+        }
+    }
+
+    int extra = n - m;
+    int already = 0, best = 0;
+
+    set<int> seen;
+
+    for (auto &cnt : counts) {
+        if (seen.count(cnt.fs)) continue;
+        int counterpart = t - cnt.fs;
+        seen.insert(counterpart);
+        if (cnt.fs < 0 || counterpart < 0) continue;
+        int counterCount = counts.count(counterpart) ? counts[counterpart] : 0;
+
+        if (cnt.fs == counterpart) {
+            int contrib = (cnt.sd * (cnt.sd - 1)) / 2;
+            already += contrib;
+            int maxedOut = cnt.sd + extra;
+            best = max(best, (maxedOut * (maxedOut - 1)) / 2 - contrib);
+            continue;
+        }
+
+        already += cnt.sd * counterCount;
+
+        int larger = max(counterCount, cnt.sd), smaller = min(counterCount, cnt.sd);
+        int ogLarger = larger, ogSmaller = smaller;
+        int myExtra = extra;
+        if (larger - smaller >= myExtra) {
+            smaller += myExtra;
+        } else {
+            myExtra -= (larger - smaller);
+            smaller = larger;
+            smaller += myExtra / 2;
+            larger += (myExtra + 1) / 2;
+        }
+        best = max(best, smaller * larger - ogSmaller * ogLarger);
+
+        // cout << cnt.fs << " " << cnt.sd << " " << best << endl;
+    }
+
+    cout << (already + best) << endl;
+}
+```
+
+### Problem I
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+#define int long long
+#define rep(i, a, b) for(int i = a; i < (b); ++i)
+#define all(x) begin(x), end(x)
+#define sz(x) (int)(x).size()
+#define eb emplace_back
+#define pb push_back
+#define vc vector
+#define fs first
+#define sd second
+typedef pair<int, int> pii;
+typedef vector<int> vi;
+
+signed main() {
+    cin.tie(0)->sync_with_stdio(0);
+    // cin.exceptions(cin.failbit);
+
+    double n;
+    while (cin >> n) {
+        int cents = (int) round(n * 20);
+        double res = cents / 20.0;
+        cout << fixed << setprecision(2) << res << endl;
+    }
+
+}
+```
+
+### Problem J
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+#define int long long
+#define rep(i, a, b) for(int i = a; i < (b); ++i)
+#define all(x) begin(x), end(x)
+#define sz(x) (int)(x).size()
+#define eb emplace_back
+#define pb push_back
+#define vc vector
+#define fs first
+#define sd second
+typedef pair<int, int> pii;
+typedef vector<int> vi;
+
+double manh(double x1, double x2, double y1, double y2) {
+    return abs(x2 - x1) + abs(y2 - y1);
+}
+
+pair<double, double> umbrella(double x, double y) {
+    return {sqrt(2) * -y, sqrt(2) * x};
+}
+
+void solve() {
+    int x1, y1, x2, y2;
+    char d1, d2;
+    cin >> x1 >> y1 >> d1 >> x2 >> y2 >> d2;
+
+    if (d1 == d2) {
+        if (d1 == 'N') {
+            double ret = manh(x1, x2, y1, y2);
+            pair<double, double> a1 = umbrella(x1, y1), a2 = umbrella(x2, y2);
+            double low = min(min(manh(x1, a1.fs / sqrt(2), y1, -a1.fs / sqrt(2)) + abs(a1.fs - a2.fs) + manh(x2, a2.fs / sqrt(2), y2, -a2.fs / sqrt(2)),
+                                    manh(x1, a1.fs / sqrt(2), y1, -a1.fs / sqrt(2)) + abs(a1.fs - a2.sd) + manh(x2, a2.sd / sqrt(2), y2, -a2.sd / sqrt(2))),
+                             min(manh(x1, a1.sd / sqrt(2), y1, -a1.sd / sqrt(2)) + abs(a1.sd - a2.fs) + manh(x2, a2.fs / sqrt(2), y2, -a2.fs / sqrt(2)),
+                                    manh(x1, a1.sd / sqrt(2), y1, -a1.sd / sqrt(2)) + abs(a1.sd - a2.sd) + manh(x2, a2.sd / sqrt(2), y2, -a2.sd / sqrt(2))));
+            ret = min(ret, low);
+            cout << setprecision(16) << ret << endl;
+        } else {
+            cout << setprecision(16) << manh(x1, x2, y1, y2) << endl;
+        }
+        return;
+    } else if (d1 == 'N') {
+        swap(x1, x2);
+        swap(y1, y2);
+        swap(d1, d2);
+    }
+
+    pair<double, double> a1 = umbrella(x2, y2);
+    double ret = manh(x1, a1.fs, y1, 0) + x2 + y2;
+    ret = min(ret, manh(x1, a1.sd, y1, 0) + x2 + y2);
+    ret = min(ret, manh(ceil(x1 / sqrt(2)), x2, -ceil(x1 / sqrt(2)), y2) + abs(y1) + abs(ceil(x1 / sqrt(2)) * sqrt(2) - x1));
+    ret = min(ret, manh(floor(x1 / sqrt(2)), x2, -floor(x1 / sqrt(2)), y2) + abs(y1) + abs(floor(x1 / sqrt(2)) * sqrt(2) - x1));
+
+    cout << setprecision(16) << ret << endl;
+}
+
+signed main() {
+    cin.tie(0)->sync_with_stdio(0);
+    cin.exceptions(cin.failbit);
+
+    int q;
+    cin >> q;
+    while (q--) solve();
+}
+```
+
+### Problem K
+
+```cpp
+#pragma GCC optimize("Ofast")
+
+#include <bits/stdc++.h>
+using namespace std;
+
+#define int long long
+#define rep(i, a, b) for(int i = a; i < (b); ++i)
+#define all(x) begin(x), end(x)
+#define sz(x) (int)(x).size()
+#define eb emplace_back
+#define pb push_back
+#define vc vector
+#define fs first
+#define sd second
+typedef pair<int, int> pii;
+typedef vector<int> vi;
+
+const int inf = 1e9;
+
+struct Tree {
+    typedef int T;
+    static constexpr T unit = LLONG_MIN;
+    T f(T a, T b) {
+        return max(a, b);
+    }
+    vc<T> s; int n;
+    Tree(int n = 0, T def = unit) : s(2 * n, def), n(n) {}
+
+    void update(int pos, T val) {
+        for (s[pos += n] = val; pos /= 2;)
+            s[pos] = f(s[pos * 2], s[pos * 2] + 1);
+    }
+
+    T query(int b, int e) {
+        T ra = unit, rb = unit;
+        for (b += n, e += n; b < e; b /= 2, e/= 2) {
+            if (b % 2) ra = f(ra, s[b++]);
+            if (e % 2) rb = f(s[--e], rb);
+        }
+        return f(ra, rb);
+    }
+};
+
+signed main() {
+    cin.tie(0)->sync_with_stdio(0);
+    cin.exceptions(cin.failbit);
+
+    int n;
+    cin >> n;
+    vc<vc<pii>> neighbors(n);
+    rep(i, 0, n) {
+        int u, v, d;
+        cin >> u >> v >> d;
+        u--;
+        v--;
+        neighbors[u].pb({v, d});
+        neighbors[v].pb({u, d});
+    }
+
+    vi prev(n, -1);
+    int cycleEnd = -1;
+
+    function<void(int, int)> dfs;
+    dfs = [&](int cur, int par) {
+        if (cycleEnd != -1) return;
+
+        if (prev[cur] != -1) {
+            cycleEnd = cur;
+            return;
+        }
+        prev[cur] = par;
+
+        for (auto &neighbor : neighbors[cur]) {
+            if (neighbor.fs == par) continue;
+            if (cycleEnd != -1) return;
+
+            dfs(neighbor.fs, cur);
+        }
+    };
+    dfs(0, -1);
+
+    assert(cycleEnd != -1);
+    vi cycleList = {cycleEnd};
+    int cur = prev[cycleEnd];
+    while (cur != cycleEnd) {
+        cycleList.pb(cur);
+        cur = prev[cur];
+    }
+
+    for (int num : cycleList) {
+        cout << num << ' ';
+    }
+    cout << endl;
+
+    int numTrees = sz(cycleList);
+    vi subtreeDepths(numTrees, 0);
+    vi distToRoot(n, 0), rootId(n);
+    rep(i, 0, numTrees) {
+        function<void(int, int, int)> dfs;
+        dfs = [&](int cur, int par, int dist) {
+            rootId[cur] = cycleList[i];
+            distToRoot[cur] = dist;
+
+            subtreeDepths[i] = max(subtreeDepths[i], dist);
+
+            for (auto &neighbor : neighbors[cur]) {
+                if (neighbor.fs == cycleList[(i + 1) % numTrees] || neighbor.fs == cycleList[(i - 1 + numTrees) % numTrees] || neighbor.fs == par) {
+                    continue;
+                }
+                dfs(neighbor.fs, cur, dist + neighbor.sd);
+            }
+        };
+        dfs(cycleList[i], -1, 0);
+    }
+
+    // cycleDists[i] is dist from cycleList[i] to cycleList[(i + 1) % numTrees]
+    vi cycleDists(numTrees, 0);
+
+    int totalAroundCycle = 0;
+    rep(i, 0, numTrees) {
+        int node = cycleList[i];
+        for (auto &neighbor : neighbors[node]) {
+            if (neighbor.fs == cycleList[(i + 1) % numTrees]) {
+                cycleDists[i] = neighbor.sd;
+                break;
+            }
+        }
+        totalAroundCycle += cycleDists[i];
+    }
+
+    Tree cwDist(numTrees), ccwDist(numTrees);
+    int cwPrefix = 0;
+    rep(i, 0, numTrees) {
+        cout << "sub depth: " << subtreeDepths[i] << endl;
+        cwDist.update(i, cwPrefix + subtreeDepths[i]);
+        ccwDist.update(i, totalAroundCycle - cwPrefix + subtreeDepths[i]);
+        cwPrefix += cycleDists[i];
+    }
+
+    int cwOffset = 0, ccwOffset = 0;
+
+    int x = 0;
+    vi maxDists(n, 0);
+    rep(i, 0, numTrees) {
+        cout << "offsets " << cwOffset << " " << ccwOffset << endl;
+
+        cwDist.update(i,  subtreeDepths[i] -cwOffset);
+        ccwDist.update(i, subtreeDepths[i] -ccwOffset);
+
+        while (cwDist.query(x, x + 1) + cwOffset <= ccwDist.query(x, x + 1) + ccwOffset) {
+            x = (x + 1) % numTrees;
+        }
+        x = (x + numTrees - 1) % numTrees;
+
+        int mMax = 0;
+        if (i <= x) {
+            mMax = max(mMax, cwDist.query(i, x + 1) + cwOffset);
+        } else {
+            mMax = max(mMax, cwDist.query(0, x + 1) + cwOffset);
+            mMax = max(mMax, cwDist.query(i, numTrees) + cwOffset);
+        }
+        if (i <= x) {
+            mMax = max(mMax, ccwDist.query(0, i) + ccwOffset);
+            mMax = max(mMax, ccwDist.query(x + 1, numTrees) + ccwOffset);
+        } else {
+            mMax = max(mMax, ccwDist.query(x + 1, i) + ccwOffset);
+        }
+
+        maxDists[cycleList[i]] = mMax;
+
+        cwOffset -= cycleDists[i];
+        ccwOffset += cycleDists[i];
+
+        if (cwOffset >= totalAroundCycle) {
+            cwOffset -= totalAroundCycle;
+        }
+        if (cwOffset < 0) {
+            cwOffset += totalAroundCycle;
+        }
+
+        if (ccwOffset >= totalAroundCycle) {
+            ccwOffset -= totalAroundCycle;
+        }
+        if (ccwOffset < 0) {
+            ccwOffset += totalAroundCycle;
+        }
+
+        cwDist.update(i, totalAroundCycle + subtreeDepths[i] - cycleDists[i] - cwOffset);
+        ccwDist.update(i,cycleDists[i] + subtreeDepths[i] - ccwOffset);
+    }
+
+    rep(i, 0, n) {
+        int res = distToRoot[i] + maxDists[rootId[i]];
+
+        cout << res << ' ';
+    }
+    cout << endl;
+}
+```
+
+### Problem L
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+#define int long long
+#define rep(i, a, b) for(int i = a; i < (b); ++i)
+#define all(x) begin(x), end(x)
+#define sz(x) (int)(x).size()
+#define eb emplace_back
+#define pb push_back
+#define vc vector
+#define fs first
+#define sd second
+#define ar array
+typedef pair<int, int> pii;
+
+signed main() {
+    cin.tie(0)->sync_with_stdio(0);
+    cin.exceptions(cin.failbit);
+    int n; cin >> n;
+
+    multiset<int> endCounts;
+    // first is x-coord, second is x-coord of end
+    vc<pii> starts;
+    int pairs = 0;
+
+    rep(i, 0, n) {
+        int x, r;
+        cin >> x >> r;
+        int start = x - r, end = x + r;
+        starts.pb({start, end});
+    }
+    sort(all(starts));
+    rep(i, 0, n) {
+        // process pending ends, pairing together as needed
+        while (!endCounts.empty() && *endCounts.begin() < starts[i].fs) {
+            if (sz(endCounts) == 1) {
+                endCounts.erase(endCounts.begin());
+            } else {
+                endCounts.erase(endCounts.begin());
+                endCounts.erase(endCounts.begin());
+                pairs++;
+            }
+        }
+
+        // process this start
+        endCounts.insert(starts[i].sd);
+    }
+
+    // end parsing
+    while (!endCounts.empty()) {
+        if (sz(endCounts) == 1) {
+            endCounts.erase(endCounts.begin());
+        } else {
+            endCounts.erase(endCounts.begin());
+            endCounts.erase(endCounts.begin());
+            pairs++;
+        }
+    }
+
+    cout << (n - 2 * pairs) << endl;
+}
+```
+
+### Problem M
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+#define int long long
+#define rep(i, a, b) for(int i = a; i < (b); ++i)
+#define all(x) begin(x), end(x)
+#define sz(x) (int)(x).size()
+#define eb emplace_back
+#define pb push_back
+#define vc vector
+#define fs first
+#define sd second
+typedef pair<int, int> pii;
+typedef vector<int> vi;
+
+signed main() {
+    cin.tie(0)->sync_with_stdio(0);
+    cin.exceptions(cin.failbit);
+
+    int r, c, s;
+    cin >> r >> c >> s;
+    vc<vi> slots(s, vi(3));
+}
+```
+
+## Reflection
+
+{/* Add your thoughts about the contest here */}

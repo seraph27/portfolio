@@ -1,0 +1,54 @@
+---
+interface Props {
+  headers: string[]
+  rows: Array<Array<string | { text: string; href?: string }>>
+  class?: string
+}
+
+const { headers, rows, class: className } = Astro.props
+
+const columnWidth = `${100 / headers.length}%`
+---
+
+<div class={`overflow-x-auto my-6 ${className || ''}`}>
+  <table class="w-full table-fixed border-collapse">
+    <thead>
+      <tr class="border-b border-muted-foreground/30">
+        {headers.map((header) => (
+          <th
+            class="px-4 py-2 text-left font-medium"
+            style={`width: ${columnWidth}`}
+          >
+            {header}
+          </th>
+        ))}
+      </tr>
+    </thead>
+    <tbody>
+      {rows.map((row) => (
+        <tr class="border-y border-muted-foreground/30">
+          {row.map((cell) => {
+            const cellContent = typeof cell === 'string' ? cell : cell.text
+            const cellHref = typeof cell === 'object' ? cell.href : undefined
+            
+            return (
+              <td class="px-4 py-2 text-foreground/80">
+                {cellHref ? (
+                  <a
+                    href={cellHref}
+                    class="text-foreground decoration-muted-foreground hover:decoration-foreground font-medium underline underline-offset-[3px]"
+                  >
+                    {cellContent}
+                  </a>
+                ) : (
+                  cellContent
+                )}
+              </td>
+            )
+          })}
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>
+
