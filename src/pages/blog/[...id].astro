@@ -260,25 +260,33 @@ const tocSections = await getTOCSections(currentPostId)
   </Button>
 
   <script>
-    document.addEventListener('astro:page-load', () => {
+    const onScroll = () => {
       const scrollToTopButton = document.getElementById('scroll-to-top')
       const footer = document.querySelector('footer')
+      
+      if (!scrollToTopButton || !footer) return
 
-      if (scrollToTopButton && footer) {
+      const footerRect = footer.getBoundingClientRect()
+      const isFooterVisible = footerRect.top <= window.innerHeight
+
+      scrollToTopButton.classList.toggle(
+        'hidden',
+        window.scrollY <= 300 || isFooterVisible,
+      )
+    }
+
+    document.addEventListener('astro:page-load', () => {
+      const scrollToTopButton = document.getElementById('scroll-to-top')
+      if (scrollToTopButton) {
         scrollToTopButton.addEventListener('click', () => {
           window.scrollTo({ top: 0, behavior: 'smooth' })
         })
-
-        window.addEventListener('scroll', () => {
-          const footerRect = footer.getBoundingClientRect()
-          const isFooterVisible = footerRect.top <= window.innerHeight
-
-          scrollToTopButton.classList.toggle(
-            'hidden',
-            window.scrollY <= 300 || isFooterVisible,
-          )
-        })
+        window.addEventListener('scroll', onScroll, { passive: true })
       }
+    })
+
+    document.addEventListener('astro:before-swap', () => {
+      window.removeEventListener('scroll', onScroll)
     })
   </script>
 </Layout>

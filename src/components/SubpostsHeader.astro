@@ -304,10 +304,6 @@ const currentSubpostDetails = isCurrentSubpost
   }
 
   document.addEventListener('astro:page-load', () => SubpostsController.init())
-  document.addEventListener('astro:after-swap', () => {
-    SubpostsController.cleanup()
-    SubpostsController.init()
-  })
   document.addEventListener('astro:before-swap', () =>
     SubpostsController.cleanup(),
   )

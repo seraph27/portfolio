@@ -9,7 +9,7 @@
     --play-icon-opacity: var(--play-icon-opacity-collapsed);
     --info-padding-right: var(--info-padding-right-collapsed);
     
-    @apply relative block overflow-hidden w-full;
+    @apply relative block w-full;
     
     max-width: var(--panel-max-width);
     height: var(--panel-height);
@@ -21,6 +21,7 @@
   }
 
   .beatmapset-panel:hover {
+    z-index: 20;
     --info-bg: var(--panel-info-bg-hover);
     --menu-container-width: var(--menu-container-width-expanded);
     --menu-opacity: var(--menu-opacity-expanded);
@@ -33,6 +34,8 @@
   .beatmapset-panel__bg-image {
     @apply absolute;
     inset: 0;
+    overflow: hidden;
+    border-radius: inherit;
   }
 
   .beatmapset-panel__bg-image-inner {
@@ -60,6 +63,8 @@
     width: var(--cover-width);
     height: var(--panel-height);
     transition: background-color var(--transition-base);
+    border-top-left-radius: var(--panel-radius);
+    border-bottom-left-radius: var(--panel-radius);
   }
 
   .beatmapset-panel:hover .beatmapset-panel__cover-col--play {
@@ -229,11 +234,22 @@
 
   /* Difficulty Popup */
   .difficulty-popup {
-    @apply fixed;
+    @apply absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    margin-top: -10px;
     opacity: 0;
     pointer-events: none;
-    transition: opacity var(--transition-base);
+    transition: opacity var(--transition-base) 0.3s;
     z-index: var(--z-popup);
+  }
+  
+  .extra-row:hover .difficulty-popup,
+  .difficulty-popup:hover {
+    opacity: 1;
+    pointer-events: auto;
+    transition-delay: 0s;
   }
 
   .difficulty-popup__content {

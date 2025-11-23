@@ -53,16 +53,18 @@ import { Icon } from 'astro-icon/components'
       ?.addEventListener('click', handleToggleClick)
   }
 
-  initThemeToggle()
-
-  document.addEventListener('astro:after-swap', () => {
+  // Re-apply theme on page transitions
+  document.addEventListener('astro:page-load', () => {
     const storedTheme = localStorage.getItem('theme') || 'light'
     const element = document.documentElement
 
+    // Only run transition-none if theme actually changes or on first load?
+    // Astro resets documentElement on swap, so we must re-apply.
+    
     element.classList.add('[&_*]:transition-none')
-    window.getComputedStyle(element).getPropertyValue('opacity')
     element.setAttribute('data-theme', storedTheme)
-
+    window.getComputedStyle(element).getPropertyValue('opacity')
+    
     requestAnimationFrame(() => {
       element.classList.remove('[&_*]:transition-none')
     })
