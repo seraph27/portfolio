@@ -114,6 +114,7 @@
   }
 
   .beatmapset-panel__info-row--stats {
+    margin-top: auto;
     margin-bottom: 0;
     gap: 10px;
     opacity: var(--stats-opacity);
@@ -129,7 +130,6 @@
 
   .beatmapset-panel__info-row--extra {
     @apply items-center;
-    margin-top: auto;
     margin-left: -3px;
     margin-right: -3px;
     gap: 4px;
@@ -316,7 +316,8 @@
     min-width: 56px;
     min-height: 56px;
     opacity: var(--play-icon-opacity);
-    transition: opacity var(--transition-base), transform var(--transition-base), background-color var(--transition-base);
+    visibility: hidden;
+    transition: opacity var(--transition-base), transform var(--transition-base), background-color var(--transition-base), visibility 0s linear var(--transition-base);
     z-index: var(--z-play-button);
     background: rgba(0, 0, 0, 0.4);
     backdrop-filter: blur(8px);
@@ -325,6 +326,11 @@
     cursor: pointer;
     padding: 0;
     pointer-events: auto;
+  }
+
+  .beatmapset-panel:hover .beatmapset-panel__play-button {
+    visibility: visible;
+    transition-delay: 0s;
   }
 
   .beatmapset-panel__play-button:hover {

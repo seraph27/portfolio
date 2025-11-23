@@ -3,6 +3,7 @@ import { Icon } from 'astro-icon/components'
 import { Image } from 'astro:assets'
 import type { CollectionEntry } from 'astro:content'
 import DescriptionWithTooltip from '@/components/DescriptionWithTooltip.astro'
+import { calculateWordCountFromHtml } from '@/lib/utils'
 
 interface Props {
   entry: CollectionEntry<'blog'>
@@ -10,8 +11,8 @@ interface Props {
 
 const { entry } = Astro.props
 const shortDate = new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric', year: 'numeric' }).format(entry.data.date)
-const views = entry.data.views || Math.floor(Math.random() * 5000) + 500
 const status = entry.data.status || 'ranked'
+const wordCount = calculateWordCountFromHtml(entry.body)
 
 // Badge colors based on status
 const statusConfig = {
@@ -100,8 +101,8 @@ const getGamemodeIconClass = (mode: string) => {
         <Image
           src={entry.data.image}
           alt=""
-          width={1000}
-          height={270}
+          width={400}
+          height={108}
           class="beatmapset-panel__bg-image-inner"
         />
       </div>
@@ -151,11 +152,11 @@ const getGamemodeIconClass = (mode: string) => {
 
       <!-- Stats row -->
       <div class="beatmapset-panel__info-row beatmapset-panel__info-row--stats">
-        <div class="beatmapset-panel__stats-item" title={`${views.toLocaleString()} views`}>
+        <div class="beatmapset-panel__stats-item">
           <span class="beatmapset-panel__stats-icon">
-            <Icon name="lucide:eye" class="beatmapset-panel__stats-icon-inner" />
+            <Icon name="lucide:file-text" class="beatmapset-panel__stats-icon-inner" />
           </span>
-          <span>{views.toLocaleString()}</span>
+          <span>{wordCount} words</span>
         </div>
       </div>
 
