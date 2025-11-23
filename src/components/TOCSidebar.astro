@@ -151,7 +151,7 @@ const parentId = isCurrentSubpost ? getParentId(currentPostId) : currentPostId
     )
     activeIds: string[] = []
     headings: HTMLElement[] = []
-    regions: { id: string; start: number; end: number; height: number }[] = []
+    regions: { id: string; start: number; end: number }[] = []
     scrollArea: HTMLElement | null = null
     tocScrollArea: HTMLElement | null = null
 
@@ -190,7 +190,6 @@ const parentId = isCurrentSubpost ? getParentId(currentPostId) : currentPostId
         return {
           id: heading.id,
           start: heading.offsetTop,
-          height: heading.offsetHeight,
           end: nextHeading ? nextHeading.offsetTop : document.body.scrollHeight,
         }
       })
@@ -208,20 +207,24 @@ const parentId = isCurrentSubpost ? getParentId(currentPostId) : currentPostId
         (bottom >= viewportTop && bottom <= viewportBottom) ||
         (top <= viewportTop && bottom >= viewportBottom)
 
-      state.regions.forEach((region) => {
-        // Check if heading itself is visible
-        const headingBottom = region.start + region.height
-        if (isInViewport(region.start, headingBottom)) {
-          visibleIds.add(region.id)
+      state.headings.forEach((heading) => {
+        const headingBottom = heading.offsetTop + heading.offsetHeight
+        if (isInViewport(heading.offsetTop, headingBottom)) {
+          visibleIds.add(heading.id)
         }
+      })
 
-        // Check if region content is visible
+      state.regions.forEach((region) => {
         if (region.start <= viewportBottom && region.end >= viewportTop) {
-          if (
-            region.end > headingBottom &&
-            (headingBottom < viewportBottom || viewportTop < region.end)
-          ) {
-            visibleIds.add(region.id)
+          const heading = document.getElementById(region.id)
+          if (heading) {
+            const headingBottom = heading.offsetTop + heading.offsetHeight
+            if (
+              region.end > headingBottom &&
+              (headingBottom < viewportBottom || viewportTop < region.end)
+            ) {
+              visibleIds.add(region.id)
+            }
           }
         }
       })
