@@ -16,6 +16,9 @@ difficulties:
 views: 1100
 favorites: 25
 image: wallhaven-zp85do.png
+audio: "audio.mp3"
+audioStartTime: 0
+audioVolume: 30
 ---
 
 <!-- markdownlint-disable-file -->

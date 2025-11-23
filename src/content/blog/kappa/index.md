@@ -13,7 +13,7 @@ difficulties:
     mode: mania
 views: 760
 favorites: 14
-image: 2-osaka-jade-bg.jpg
+image: wallhaven-5d79q9.png
 audio: "月曜日戦争.mp3"
 ---
 

@@ -102,20 +102,25 @@
 <script>
   class AudioPlayer {
     private audio: HTMLAudioElement
-    private playerEl: HTMLElement | null
-    private playPauseBtn: HTMLElement | null
-    private playIcon: HTMLElement | null
-    private progressBar: HTMLElement | null
-    private progressFill: HTMLElement | null
-    private currentTimeEl: HTMLElement | null
-    private durationEl: HTMLElement | null
-    private titleEl: HTMLElement | null
-    private volumeSlider: HTMLInputElement | null
+    private playerEl: HTMLElement | null = null
+    private playPauseBtn: HTMLElement | null = null
+    private playIcon: HTMLElement | null = null
+    private progressBar: HTMLElement | null = null
+    private progressFill: HTMLElement | null = null
+    private currentTimeEl: HTMLElement | null = null
+    private durationEl: HTMLElement | null = null
+    private titleEl: HTMLElement | null = null
+    private volumeSlider: HTMLInputElement | null = null
     private currentTrack: string | null = null
 
     constructor() {
       this.audio = new Audio()
       this.audio.volume = 0.05 // Set default volume to 5%
+      this.refreshElements()
+      this.init()
+    }
+
+    public refreshElements() {
       this.playerEl = document.getElementById('audio-player')
       this.playPauseBtn = document.getElementById('play-pause-btn')
       this.playIcon = document.getElementById('play-icon')
@@ -125,11 +130,12 @@
       this.durationEl = document.getElementById('duration')
       this.titleEl = document.getElementById('current-track-title')
       this.volumeSlider = document.getElementById('volume-slider') as HTMLInputElement
-
-      this.init()
     }
 
     public init() {
+      // Refresh elements in case they were replaced by navigation
+      this.refreshElements()
+
       // Attach listeners directly to play buttons
       document.querySelectorAll('.play-button').forEach((btn) => {
         if (!(btn as HTMLElement).dataset.audioListener) {
@@ -319,7 +325,11 @@
     }
   }
 
-  const audioPlayer = new AudioPlayer()
+  // Singleton pattern to persist audio playback across navigations
+  if (!(window as any).globalAudioPlayer) {
+    (window as any).globalAudioPlayer = new AudioPlayer()
+  }
+  const audioPlayer = (window as any).globalAudioPlayer as AudioPlayer
 
   // Re-attach listeners on Astro page navigation
   document.addEventListener('astro:page-load', () => {

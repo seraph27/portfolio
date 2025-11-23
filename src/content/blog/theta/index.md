@@ -17,7 +17,7 @@ difficulties:
     mode: catch
 views: 900
 favorites: 18
-image: 2-cat-waves-mocha.png
+image: bg1.jpg
 ---
 
 <!-- markdownlint-disable-file -->

@@ -1,8 +1,9 @@
 ---
 title: "β - ICPC 2025"
 description: "Tapioca Express orz"
-date: 2025-11-15
+date: 2025-12-15
 tags: ["ICPC", "Competitive Programming"]
+authors: ["seraph"]
 draft: false
 difficulties:
   - rating: 7.8
@@ -19,16 +20,13 @@ audioVolume: 100
 
 Our team **Tapioca Express** placed **8th** at ICPC 2025 SoCal Regionals!
 
-{/* TODO: Add leaderboard screenshot */}
-{/* TODO: Add team photo/merch photos */}
+[View Contest Problems (PDF)](/blog/beta/contest-Post-SCICPC-2025-2026.pdf)
 
 ## Problems Solved
 
 We solved problems A through M. Here are our solutions:
 
-### Problem A
-
-```cpp
+```cpp title="problem/a.cpp" collapse={2-15}
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -68,9 +66,9 @@ signed main() {
 }
 ```
 
-### Problem B
+---
 
-```cpp
+```cpp title="problem/b.cpp" collapse={2-15}
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -210,9 +208,9 @@ signed main() {
 }
 ```
 
-### Problem C
+---
 
-```cpp
+```cpp title="problem/c.cpp" collapse={2-15}
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -307,9 +305,9 @@ signed main() {
 }
 ```
 
-### Problem D
+---
 
-```cpp
+```cpp title="problem/d.cpp" collapse={2-15}
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -360,9 +358,9 @@ signed main() {
 }
 ```
 
-### Problem E
+---
 
-```cpp
+```cpp title="problem/e.cpp" collapse={2-16}
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -411,9 +409,9 @@ signed main() {
 }
 ```
 
-### Problem F
+---
 
-```cpp
+```cpp title="problem/f.cpp" collapse={2-15}
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -471,9 +469,9 @@ signed main() {
 }
 ```
 
-### Problem G
+---
 
-```cpp
+```cpp title="problem/g.cpp" collapse={2-15}
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -520,9 +518,9 @@ signed main() {
 }
 ```
 
-### Problem H
+---
 
-```cpp
+```cpp title="problem/h.cpp" collapse={2-15}
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -600,9 +598,9 @@ signed main() {
 }
 ```
 
-### Problem I
+---
 
-```cpp
+```cpp title="problem/i.cpp" collapse={2-15}
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -632,9 +630,9 @@ signed main() {
 }
 ```
 
-### Problem J
+---
 
-```cpp
+```cpp title="problem/j.cpp" collapse={2-15}
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -702,9 +700,9 @@ signed main() {
 }
 ```
 
-### Problem K
+---
 
-```cpp
+```cpp title="problem/k.cpp" collapse={2-20}
 #pragma GCC optimize("Ofast")
 
 #include <bits/stdc++.h>
@@ -820,7 +818,6 @@ signed main() {
         dfs(cycleList[i], -1, 0);
     }
 
-    // cycleDists[i] is dist from cycleList[i] to cycleList[(i + 1) % numTrees]
     vi cycleDists(numTrees, 0);
 
     int totalAroundCycle = 0;
@@ -905,9 +902,9 @@ signed main() {
 }
 ```
 
-### Problem L
+---
 
-```cpp
+```cpp title="problem/l.cpp" collapse={2-15}
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -971,9 +968,9 @@ signed main() {
 }
 ```
 
-### Problem M
+---
 
-```cpp
+```cpp title="problem/m.cpp" collapse={2-15}
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -1000,5 +997,3 @@ signed main() {
 ```
 
 ## Reflection
-
-{/* Add your thoughts about the contest here */}

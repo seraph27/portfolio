@@ -264,6 +264,8 @@ const getGamemodeIconClass = (mode: string) => {
 
 <script>
   // Difficulty popup hover logic
+  const cleanups: (() => void)[] = []
+
   document.addEventListener('astro:page-load', () => {
     const timeouts: Record<string, number> = {}
     
@@ -317,6 +319,20 @@ const getGamemodeIconClass = (mode: string) => {
       
       window.addEventListener('scroll', updatePopupPosition, true)
       window.addEventListener('resize', updatePopupPosition)
+
+      cleanups.push(() => {
+        window.removeEventListener('scroll', updatePopupPosition, true)
+        window.removeEventListener('resize', updatePopupPosition)
+        row.removeEventListener('mouseenter', delayedShow)
+        row.removeEventListener('mouseleave', delayedHide)
+        popup.removeEventListener('mouseenter', keepOpen)
+        popup.removeEventListener('mouseleave', delayedHide)
+      })
     })
+  })
+
+  document.addEventListener('astro:before-swap', () => {
+    cleanups.forEach(cleanup => cleanup())
+    cleanups.length = 0
   })
 </script>

@@ -1,5 +1,6 @@
 ---
 import Breadcrumbs from '@/components/Breadcrumbs.astro'
+import Link from '@/components/Link.astro'
 import PostHead from '@/components/PostHead.astro'
 import PostNavigation from '@/components/PostNavigation.astro'
 import SubpostsHeader from '@/components/SubpostsHeader.astro'
@@ -20,6 +21,7 @@ import {
   getTOCSections,
   hasSubposts,
   isSubpost,
+  parseAuthors,
 } from '@/lib/data-utils'
 import { formatDate } from '@/lib/utils'
 import { Icon } from 'astro-icon/components'
@@ -35,9 +37,9 @@ export async function getStaticPaths() {
 }
 
 const post = Astro.props
-const currentPostId = Astro.params.id || ''
+const currentPostId = Astro.params.id
 const { Content, headings } = await render(post)
-const initialPostViews = post.data.views || 0
+const authors = await parseAuthors(post.data.authors ?? [])
 
 const isCurrentSubpost = isSubpost(currentPostId)
 const navigation = await getAdjacentPosts(currentPostId)
@@ -130,7 +132,34 @@ const tocSections = await getTOCSections(currentPostId)
         <div
           class="text-muted-foreground divide-border mb-4 flex flex-col items-center justify-center divide-y text-xs sm:flex-row sm:flex-wrap sm:divide-x sm:divide-y-0 sm:text-sm"
         >
-
+          {
+            authors.length > 0 && (
+              <div class="flex w-full items-center justify-center gap-x-2 py-2 sm:w-fit sm:px-2 sm:py-0 first:sm:pl-0 last:sm:pr-0">
+                {authors.map((author) => (
+                  <div class="flex items-center gap-x-1.5">
+                    <Image
+                      src={author.avatar}
+                      alt={author.name}
+                      width={20}
+                      height={20}
+                      class="rounded-full"
+                    />
+                    {author.isRegistered ? (
+                      <Link
+                        href={`/authors/${author.id}`}
+                        underline
+                        class="text-foreground"
+                      >
+                        <span>{author.name}</span>
+                      </Link>
+                    ) : (
+                      <span>{author.name}</span>
+                    )}
+                  </div>
+                ))}
+              </div>
+            )
+          }
 
           <div
             class="flex w-full items-center justify-center gap-2 py-2 sm:w-fit sm:px-2 sm:py-0 first:sm:pl-0 last:sm:pr-0"
@@ -152,14 +181,6 @@ const tocSections = await getTOCSections(currentPostId)
                     </span>
                   )
               }
-            </span>
-          </div>
-
-          <div
-            class="flex w-full items-center justify-center gap-2 py-2 sm:w-fit sm:px-2 sm:py-0 first:sm:pl-0 last:sm:pr-0"
-          >
-            <span>
-              authored by <a href="/authors/seraph" class="hover:underline" style="color: hsl(270, 50%, 60%);">seraph</a>
             </span>
           </div>
 
@@ -238,7 +259,7 @@ const tocSections = await getTOCSections(currentPostId)
     />
   </Button>
 
-  <script define:vars={{ currentPostId, initialPostViews }}>
+  <script>
     document.addEventListener('astro:page-load', () => {
       const scrollToTopButton = document.getElementById('scroll-to-top')
       const footer = document.querySelector('footer')
@@ -257,46 +278,6 @@ const tocSections = await getTOCSections(currentPostId)
             window.scrollY <= 300 || isFooterVisible,
           )
         })
-      }
-
-      // Track view for this post
-      const postId = currentPostId
-      const initialViews = initialPostViews
-      
-      if (postId) {
-        const viewKey = `viewed-${postId}`
-        const today = new Date().toDateString()
-        const lastViewed = localStorage.getItem(viewKey)
-
-        // Only count view once per day
-        if (lastViewed !== today) {
-          try {
-            const viewsKey = `views-${postId}`
-            const savedViews = localStorage.getItem(viewsKey)
-            let viewCount = savedViews ? JSON.parse(savedViews).count : initialViews
-            
-            viewCount += 1
-            
-            localStorage.setItem(viewsKey, JSON.stringify({ count: viewCount }))
-            localStorage.setItem(viewKey, today)
-
-            // Update all view count displays on the page
-            const viewDisplays = document.querySelectorAll(`[data-view-count-display][data-post-id="${postId}"]`)
-            viewDisplays.forEach((display) => {
-              display.textContent = viewCount.toLocaleString()
-            })
-
-            // Also call API to track server-side
-            fetch(`/api/beatmapsets/${postId}/view`, {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-            }).catch(() => {
-              // Ignore errors
-            })
-          } catch (e) {
-            console.error('Error tracking view:', e)
-          }
-        }
       }
     })
   </script>

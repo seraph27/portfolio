@@ -19,10 +19,10 @@ difficulties:
     mode: taiko
 views: 1300
 favorites: 32
-image: wallhaven-jexmpm.jpg
+image: wallhaven-ly9qzq.jpg
 audio: "in_the_pool.mp3"
-audioStartTime: 10
-audioVolume: 50
+audioStartTime: 15
+audioVolume: 70
 ---
 
 <!-- markdownlint-disable-file -->

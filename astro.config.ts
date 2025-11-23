@@ -9,7 +9,7 @@ import { rehypeHeadingIds } from '@astrojs/markdown-remark'
 import expressiveCode from 'astro-expressive-code'
 import rehypeExternalLinks from 'rehype-external-links'
 import rehypeKatex from 'rehype-katex'
-import rehypePrettyCode from 'rehype-pretty-code'
+// import rehypePrettyCode from 'rehype-pretty-code'
 import remarkEmoji from 'remark-emoji'
 import remarkMath from 'remark-math'
 
@@ -19,7 +19,6 @@ import { pluginLineNumbers } from '@expressive-code/plugin-line-numbers'
 import tailwindcss from '@tailwindcss/vite'
 
 export default defineConfig({
-
   site: 'https://astro-erudite.vercel.app',
   integrations: [
     expressiveCode({
@@ -65,10 +64,7 @@ export default defineConfig({
         uiFontFamily: 'var(--font-sans)',
       },
     }),
-    mdx({
-      remarkPlugins: [remarkMath],
-      rehypePlugins: [rehypeKatex],
-    }),
+    mdx(),
     react(),
     sitemap(),
     icon(),
@@ -95,15 +91,15 @@ export default defineConfig({
       ],
       rehypeHeadingIds,
       rehypeKatex,
-      [
-        rehypePrettyCode,
-        {
-          theme: {
-            light: 'github-light',
-            dark: 'github-dark',
-          },
-        },
-      ],
+      // [
+      //   rehypePrettyCode,
+      //   {
+      //     theme: {
+      //       light: 'github-light',
+      //       dark: 'github-dark',
+      //     },
+      //   },
+      // ],
     ],
     remarkPlugins: [remarkMath, remarkEmoji],
   },

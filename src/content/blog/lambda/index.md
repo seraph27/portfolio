@@ -12,6 +12,9 @@ difficulties:
 views: 700
 favorites: 12
 image: wallhaven-ly87kp.png
+audio: "oto_ni_dekiru_koto.mp3"
+audioStartTime: 0
+audioVolume: 70
 ---
 
 <!-- markdownlint-disable-file -->

@@ -257,10 +257,6 @@ const subpostsWithReadingTime = await Promise.all(
   }
 
   document.addEventListener('astro:page-load', () => SidebarController.init())
-  document.addEventListener('astro:after-swap', () => {
-    SidebarController.cleanup()
-    SidebarController.init()
-  })
   document.addEventListener('astro:before-swap', () =>
     SidebarController.cleanup(),
   )

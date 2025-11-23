@@ -1,4 +1,4 @@
-# Rex Chao's Portfolio
+# seraph's Portfolio
 
 Personal portfolio showcasing my work in backend systems, machine learning, and competitive programming.
 

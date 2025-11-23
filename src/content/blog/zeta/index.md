@@ -12,6 +12,9 @@ difficulties:
 views: 1000
 favorites: 22
 image: 1-catppuccin.png
+audio: "audio.mp3"
+audioStartTime: 50
+audioVolume: 50
 ---
 
 <!-- markdownlint-disable-file -->
