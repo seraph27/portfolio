@@ -1,4 +1,6 @@
-# seraph's Portfolio
+![Seraph](public/sky.jpg)
+
+# Seraph
 
 Personal portfolio showcasing my work in backend systems, machine learning, and competitive programming.
 

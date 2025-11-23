@@ -263,16 +263,16 @@ const tocSections = await getTOCSections(currentPostId)
     const onScroll = () => {
       const scrollToTopButton = document.getElementById('scroll-to-top')
       const footer = document.querySelector('footer')
-      
+
       if (!scrollToTopButton || !footer) return
 
-      const footerRect = footer.getBoundingClientRect()
-      const isFooterVisible = footerRect.top <= window.innerHeight
+          const footerRect = footer.getBoundingClientRect()
+          const isFooterVisible = footerRect.top <= window.innerHeight
 
-      scrollToTopButton.classList.toggle(
-        'hidden',
-        window.scrollY <= 300 || isFooterVisible,
-      )
+          scrollToTopButton.classList.toggle(
+            'hidden',
+            window.scrollY <= 300 || isFooterVisible,
+          )
     }
 
     document.addEventListener('astro:page-load', () => {

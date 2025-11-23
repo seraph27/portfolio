@@ -2,7 +2,7 @@
 import Link from '@/components/Link.astro'
 import { NAV_LINKS } from '@/consts'
 import { Image } from 'astro:assets'
-import avatar from '../../public/avatar.jpg'
+import icon from '../../public/icon.png'
 ---
 
 <div>
@@ -11,12 +11,12 @@ import avatar from '../../public/avatar.jpg'
   >
     <Link href="/" class="flex shrink-0 items-center justify-center">
       <Image
-        src={avatar}
+        src={icon}
         alt="seraph"
         class="size-10 rounded-full object-cover"
-        width={80}
-        height={80}
-        quality={95}
+        width={200}
+        height={200}
+        quality={100}
       />
     </Link>
     <div class="flex items-center gap-4">

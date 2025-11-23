@@ -1,0 +1,139 @@
+---
+title: "Resources Tier List"
+description: "Tier list of competitive programming and interview preparation resources."
+date: 2025-11-17
+authors: ["seraph"]
+---
+import { Image } from 'astro:assets'
+import Table from '@/components/Table.astro'
+import cfImg from './cf.png'
+import leetcodeImg from './leetcode.png'
+
+## Tier List
+
+<div class="flex flex-col gap-1 not-prose font-sans my-8">
+  {/* S Tier */}
+  <div class="flex min-h-[80px]">
+    <div class="w-24 bg-[#ff7f7f] flex items-center justify-center font-bold text-black text-2xl shrink-0 rounded-l-lg">S</div>
+    <div class="flex-1 bg-neutral-900 p-2 flex flex-wrap gap-2 rounded-r-lg border border-neutral-800">
+        <a href="https://kenkoooo.com/atcoder/#/table/" target="_blank" class="w-20 h-20 bg-black overflow-hidden rounded-md hover:scale-105 transition-transform flex items-center justify-center border border-white/20" title="AtCoder">
+            <span class="text-white font-bold">AtCoder</span>
+        </a>
+        <a href="https://cses.fi/" target="_blank" class="w-20 h-20 bg-orange-600 overflow-hidden rounded-md hover:scale-105 transition-transform flex items-center justify-center" title="CSES">
+            <span class="text-white font-bold">CSES</span>
+        </a>
+        <a href="https://usaco.guide/bronze/time-comp" target="_blank" class="w-20 h-20 bg-blue-600 overflow-hidden rounded-md hover:scale-105 transition-transform flex items-center justify-center" title="USACO Guide">
+            <span class="text-white font-bold text-center text-sm">USACO<br/>Guide</span>
+        </a>
+        <a href="https://marisaoj.com/" target="_blank" class="w-20 h-20 bg-purple-600 overflow-hidden rounded-md hover:scale-105 transition-transform flex items-center justify-center" title="Marisa OJ">
+            <span class="text-white font-bold text-center text-sm">Marisa<br/>OJ</span>
+        </a>
+        <a href="https://qoj.ac/" target="_blank" class="w-20 h-20 bg-indigo-900 overflow-hidden rounded-md hover:scale-105 transition-transform flex items-center justify-center" title="QOJ (icpc, ioi, ucup)">
+            <span class="text-white font-bold text-center text-sm">QOJ</span>
+        </a>
+    </div>
+  </div>
+
+  {/* A Tier */}
+  <div class="flex min-h-[80px]">
+    <div class="w-24 bg-[#ffbf7f] flex items-center justify-center font-bold text-black text-2xl shrink-0 rounded-l-lg">A</div>
+    <div class="flex-1 bg-neutral-900 p-2 flex flex-wrap gap-2 rounded-r-lg border border-neutral-800">
+        <a href="https://codeforces.com/" target="_blank" class="block w-20 h-20 bg-white overflow-hidden rounded-md hover:scale-105 transition-transform" title="Codeforces">
+            <img src={cfImg.src} alt="Codeforces" class="w-full h-full object-contain" />
+        </a>
+        <a href="https://onlinejudge.u-aizu.ac.jp/home" target="_blank" class="w-20 h-20 bg-blue-800 overflow-hidden rounded-md hover:scale-105 transition-transform flex items-center justify-center" title="Aizu Online Judge">
+            <span class="text-white font-bold text-center text-sm">Aizu</span>
+        </a>
+        <a href="https://www.luogu.com.cn/" target="_blank" class="w-20 h-20 bg-blue-500 overflow-hidden rounded-md hover:scale-105 transition-transform flex items-center justify-center" title="Luogu">
+            <span class="text-white font-bold text-center text-sm">Luogu</span>
+        </a>
+    </div>
+  </div>
+
+  {/* B Tier */}
+  <div class="flex min-h-[80px]">
+    <div class="w-24 bg-[#ffdf7f] flex items-center justify-center font-bold text-black text-2xl shrink-0 rounded-l-lg">B</div>
+    <div class="flex-1 bg-neutral-900 p-2 flex flex-wrap gap-2 rounded-r-lg border border-neutral-800">
+        <a href="https://open.kattis.com/" target="_blank" class="w-20 h-20 bg-black overflow-hidden rounded-md hover:scale-105 transition-transform flex items-center justify-center border border-white/20" title="Kattis">
+            <span class="text-yellow-400 font-bold">Kattis</span>
+        </a>
+    </div>
+  </div>
+
+  {/* C Tier */}
+  <div class="flex min-h-[80px]">
+    <div class="w-24 bg-[#ffff7f] flex items-center justify-center font-bold text-black text-2xl shrink-0 rounded-l-lg">C</div>
+    <div class="flex-1 bg-neutral-900 p-2 flex flex-wrap gap-2 rounded-r-lg border border-neutral-800">
+        <a href="https://leetcode.com" target="_blank" class="block w-20 h-20 bg-[#282828] overflow-hidden rounded-md hover:scale-105 transition-transform border border-white/10" title="LeetCode">
+            <img src={leetcodeImg.src} alt="LeetCode" class="w-full h-full object-contain" />
+        </a>
+    </div>
+  </div>
+
+  {/* D Tier */}
+  <div class="flex min-h-[80px]">
+    <div class="w-24 bg-[#bfff7f] flex items-center justify-center font-bold text-black text-2xl shrink-0 rounded-l-lg">D</div>
+    <div class="flex-1 bg-neutral-900 p-2 flex flex-wrap gap-2 rounded-r-lg border border-neutral-800">
+        <a href="https://www.hackerrank.com" target="_blank" class="w-20 h-20 bg-[#2ec866] overflow-hidden rounded-md hover:scale-105 transition-transform flex items-center justify-center" title="HackerRank">
+            <span class="text-white font-bold text-center text-xs">Hacker<br/>Rank</span>
+        </a>
+        <a href="https://www.codewars.com/" target="_blank" class="w-20 h-20 bg-red-600 overflow-hidden rounded-md hover:scale-105 transition-transform flex items-center justify-center" title="Codewars">
+            <span class="text-white font-bold text-center text-xs">Code<br/>Wars</span>
+        </a>
+    </div>
+  </div>
+
+  {/* F Tier */}
+  <div class="flex min-h-[80px]">
+    <div class="w-24 bg-[#ff7fff] flex items-center justify-center font-bold text-black text-2xl shrink-0 rounded-l-lg">F</div>
+    <div class="flex-1 bg-neutral-900 p-2 flex flex-wrap gap-2 rounded-r-lg border border-neutral-800">
+        <div class="w-20 h-20 bg-gray-800 overflow-hidden rounded-md hover:scale-105 transition-transform flex items-center justify-center border border-white/10 cursor-help" title="Paid Courses">
+            <span class="text-gray-400 font-bold text-center text-[10px] p-1">Courses</span>
+        </div>
+        <a href="https://www.tle-eliminators.com/" target="_blank" class="w-20 h-20 bg-blue-900 overflow-hidden rounded-md hover:scale-105 transition-transform flex items-center justify-center" title="TLE Eliminators">
+            <span class="text-white font-bold text-center text-[10px] p-1">TLE<br/>Eliminators</span>
+        </a>
+        <a href="https://codeforces.com/blog/entry/119091" target="_blank" class="w-20 h-20 bg-green-800 overflow-hidden rounded-md hover:scale-105 transition-transform flex items-center justify-center" title="CP 31 Sheet">
+            <span class="text-white font-bold text-center text-[10px] p-1">CP 31<br/>Sheet</span>
+        </a>
+    </div>
+  </div>
+</div>
+
+## All Resources
+
+Here is a comprehensive list of resources I have collected over time.
+
+### Competitive Programming Platforms
+
+<Table
+  headers={['Platform', 'Description', 'Best For']}
+  rows={[
+    [{ text: 'Codeforces', href: 'https://codeforces.com' }, 'The largest CP platform with frequent contests.', 'Contests, Editorials, Community'],
+    [{ text: 'AtCoder', href: 'https://atcoder.jp' }, 'High quality Japanese CP platform. Very educational.', 'Beginner Contests (ABC), Math/DP'],
+    [{ text: 'USACO Guide', href: 'https://usaco.guide' }, 'Comprehensive curriculum for CP.', 'Structured Learning, Topics'],
+    [{ text: 'CSES', href: 'https://cses.fi/problemset' }, 'Classic problem set covering all standard topics.', 'Standard Algorithms, Implementation'],
+    [{ text: 'Kattis', href: 'https://open.kattis.com' }, 'Huge archive of university contest problems.', 'Variety, Non-standard problems'],
+  ]}
+/>
+
+### Learning Resources & Algorithms
+
+<Table
+  headers={['Resource', 'Type', 'Description']}
+  rows={[
+    [{ text: 'CP-Algorithms', href: 'https://cp-algorithms.com' }, 'Wiki', 'Translation of e-maxx.ru. The bible of algorithms.'],
+    [{ text: 'Competitive Programmer\'s Handbook', href: 'https://cses.fi/book/book.pdf' }, 'Book', 'Excellent intro book by Antti Laaksonen.'],
+    [{ text: 'Errichto', href: 'https://www.youtube.com/c/Errichto' }, 'YouTube', 'Lectures and contest screencasts.'],
+    [{ text: 'OI Checklist', href: 'https://oichecklist.arvpo.rs' }, 'Tracker', 'Track progress on various OIs.'],
+  ]}
+/>
+
+### Tools & Math
+
+<Table
+  headers={['Tool', 'Usage']}
+  rows={[
+    [{ text: 'OEIS', href: 'https://oeis.org' }, 'On-Line Encyclopedia of Integer Sequences.'],
+  ]}
+/>
