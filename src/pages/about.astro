@@ -31,26 +31,12 @@ import Layout from '@/layouts/Layout.astro'
   <section class="mx-auto flex max-w-3xl flex-col gap-4 px-4 py-6">
     <div class="flex flex-col gap-4">
       <div class="flex flex-col gap-y-4">
-        <h1 class="text-2xl font-semibold text-muted-foreground/80">About Me</h1>
-
         <div
-          class="prose dark:prose-invert text-muted-foreground no-underline-prose max-w-none"
+          class="prose dark:prose-invert text-dark-wine no-underline-prose max-w-none"
         >
           <p>
             Hi~ I go by the alias <span class="gradient-text">seraph</span> online
-            (and in person lol). I've only been programming seriously for less than 2 years, so I'm on a relentless grind
-            to bridge the gap between my interests and my skills.
-          </p>
-
-          <p>
-            I'm a final-year <span class="gradient-text">math-cs student</span> at
-            UC San Diego (UCSD). My interests lie in algorithm design and optimization, low-level AI systems (CUDA, Triton, PyTorch internals), and recommender systems. 
-            I have been daily driving <Link href="https://omarchy.org/" external><span class="gradient-text">Omarchy</span></Link>, 
-            an opinionated Arch Linux distro, and my preferred IDE is <span class="gradient-text">neovim + tmux</span>.
-          </p>
-
-          <p>
-            I'm currently a founding software engineer at <Link
+            (and in person lol). I'm currently a founding software engineer at <Link
               href="https://lunabill.com/"
               external><span class="gradient-text">LunaBill</span></Link
             >
@@ -60,6 +46,13 @@ import Layout from '@/layouts/Layout.astro'
               external><span class="gradient-text">Foxconn</span></Link
             >, where I worked on latency optimization for multilingual voice
             agents.
+          </p>
+
+          <p>
+            I'm a final-year <span class="gradient-text">math-cs student</span> at
+            UC San Diego (UCSD). My interests lie in algorithm design and optimization, low-level AI systems (CUDA, Triton, PyTorch internals), and recommender systems. 
+            I have been daily driving <Link href="https://omarchy.org/" external><span class="gradient-text">Omarchy</span></Link>, 
+            an opinionated Arch Linux distro, and my preferred IDE is <span class="gradient-text">neovim + tmux</span>.
           </p>
 
           <p>
@@ -90,39 +83,37 @@ import Layout from '@/layouts/Layout.astro'
               className="h-auto w-full rounded-md border"
               client:load
             >
-              <div class="space-y-2 p-4 text-sm">
+              <div class="space-y-2 p-4 text-sm text-dark-wine">
                 <div class="grid grid-cols-[110px_1fr] gap-x-2">
-                  <span class="text-foreground">[2025/11]</span>
-                  <span>ICPC SoCal Regionals 2025</span>
+                  <span class="text-dark-wine">[2025/11]</span>
+                  <span>ICPC SoCal Regionals 2025 (Tapioca Express ranked 8th!!)</span>
                 </div>
                 <div class="grid grid-cols-[110px_1fr] gap-x-2">
-                  <span class="text-foreground">[2025/09]</span>
+                  <span class="text-dark-wine">[2025/09]</span>
                   <span
                     >Joined <Link
                       href="https://lunabill.com/"
                       external
-                      underline
-                      class="text-foreground">Lunabill</Link
+                      underline>Lunabill</Link
                     > as a founding software engineer</span
                   >
                 </div>
                 <div class="grid grid-cols-[110px_1fr] gap-x-2">
-                  <span class="text-foreground">[2025/06]</span>
+                  <span class="text-dark-wine">[2025/06]</span>
                   <span
                     >Joined <Link
                       href="https://www.foxconn.com"
                       external
-                      underline
-                      class="text-foreground">Foxconn</Link
-                    > as MLE</span
+                      underline>Foxconn</Link
+                    > as a MLE</span
                   >
                 </div>
                 <div class="grid grid-cols-[110px_1fr] gap-x-2">
-                  <span class="text-foreground">[2024/11]</span>
-                  <span>ICPC SoCal Regionals 2024</span>
+                  <span class="text-dark-wine">[2024/11]</span>
+                  <span>ICPC SoCal Regionals 2024 (Crystal Castles ranked 17th!!)</span>
                 </div>
                 <div class="grid grid-cols-[110px_1fr] gap-x-2">
-                  <span class="text-foreground">[2021/09]</span>
+                  <span class="text-dark-wine">[2021/09]</span>
                   <span>Attended UCSD</span>
                 </div>
               </div>

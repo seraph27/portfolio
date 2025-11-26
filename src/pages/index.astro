@@ -1,6 +1,7 @@
 ---
 import AudioPlayer from '@/components/AudioPlayer.astro'
 import BlogGridCard from '@/components/BlogGridCard.astro'
+import HeroSearch from '@/components/HeroSearch.astro'
 import PageHead from '@/components/PageHead.astro'
 import Layout from '@/layouts/Layout.astro'
 import { getAllPosts } from '@/lib/data-utils'
@@ -15,6 +16,8 @@ const recentPosts = allPosts.slice(0, 12)
     title="meow"
     description="give me a github star! right now!"
   />
+
+  <HeroSearch />
 
   <div class="mx-auto w-full max-w-[970px] px-4 lg:px-0">
     <!-- Blog Grid -->

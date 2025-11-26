@@ -1,0 +1,282 @@
+/* Hero Search - osu! beatmap listing style
+ * Based on osu-web/resources/css/bem/beatmapsets-search.less
+ * and osu-web/resources/css/bem/beatmapsets-search-filter.less
+ */
+
+/* osu! color variables (from colors.less) */
+.hero-search {
+  /* Base hue: 200 (blue) - matches osu! beatmaps section */
+  --base-hue: 200;
+  
+  /* Base colours from osu-web colors.less */
+  --hsl-c1: var(--base-hue), 40%, 100%;
+  --hsl-c2: var(--base-hue), 40%, 90%;
+  --hsl-l1: var(--base-hue), 40%, 80%;
+  --hsl-l2: var(--base-hue), 40%, 75%;
+  --hsl-l3: var(--base-hue), 40%, 70%;
+  --hsl-b1: var(--base-hue), 10%, 40%;
+  --hsl-b2: var(--base-hue), 10%, 30%;
+  --hsl-b4: var(--base-hue), 10%, 20%;
+  --hsl-b6: var(--base-hue), 10%, 10%;
+  
+  /* Orange accent from osu-web */
+  --hsl-orange-1: 45, 100%, 70%;
+  
+  /* Font sizes from variables.less */
+  --font-size-small: 10px;
+  --font-size-normal-2: 13px;
+  --font-size-large: 20px;
+}
+
+.hero-search {
+  position: relative;
+  width: 100%;
+  max-width: 970px;
+  margin: 0 auto;
+  font-family: var(--font-osu), 'Torus', ui-sans-serif, system-ui, sans-serif;
+  font-size: var(--font-size-normal-2);
+  border-radius: 10px;
+  overflow: hidden;
+  /* background-color from osu-web beatmapsets-search */
+  background-color: hsl(var(--hsl-b6));
+}
+
+/* Background cover - exactly like osu-web beatmapsets-search__cover */
+.hero-search__cover {
+  position: absolute;
+  inset: 0;
+  border-radius: 0;
+  /* opacity: 0.5 from osu-web */
+  opacity: 0.5;
+}
+
+.hero-search__cover::after {
+  position: absolute;
+  inset: 0;
+  content: "";
+  /* hsla(var(--hsl-b1), 80%) from osu-web */
+  background-color: hsla(var(--hsl-b1), 80%);
+}
+
+.hero-search__cover-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+/* Content wrapper */
+.hero-search__content {
+  position: relative;
+  z-index: 1;
+  padding: 10px;
+}
+
+/* Header with logo and title */
+.hero-search__header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-bottom: 10px;
+  margin-bottom: 10px;
+  border-bottom: 2px solid hsl(25, 70%, 55%);
+}
+
+.hero-search__logo-icon {
+  width: 32px;
+  height: 32px;
+  color: white;
+  flex-shrink: 0;
+}
+
+.hero-search__title {
+  font-size: var(--font-size-large);
+  font-weight: 400;
+  color: white;
+  letter-spacing: 0.02em;
+}
+
+/* Filter grid - from beatmapsets-search.less */
+.hero-search__filter-grid {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  align-items: baseline;
+}
+
+@media (min-width: 768px) {
+  .hero-search__filter-grid {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0 10px;
+  }
+}
+
+/* Filter row - from beatmapsets-search-filter.less */
+.hero-search__filter-row {
+  position: relative;
+  margin: 2px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+}
+
+.hero-search__filter-row--grid {
+  display: contents;
+}
+
+.hero-search__filter-header {
+  display: block;
+  color: hsl(var(--hsl-c1));
+  margin: 15px 0 5px;
+  font-weight: 600;
+  min-width: 120px;
+}
+
+@media (min-width: 768px) {
+  .hero-search__filter-header {
+    margin-top: 5px;
+  }
+}
+
+/* Filter items container */
+.hero-search__filter-items {
+  flex: 1;
+  display: flex;
+  gap: 2px 10px;
+  flex-wrap: wrap;
+  align-items: baseline;
+}
+
+/* Filter item - from beatmapsets-search-filter.less */
+.hero-search__filter-item {
+  --colour: hsl(var(--hsl-l2));
+  --colour-hover: hsl(var(--hsl-l1));
+  color: var(--colour);
+  cursor: pointer;
+  transition: color 120ms;
+}
+
+.hero-search__filter-item:focus {
+  color: var(--colour);
+}
+
+.hero-search__filter-item:hover {
+  color: var(--colour-hover);
+}
+
+.hero-search__filter-item:active {
+  color: var(--colour-hover);
+}
+
+.hero-search__filter-item--active {
+  font-weight: 600;
+  --colour: hsl(var(--hsl-c1));
+  --colour-hover: var(--colour);
+}
+
+.hero-search__filter-item--featured-artists {
+  --colour: hsl(var(--hsl-orange-1));
+  --colour-hover: var(--colour);
+}
+
+/* Expand link - from beatmapsets-search.less */
+.hero-search__expand-link {
+  grid-column: 1 / span 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  width: 100%;
+  margin-top: 10px;
+  text-align: center;
+  font-size: var(--font-size-small);
+  color: hsl(var(--hsl-l2));
+  cursor: pointer;
+  transition: color 120ms;
+  text-decoration: none;
+}
+
+.hero-search__expand-link:hover,
+.hero-search__expand-link:active,
+.hero-search__expand-link:focus {
+  color: hsl(var(--hsl-c1));
+}
+
+.hero-search__expand-icon {
+  width: 12px;
+  height: 12px;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+/* Responsive adjustments */
+@media (max-width: 767px) {
+  .hero-search {
+    border-radius: 0;
+    margin-left: -1rem;
+    margin-right: -1rem;
+    width: calc(100% + 2rem);
+    max-width: none;
+  }
+
+  .hero-search__content {
+    padding: 10px 16px;
+  }
+
+  .hero-search__header {
+    gap: 8px;
+    padding-bottom: 8px;
+    margin-bottom: 8px;
+  }
+
+  .hero-search__logo-icon {
+    width: 24px;
+    height: 24px;
+  }
+
+  .hero-search__title {
+    font-size: 16px;
+  }
+
+  .hero-search__filter-row--grid {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+  }
+
+  .hero-search__filter-header {
+    min-width: auto;
+    font-size: 11px;
+    margin: 10px 0 4px;
+    width: 100%;
+  }
+
+  .hero-search__filter-item {
+    font-size: 11px;
+  }
+
+  .hero-search__filter-items {
+    gap: 4px 8px;
+    width: 100%;
+  }
+
+  .hero-search__expand-link {
+    margin-top: 8px;
+    font-size: 10px;
+  }
+}
+
+/* Default box shadow from osu-web */
+.hero-search {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+}
+
+/* Gutter from osu-web */
+@media (min-width: 768px) {
+  .hero-search__content {
+    padding-left: 50px;
+    padding-right: 50px;
+  }
+}

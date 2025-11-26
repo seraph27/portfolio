@@ -2,6 +2,7 @@
 @import './design-tokens.css';
 @import './components/beatmapset-panel.css';
 @import './components/tooltip.css';
+@import './hero-search.css';
 
 @custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
 
@@ -27,6 +28,8 @@
 
   --color-border: var(--border);
   --color-ring: var(--ring);
+
+  --color-dark-wine: var(--dark-wine);
 }
 
 @font-face {
@@ -142,6 +145,7 @@
   --destructive: oklch(0.577 0.245 27.325);
   --border: oklch(0.922 0 0);
   --ring: oklch(0.708 0 0);
+  --dark-wine: oklch(0.18 0.06 340);
 }
 
 [data-theme='dark'] {
@@ -154,6 +158,7 @@
   --destructive: oklch(0.704 0.191 22.216);
   --border: oklch(1 0 0 / 10%);
   --ring: oklch(0.556 0 0);
+  --dark-wine: oklch(0.75 0.08 340);
 }
 
 @layer base {

@@ -1,0 +1,92 @@
+---
+// HeroSearch.astro - osu! beatmap listing style hero section
+// Based on osu-web beatmapsets-search component
+---
+
+<div class="hero-search">
+  <!-- Background cover with transparency -->
+  <div class="hero-search__cover">
+    <img src="/sky.jpg" alt="" class="hero-search__cover-image" />
+  </div>
+
+  <!-- Content -->
+  <div class="hero-search__content">
+    <!-- Header row -->
+    <div class="hero-search__header">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="hero-search__logo-icon">
+        <circle cx="12" cy="12" r="3"/>
+        <path d="M12 16.5A4.5 4.5 0 1 1 7.5 12 4.5 4.5 0 1 1 12 7.5a4.5 4.5 0 1 1 4.5 4.5 4.5 4.5 0 1 1-4.5 4.5"/>
+        <path d="M12 7.5V9"/>
+        <path d="M7.5 12H9"/>
+        <path d="M16.5 12H15"/>
+        <path d="M12 16.5V15"/>
+        <path d="m8 8 1.88 1.88"/>
+        <path d="M14.12 9.88 16 8"/>
+        <path d="m8 16 1.88-1.88"/>
+        <path d="M14.12 14.12 16 16"/>
+      </svg>
+      <h1 class="hero-search__title">seraph's portfolio</h1>
+    </div>
+
+    <!-- Filter grid -->
+    <div class="hero-search__filter-grid">
+      <!-- Row 1: Working -->
+      <div class="hero-search__filter-row hero-search__filter-row--grid">
+        <span class="hero-search__filter-header">Working</span>
+        <div class="hero-search__filter-items">
+          <span class="hero-search__filter-item hero-search__filter-item--featured-artists">Lunabill (F25)</span>
+          <span class="hero-search__filter-item">Foxconn</span>
+          <span class="hero-search__filter-item">Systex</span>
+          <span class="hero-search__filter-item">Formosa Dental</span>
+          <a href="/work" class="hero-search__filter-item hero-search__filter-item--featured-artists">Hire Me!</a>
+        </div>
+      </div>
+
+      <!-- Row 2: Location -->
+      <div class="hero-search__filter-row hero-search__filter-row--grid">
+        <span class="hero-search__filter-header">Location</span>
+        <div class="hero-search__filter-items">
+          <span class="hero-search__filter-item">San Francisco</span>
+          <span class="hero-search__filter-item hero-search__filter-item--featured-artists">San Diego</span>
+          <span class="hero-search__filter-item">Taiwan</span>
+          <span class="hero-search__filter-item">Japan</span>
+        </div>
+      </div>
+
+      <!-- Row 3: Stack -->
+      <div class="hero-search__filter-row hero-search__filter-row--grid">
+        <span class="hero-search__filter-header">Stack</span>
+        <div class="hero-search__filter-items">
+          <span class="hero-search__filter-item hero-search__filter-item--featured-artists">C++</span>
+          <span class="hero-search__filter-item">Python</span>
+          <span class="hero-search__filter-item hero-search__filter-item--featured-artists">TypeScript</span>
+          <span class="hero-search__filter-item hero-search__filter-item--featured-artists">Astro</span>
+          <span class="hero-search__filter-item">React</span>
+          <span class="hero-search__filter-item">PyTorch</span>
+          <span class="hero-search__filter-item">PostgreSQL</span>
+        </div>
+      </div>
+
+      <!-- Row 4: Interests -->
+      <div class="hero-search__filter-row hero-search__filter-row--grid">
+        <span class="hero-search__filter-header">Interests</span>
+        <div class="hero-search__filter-items">
+          <span class="hero-search__filter-item hero-search__filter-item--featured-artists">Competitive Programming</span>
+          <span class="hero-search__filter-item">osu!</span>
+          <span class="hero-search__filter-item">Piano</span>
+          <span class="hero-search__filter-item">Calisthenics</span>
+          <span class="hero-search__filter-item hero-search__filter-item--featured-artists">Running</span>
+          <span class="hero-search__filter-item">Travel</span>
+        </div>
+      </div>
+
+      <!-- More About Me link -->
+      <a href="/about" class="hero-search__expand-link">
+        More About Me
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="hero-search__expand-icon">
+          <path d="m9 18 6-6-6-6"/>
+        </svg>
+      </a>
+    </div>
+  </div>
+</div>
