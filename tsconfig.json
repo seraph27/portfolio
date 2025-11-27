@@ -8,5 +8,6 @@
     },
     "jsx": "react-jsx",
     "jsxImportSource": "react"
-  }
+  },
+  "exclude": ["osu-web", "node_modules", "dist"]
 }

@@ -32,7 +32,7 @@
   position: relative;
   width: 100%;
   max-width: 970px;
-  margin: 0 auto;
+  margin: 2px auto 0;
   font-family: var(--font-osu), 'Torus', ui-sans-serif, system-ui, sans-serif;
   font-size: var(--font-size-normal-2);
   border-radius: 10px;
@@ -180,6 +180,45 @@
   --colour-hover: var(--colour);
 }
 
+/* Tooltip for filter items */
+.hero-search__filter-item {
+  position: relative;
+}
+
+.hero-search__tooltip {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 8px 12px;
+  background-color: hsl(var(--hsl-b6));
+  border: 1px solid hsl(var(--hsl-b2));
+  border-radius: 8px;
+  color: hsl(var(--hsl-c1));
+  font-size: 11px;
+  font-weight: 400;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 150ms ease;
+  z-index: 100;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+.hero-search__tooltip::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 6px solid transparent;
+  border-top-color: hsl(var(--hsl-b6));
+}
+
+.hero-search__filter-item:hover .hero-search__tooltip {
+  opacity: 1;
+}
+
 /* Expand link - from beatmapsets-search.less */
 .hero-search__expand-link {
   grid-column: 1 / span 2;
@@ -210,13 +249,12 @@
   vertical-align: middle;
 }
 
-/* Responsive adjustments */
+/* Responsive adjustments - keep original format, just wrap items */
 @media (max-width: 767px) {
   .hero-search {
-    border-radius: 0;
-    margin-left: -1rem;
-    margin-right: -1rem;
-    width: calc(100% + 2rem);
+    border-radius: 10px;
+    margin: 2px 1rem 0;
+    width: calc(100% - 2rem);
     max-width: none;
   }
 
@@ -224,47 +262,12 @@
     padding: 10px 16px;
   }
 
-  .hero-search__header {
-    gap: 8px;
-    padding-bottom: 8px;
-    margin-bottom: 8px;
-  }
-
-  .hero-search__logo-icon {
-    width: 24px;
-    height: 24px;
-  }
-
-  .hero-search__title {
-    font-size: 16px;
-  }
-
   .hero-search__filter-row--grid {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    width: 100%;
-  }
-
-  .hero-search__filter-header {
-    min-width: auto;
-    font-size: 11px;
-    margin: 10px 0 4px;
-    width: 100%;
-  }
-
-  .hero-search__filter-item {
-    font-size: 11px;
+    display: contents;
   }
 
   .hero-search__filter-items {
-    gap: 4px 8px;
-    width: 100%;
-  }
-
-  .hero-search__expand-link {
-    margin-top: 8px;
-    font-size: 10px;
+    flex-wrap: wrap;
   }
 }
 

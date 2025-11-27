@@ -1,6 +1,46 @@
 ---
 // HeroSearch.astro - osu! beatmap listing style hero section
 // Based on osu-web beatmapsets-search component
+
+interface FilterItem {
+  name: string;
+  gold?: boolean;
+  tooltip?: string;
+  link?: string;
+}
+
+// Data structure for filter items - easy to modify
+const filterData: Record<string, FilterItem[]> = {
+  working: [
+    { name: "Lunabill (F25)", gold: true, tooltip: "Y Combinator F25 startup - automating medical insurance calls" },
+    { name: "Foxconn", tooltip: "MLE Intern - latency optimization for multilingual voice agents" },
+    { name: "Formosa Dental", tooltip: "A billing and inventory management platform for formosa dental clinic" },
+    { name: "Hire Me!", gold: true, link: "/work" },
+  ],
+  location: [
+    { name: "San Francisco" },
+    { name: "San Diego", gold: true },
+    { name: "Taiwan" },
+    { name: "Japan" },
+  ],
+  stack: [
+    { name: "C++", gold: true, tooltip: "Competitive programming, low level learning" },
+    { name: "Python", tooltip: "ML/AI, scripting" },
+    { name: "TypeScript", gold: true, tooltip: "Full-stack web development" },
+    { name: "Astro", gold: true, tooltip: "This portfolio!" },
+    { name: "React", tooltip: "Frontend" },
+    { name: "PyTorch", tooltip: "ML / Deep learning" },
+    { name: "PostgreSQL", tooltip: "Database" },
+  ],
+  interests: [
+    { name: "Competitive Programming", gold: true, tooltip: "AtCoder, Codeforces, ICPC" },
+    { name: "osu!", tooltip: "<3 osu!" },
+    { name: "Piano", tooltip: "chopin" },
+    { name: "Calisthenics", tooltip: "in progress" },
+    { name: "Running", gold: true, tooltip: "in progress" },
+    { name: "Travel", tooltip: "japan" },
+  ],
+};
 ---
 
 <div class="hero-search">
@@ -34,11 +74,19 @@
       <div class="hero-search__filter-row hero-search__filter-row--grid">
         <span class="hero-search__filter-header">Working</span>
         <div class="hero-search__filter-items">
-          <span class="hero-search__filter-item hero-search__filter-item--featured-artists">Lunabill (F25)</span>
-          <span class="hero-search__filter-item">Foxconn</span>
-          <span class="hero-search__filter-item">Systex</span>
-          <span class="hero-search__filter-item">Formosa Dental</span>
-          <a href="/work" class="hero-search__filter-item hero-search__filter-item--featured-artists">Hire Me!</a>
+          {filterData.working.map((item) => (
+            item.link ? (
+              <a href={item.link} class={`hero-search__filter-item ${item.gold ? 'hero-search__filter-item--featured-artists' : ''}`} data-tooltip={item.tooltip}>
+                {item.name}
+                {item.tooltip && <span class="hero-search__tooltip">{item.tooltip}</span>}
+              </a>
+            ) : (
+              <span class={`hero-search__filter-item ${item.gold ? 'hero-search__filter-item--featured-artists' : ''}`} data-tooltip={item.tooltip}>
+                {item.name}
+                {item.tooltip && <span class="hero-search__tooltip">{item.tooltip}</span>}
+              </span>
+            )
+          ))}
         </div>
       </div>
 
@@ -46,10 +94,12 @@
       <div class="hero-search__filter-row hero-search__filter-row--grid">
         <span class="hero-search__filter-header">Location</span>
         <div class="hero-search__filter-items">
-          <span class="hero-search__filter-item">San Francisco</span>
-          <span class="hero-search__filter-item hero-search__filter-item--featured-artists">San Diego</span>
-          <span class="hero-search__filter-item">Taiwan</span>
-          <span class="hero-search__filter-item">Japan</span>
+          {filterData.location.map((item) => (
+            <span class={`hero-search__filter-item ${item.gold ? 'hero-search__filter-item--featured-artists' : ''}`} data-tooltip={item.tooltip}>
+              {item.name}
+              {item.tooltip && <span class="hero-search__tooltip">{item.tooltip}</span>}
+            </span>
+          ))}
         </div>
       </div>
 
@@ -57,13 +107,12 @@
       <div class="hero-search__filter-row hero-search__filter-row--grid">
         <span class="hero-search__filter-header">Stack</span>
         <div class="hero-search__filter-items">
-          <span class="hero-search__filter-item hero-search__filter-item--featured-artists">C++</span>
-          <span class="hero-search__filter-item">Python</span>
-          <span class="hero-search__filter-item hero-search__filter-item--featured-artists">TypeScript</span>
-          <span class="hero-search__filter-item hero-search__filter-item--featured-artists">Astro</span>
-          <span class="hero-search__filter-item">React</span>
-          <span class="hero-search__filter-item">PyTorch</span>
-          <span class="hero-search__filter-item">PostgreSQL</span>
+          {filterData.stack.map((item) => (
+            <span class={`hero-search__filter-item ${item.gold ? 'hero-search__filter-item--featured-artists' : ''}`} data-tooltip={item.tooltip}>
+              {item.name}
+              {item.tooltip && <span class="hero-search__tooltip">{item.tooltip}</span>}
+            </span>
+          ))}
         </div>
       </div>
 
@@ -71,12 +120,12 @@
       <div class="hero-search__filter-row hero-search__filter-row--grid">
         <span class="hero-search__filter-header">Interests</span>
         <div class="hero-search__filter-items">
-          <span class="hero-search__filter-item hero-search__filter-item--featured-artists">Competitive Programming</span>
-          <span class="hero-search__filter-item">osu!</span>
-          <span class="hero-search__filter-item">Piano</span>
-          <span class="hero-search__filter-item">Calisthenics</span>
-          <span class="hero-search__filter-item hero-search__filter-item--featured-artists">Running</span>
-          <span class="hero-search__filter-item">Travel</span>
+          {filterData.interests.map((item) => (
+            <span class={`hero-search__filter-item ${item.gold ? 'hero-search__filter-item--featured-artists' : ''}`} data-tooltip={item.tooltip}>
+              {item.name}
+              {item.tooltip && <span class="hero-search__tooltip">{item.tooltip}</span>}
+            </span>
+          ))}
         </div>
       </div>
 

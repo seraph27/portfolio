@@ -203,7 +203,7 @@ const getGamemodeIconClass = (mode: string) => {
         <div class="difficulty-popup" data-popup-id={entry.id}>
           <div class="difficulty-popup__content">
             <div class="difficulty-popup__list">
-              {[...groupedDifficulties].map(([mode, difficulties]) => (
+              {[...groupedDifficulties].map(([_mode, difficulties]) => (
                 <div class="difficulty-popup__group">
                   <div class="difficulty-popup__difficulties">
                     {difficulties.map((diff, idx) => (
@@ -257,7 +257,7 @@ const getGamemodeIconClass = (mode: string) => {
     data-audio-start={entry.data.audioStartTime ?? 0}
     data-audio-volume={entry.data.audioVolume ?? 5}
     aria-label="Play preview"
-    onclick="event.preventDefault(); event.stopPropagation();"
+    onclick="window.event?.preventDefault(); window.event?.stopPropagation();"
   >
     <Icon name="lucide:play" class="beatmapset-panel__play-icon" />
   </button>
