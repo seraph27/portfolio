@@ -40,12 +40,8 @@ export const SOCIAL_LINKS: SocialLink[] = [
     label: 'LinkedIn',
   },
   {
-    href: 'mailto:ychao@ucsd.edu',
+    href: 'mailto:rexchao.careers@gmail.com',
     label: 'Email',
-  },
-  {
-    href: '/resume.pdf',
-    label: 'CV',
   },
 ]
 
@@ -55,5 +51,4 @@ export const ICON_MAP: IconMap = {
   LinkedIn: 'lucide:linkedin',
   Twitter: 'lucide:twitter',
   Email: 'lucide:mail',
-  CV: 'lucide:file-text',
 }
