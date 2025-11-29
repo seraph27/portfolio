@@ -9,8 +9,6 @@ difficulties:
     mode: taiko
   - rating: 4.1
     mode: taiko
-views: 950
-favorites: 20
 image: himawari.jpg
 audio: "audio.mp3"
 audioStartTime: 0

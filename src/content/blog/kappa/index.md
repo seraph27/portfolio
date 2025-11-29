@@ -11,10 +11,10 @@ difficulties:
     mode: mania
   - rating: 7.9
     mode: mania
-views: 760
-favorites: 14
 image: wallhaven-5d79q9.png
-audio: "月曜日戦争.mp3"
+audio: "Thinking of You.mp3"
+audioStartTime: 0
+audioVolume: 35
 ---
 
 <!-- markdownlint-disable-file -->

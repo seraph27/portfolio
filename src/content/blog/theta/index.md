@@ -15,9 +15,10 @@ difficulties:
     mode: catch
   - rating: 6.0
     mode: catch
-views: 900
-favorites: 18
 image: bg1.jpg
+audio: "ヨルシカ - 花に亡霊（OFFICIAL VIDEO）.mp3"
+audioStartTime: 0
+audioVolume: 50
 ---
 
 <!-- markdownlint-disable-file -->

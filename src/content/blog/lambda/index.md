@@ -9,12 +9,10 @@ difficulties:
     mode: osu
   - rating: 4.8
     mode: osu
-views: 700
-favorites: 12
 image: wallhaven-ly87kp.png
-audio: "oto_ni_dekiru_koto.mp3"
+audio: "sidetracked_day.mp3"
 audioStartTime: 0
-audioVolume: 70
+audioVolume: 35
 ---
 
 <!-- markdownlint-disable-file -->

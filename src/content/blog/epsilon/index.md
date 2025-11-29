@@ -1,5 +1,3 @@
-
-
 ---
 title: "ε"
 description: "Placeholder Epsilon post."
@@ -13,8 +11,6 @@ difficulties:
     mode: osu
   - rating: 4.1
     mode: osu
-views: 1100
-favorites: 25
 image: wallhaven-zp85do.png
 audio: "audio.mp3"
 audioStartTime: 0

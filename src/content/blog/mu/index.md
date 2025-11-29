@@ -23,9 +23,10 @@ difficulties:
     mode: catch
   - rating: 7.7
     mode: catch
-views: 650
-favorites: 10
 image: 3-cat-blue-eye-mocha.png
+audio: "Stories.mp3"
+audioStartTime: 0
+audioVolume: 30
 ---
 
 <!-- markdownlint-disable-file -->

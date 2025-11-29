@@ -13,10 +13,10 @@ difficulties:
     mode: osu
   - rating: 6.2
     mode: osu
-views: 820
-favorites: 16
 image: wallpaperflare.com_wallpaper.jpg
 audio: "SubaHibi OST_ Yoru no Himawari.mp3"
+audioStartTime: 0
+audioVolume: 40
 ---
 
 <!-- markdownlint-disable-file -->
