@@ -221,13 +221,10 @@
 
 /* Expand link - from beatmapsets-search.less */
 .hero-search__expand-link {
-  grid-column: 1 / span 2;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 4px;
-  width: 100%;
-  margin-top: 10px;
   text-align: center;
   font-size: var(--font-size-small);
   color: hsl(var(--hsl-l2));
@@ -247,6 +244,39 @@
   height: 12px;
   display: inline-block;
   vertical-align: middle;
+}
+
+/* Footer row with expand link and legend */
+.hero-search__footer {
+  grid-column: 1 / span 2;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  margin-top: 10px;
+}
+
+/* Legend indicator */
+.hero-search__legend {
+  position: absolute;
+  right: 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: var(--font-size-small);
+  color: hsl(var(--hsl-l2));
+}
+
+.hero-search__legend-box {
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+  background-color: hsl(var(--hsl-orange-1));
+}
+
+.hero-search__legend-text {
+  opacity: 0.8;
 }
 
 /* Responsive adjustments - keep original format, just wrap items */
