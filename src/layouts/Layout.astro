@@ -2,6 +2,7 @@
 import '@/styles/global.css'
 import '@/styles/typography.css'
 
+import AudioPlayer from '@/components/AudioPlayer.astro'
 import Footer from '@/components/Footer.astro'
 import Head from '@/components/Head.astro'
 import Header from '@/components/Header.astro'
@@ -40,5 +41,6 @@ const { class: className } = Astro.props
       <slot />
     </main>
     <Footer />
+    <AudioPlayer />
   </body>
 </html>

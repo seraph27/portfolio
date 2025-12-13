@@ -28,13 +28,14 @@ const filterData: Record<string, FilterItem[]> = {
     { name: "Python", tooltip: "ML/AI, scripting" },
     { name: "TypeScript", gold: true, tooltip: "Full-stack web development" },
     { name: "Astro", gold: true, tooltip: "This portfolio!" },
+    { name: "Svelte", gold: true, tooltip: "Frontend" },
     { name: "React", tooltip: "Frontend" },
     { name: "PyTorch", tooltip: "ML / Deep learning" },
     { name: "PostgreSQL", tooltip: "Database" },
   ],
   interests: [
     { name: "Competitive Programming", gold: true, tooltip: "AtCoder, Codeforces, ICPC" },
-    { name: "osu!", tooltip: "<3 osu!" },
+    { name: "osu!", tooltip: "<3 osu!", link: "https://osu.ppy.sh/users/13370667" },
     { name: "Piano", tooltip: "chopin" },
     { name: "Calisthenics", tooltip: "in progress" },
     { name: "Running", gold: true, tooltip: "in progress" },
@@ -121,21 +122,34 @@ const filterData: Record<string, FilterItem[]> = {
         <span class="hero-search__filter-header">Interests</span>
         <div class="hero-search__filter-items">
           {filterData.interests.map((item) => (
-            <span class={`hero-search__filter-item ${item.gold ? 'hero-search__filter-item--featured-artists' : ''}`} data-tooltip={item.tooltip}>
-              {item.name}
-              {item.tooltip && <span class="hero-search__tooltip">{item.tooltip}</span>}
-            </span>
+            item.link ? (
+              <a href={item.link} target="_blank" rel="noopener noreferrer" class={`hero-search__filter-item ${item.gold ? 'hero-search__filter-item--featured-artists' : ''}`} data-tooltip={item.tooltip}>
+                {item.name}
+                {item.tooltip && <span class="hero-search__tooltip">{item.tooltip}</span>}
+              </a>
+            ) : (
+              <span class={`hero-search__filter-item ${item.gold ? 'hero-search__filter-item--featured-artists' : ''}`} data-tooltip={item.tooltip}>
+                {item.name}
+                {item.tooltip && <span class="hero-search__tooltip">{item.tooltip}</span>}
+              </span>
+            )
           ))}
         </div>
       </div>
 
-      <!-- More About Me link -->
-      <a href="/about" class="hero-search__expand-link">
-        More About Me
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="hero-search__expand-icon">
-          <path d="m9 18 6-6-6-6"/>
-        </svg>
-      </a>
+      <!-- Footer row -->
+      <div class="hero-search__footer">
+        <a href="/about" class="hero-search__expand-link">
+          More About Me
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="hero-search__expand-icon">
+            <path d="m9 18 6-6-6-6"/>
+          </svg>
+        </a>
+        <div class="hero-search__legend">
+          <span class="hero-search__legend-box"></span>
+          <span class="hero-search__legend-text">Active</span>
+        </div>
+      </div>
     </div>
   </div>
 </div>

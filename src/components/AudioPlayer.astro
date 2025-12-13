@@ -176,6 +176,7 @@
     private titleEl: HTMLElement | null = null
     private volumeSlider: HTMLInputElement | null = null
     private currentTrack: string | null = null
+    private currentTitle: string = 'No track playing'
 
     constructor() {
       this.audio = new Audio()
@@ -199,6 +200,13 @@
     public init() {
       // Refresh elements in case they were replaced by navigation
       this.refreshElements()
+      
+      // Restore UI state if audio is playing (after page navigation)
+      if (!this.audio.paused && this.currentTrack) {
+        this.playerEl?.classList.add('active')
+        this.updatePlayPauseIcon(true)
+        if (this.titleEl) this.titleEl.textContent = this.currentTitle
+      }
 
       // Attach listeners directly to play buttons
       document.querySelectorAll('.play-button').forEach((btn) => {
@@ -323,6 +331,7 @@
       
       try {
         await this.audio.play()
+        this.currentTitle = title
         if (this.titleEl) this.titleEl.textContent = title
         this.playerEl?.classList.add('active')
         this.updatePlayPauseIcon(true)
