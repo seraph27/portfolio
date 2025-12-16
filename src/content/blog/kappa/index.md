@@ -11,7 +11,7 @@ difficulties:
     mode: mania
   - rating: 7.9
     mode: mania
-image: wallhaven-5d79q9.png
+image: wallhaven-5d79q9.webp
 audio: "Thinking of You.mp3"
 audioStartTime: 0
 audioVolume: 35

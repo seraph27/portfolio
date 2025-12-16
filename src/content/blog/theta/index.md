@@ -15,7 +15,7 @@ difficulties:
     mode: catch
   - rating: 6.0
     mode: catch
-image: bg1.jpg
+image: bg1.webp
 audio: "ヨルシカ - 花に亡霊（OFFICIAL VIDEO）.mp3"
 audioStartTime: 0
 audioVolume: 50

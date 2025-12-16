@@ -9,7 +9,7 @@ difficulties:
     mode: taiko
   - rating: 4.1
     mode: taiko
-image: himawari.jpg
+image: himawari.webp
 audio: "audio.mp3"
 audioStartTime: 0
 audioVolume: 10

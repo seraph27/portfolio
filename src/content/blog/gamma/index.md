@@ -17,7 +17,7 @@ difficulties:
     mode: taiko
   - rating: 7.5
     mode: taiko
-image: wallhaven-ly9qzq.jpg
+image: wallhaven-ly9qzq.webp
 audio: "in_the_pool.mp3"
 audioStartTime: 15
 audioVolume: 70
