@@ -36,10 +36,6 @@ export const SOCIAL_LINKS: SocialLink[] = [
     label: 'GitHub',
   },
   {
-    href: 'https://linkedin.com/in/rexchao',
-    label: 'LinkedIn',
-  },
-  {
     href: 'mailto:rexchao.careers@gmail.com',
     label: 'Email',
   },
@@ -48,7 +44,6 @@ export const SOCIAL_LINKS: SocialLink[] = [
 export const ICON_MAP: IconMap = {
   Website: 'lucide:globe',
   GitHub: 'lucide:github',
-  LinkedIn: 'lucide:linkedin',
   Twitter: 'lucide:twitter',
   Email: 'lucide:mail',
 }

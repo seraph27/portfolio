@@ -6,6 +6,5 @@ bio: Fullstack engineer, c++ enjoyer, and competitive programmer. UCSD '25.
 mail: rexchao.careers@gmail.com
 website: https://seraph.tw
 github: https://github.com/Seraph27
-linkedin: https://linkedin.com/in/yianchao
 ---
 
