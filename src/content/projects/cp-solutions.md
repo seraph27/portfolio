@@ -1,7 +1,7 @@
 ---
-name: "Competitive Programming Solutions"
-description: "1000+ problems solved in C++. Collection of competitive programming solutions from Codeforces, LeetCode, and various contests."
-tags: ["C++", "Algorithms"]
+name: "Competitive programming solutions & templates library"
+description: "Low-latency & modular C++ templates with auto-insert into Neovim."
+tags: ["C++", "Neovim"]
 image: "../../../public/sky.jpg"
 link: "https://github.com/seraph27/competitve-programming"
 startDate: 2023-01-01

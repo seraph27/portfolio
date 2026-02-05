@@ -1,5 +1,5 @@
 ---
-name: "CP Dashboard"
+name: "Competitive Programming Dashboard"
 description: "Real-time competitive programming dashboard tracking contest performance, rating progression, and problem-solving statistics."
 tags: ["TypeScript", "Next.js"]
 image: "../../../public/sky.jpg"
