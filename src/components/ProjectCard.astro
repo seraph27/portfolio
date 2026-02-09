@@ -30,60 +30,96 @@ const extractDomain = (url: string) => {
 <div
   class="hover:border-border hover:bg-bg-fuchsia-50 border p-4 transition-all duration-300 ease-in-out hover:shadow-sm"
 >
-  <Link
-    href={project.data.link}
-    class="flex flex-col gap-4 sm:flex-row"
-    external
-  >
-    {
-      project.data.image && (
-        <div class="w-full sm:max-w-3xs sm:shrink-0">
-          <Image
-            src={project.data.image}
-            alt={project.data.name}
-            width={1200}
-            height={630}
-            class="object-cover"
-          />
-        </div>
-      )
-    }
-    <div class="grow">
-      <h3 class="mb-1 text-lg font-medium">
-        {project.data.name}
-      </h3>
-      <p class="text-muted-foreground mb-2 text-sm">
-        {project.data.description}
-      </p>
-      {
-        project.data.startDate && (
-          <div class="text-muted-foreground/70 mb-2 flex flex-wrap items-center gap-x-2 text-xs">
-            <span class="flex items-center gap-x-1.5">
-              <Icon name="lucide:calendar" class="size-3" />
-              <span>
-                {formatMonthYear(project.data.startDate)}
-                {project.data.endDate
-                  ? ` → ${formatMonthYear(project.data.endDate)}`
-                  : ' → Present'}
+  {
+    project.data.link ? (
+      <Link
+        href={project.data.link}
+        class="flex flex-col gap-4 sm:flex-row"
+        external
+      >
+        {project.data.image && (
+          <div class="w-full sm:max-w-3xs sm:shrink-0">
+            <Image
+              src={project.data.image}
+              alt={project.data.name}
+              width={1200}
+              height={630}
+              class="object-cover"
+            />
+          </div>
+        )}
+        <div class="grow">
+          <h3 class="mb-1 text-lg font-medium">{project.data.name}</h3>
+          <p class="text-muted-foreground mb-2 text-sm">
+            {project.data.description}
+          </p>
+          {project.data.startDate && (
+            <div class="text-muted-foreground/70 mb-2 flex flex-wrap items-center gap-x-2 text-xs">
+              <span class="flex items-center gap-x-1.5">
+                <Icon name="lucide:calendar" class="size-3" />
+                <span>
+                  {formatMonthYear(project.data.startDate)}
+                  {project.data.endDate
+                    ? ` → ${formatMonthYear(project.data.endDate)}`
+                    : ' → Present'}
+                </span>
               </span>
-            </span>
-            <Separator orientation="vertical" className="h-4!" />
-            <span class="flex items-center gap-x-1">
-              <Icon name="lucide:external-link" class="size-3" />
-              <span>{extractDomain(project.data.link)}</span>
-            </span>
+              <Separator orientation="vertical" className="h-4!" />
+              <span class="flex items-center gap-x-1">
+                <Icon name="lucide:external-link" class="size-3" />
+                <span>{extractDomain(project.data.link)}</span>
+              </span>
+            </div>
+          )}
+          {project.data.tags && (
+            <div class="flex flex-wrap gap-2">
+              {project.data.tags.map((tag: string) => (
+                <Badge text={tag} />
+              ))}
+            </div>
+          )}
+        </div>
+      </Link>
+    ) : (
+      <div class="flex flex-col gap-4 sm:flex-row">
+        {project.data.image && (
+          <div class="w-full sm:max-w-3xs sm:shrink-0">
+            <Image
+              src={project.data.image}
+              alt={project.data.name}
+              width={1200}
+              height={630}
+              class="object-cover"
+            />
           </div>
-        )
-      }
-      {
-        project.data.tags && (
-          <div class="flex flex-wrap gap-2">
-            {project.data.tags.map((tag: string) => (
-              <Badge text={tag} />
-            ))}
-          </div>
-        )
-      }
-    </div>
-  </Link>
+        )}
+        <div class="grow">
+          <h3 class="mb-1 text-lg font-medium">{project.data.name}</h3>
+          <p class="text-muted-foreground mb-2 text-sm">
+            {project.data.description}
+          </p>
+          {project.data.startDate && (
+            <div class="text-muted-foreground/70 mb-2 flex flex-wrap items-center gap-x-2 text-xs">
+              <span class="flex items-center gap-x-1.5">
+                <Icon name="lucide:calendar" class="size-3" />
+                <span>
+                  {formatMonthYear(project.data.startDate)}
+                  {project.data.endDate
+                    ? ` → ${formatMonthYear(project.data.endDate)}`
+                    : ' → Present'}
+                </span>
+              </span>
+            </div>
+          )}
+          {project.data.tags && (
+            <div class="flex flex-wrap gap-2">
+              {project.data.tags.map((tag: string) => (
+                <Badge text={tag} />
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+    )
+  }
 </div>
