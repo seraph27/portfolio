@@ -1,5 +1,4 @@
 ---
-import { Badge as BadgeComponent } from '@/components/ui/badge'
 import { cn } from '@/lib/utils'
 import { Icon } from 'astro-icon/components'
 
@@ -180,21 +179,18 @@ const content = text || (typeof children === 'string' ? children : '')
 const categoryStyle = getCategoryStyle(content)
 ---
 
-<BadgeComponent
-  variant={categoryStyle ? 'muted' : variant}
-  className={cn(
-    categoryStyle && 'border-border',
-    categoryStyle && '!bg-[hsl(287,100%,95.5%)]',
-    categoryStyle && '!text-[hsl(352.7,60%,30%)]',
+<span
+  data-slot="badge"
+  class={cn(
+    'inline-flex items-center justify-center rounded-md border px-2 py-0.5 text-xs font-medium w-fit whitespace-nowrap shrink-0 gap-1 overflow-hidden',
+    !categoryStyle && variant === 'muted' && 'border-transparent bg-muted text-foreground',
+    !categoryStyle && variant === 'outline' && 'text-foreground border-border',
+    !categoryStyle && variant === 'default' && 'border-transparent bg-primary text-primary-foreground',
+    categoryStyle && 'border-border bg-[hsl(287,100%,95.5%)] text-[hsl(352.7,60%,30%)]',
     className,
   )}
-  client:load
 >
-  {
-    showIcon && categoryStyle && (
-      <Icon name={categoryStyle.icon} class="size-3" />
-    )
-  }
+  {showIcon && categoryStyle && <Icon name={categoryStyle.icon} class="size-3" />}
   {!showIcon && !categoryStyle && <Icon name="lucide:hash" class="size-3" />}
   <slot>{text}</slot>
-</BadgeComponent>
+</span>

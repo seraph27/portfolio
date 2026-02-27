@@ -10,7 +10,7 @@ difficulties:
   - rating: 3.8
     mode: taiko
 image: 1-catppuccin.webp
-audio: "audio.mp3"
+audio: "audio.opus"
 audioStartTime: 50
 audioVolume: 50
 ---

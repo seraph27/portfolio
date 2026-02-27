@@ -10,7 +10,7 @@ difficulties:
   - rating: 4.8
     mode: osu
 image: wallhaven-ly87kp.webp
-audio: "sidetracked_day.mp3"
+audio: "sidetracked_day.opus"
 audioStartTime: 0
 audioVolume: 35
 ---

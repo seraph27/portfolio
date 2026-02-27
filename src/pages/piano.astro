@@ -1,0 +1,170 @@
+---
+import Breadcrumbs from '@/components/Breadcrumbs.astro'
+import PageHead from '@/components/PageHead.astro'
+import Layout from '@/layouts/Layout.astro'
+import { Icon } from 'astro-icon/components'
+
+interface Piece {
+  title: string
+  composer: string
+  pct: number
+  link?: string
+}
+
+const pieces: Piece[] = [
+  {
+    title: 'Liebestraum No. 3 in A-flat major',
+    composer: 'Liszt',
+    pct: 70,
+    link: 'https://www.youtube.com/watch?v=u0z6BATFhFI',
+  },
+  {
+    title: 'Prelude in B major, Op. 28 No. 11',
+    composer: 'Chopin',
+    pct: 80,
+    link: 'https://www.youtube.com/watch?v=Ro1nrDPHFgs',
+  },
+  {
+    title: 'Orange (Your Lie in April ED)',
+    composer: '7!!',
+    pct: 65,
+    link: 'https://www.youtube.com/watch?v=2oiWKHEyBhM',
+  },
+  {
+    title: 'Elegy for Rem',
+    composer: 'Theishter',
+    pct: 50,
+    link: 'https://www.youtube.com/watch?v=9GIgREaFAbM',
+  },
+  {
+    title: 'Nocturne in E-flat major, Op. 9 No. 2',
+    composer: 'Chopin',
+    pct: 50,
+    link: 'https://www.youtube.com/watch?v=9E6b3swbnWg',
+  },
+  {
+    title: 'Ballade No. 1 in G minor, Op. 23',
+    composer: 'Chopin',
+    pct: 20,
+    link: 'https://www.youtube.com/watch?v=VmFmAvCXOhI',
+  },
+  {
+    title: 'Prelude in C-sharp minor, Op. 28 No. 10',
+    composer: 'Chopin',
+    pct: 15,
+    link: 'https://www.youtube.com/watch?v=Ro1nrDPHFgs',
+  },
+  {
+    title: 'Prelude in C major, Op. 28 No. 1',
+    composer: 'Chopin',
+    pct: 10,
+    link: 'https://www.youtube.com/watch?v=5OHLZ5IELZQ',
+  },
+  {
+    title: "Haruka's Love Letter",
+    composer: 'Himeringo',
+    pct: 10,
+    link: 'https://www.youtube.com/watch?v=cVJCIlxs5xY',
+  },
+  {
+    title: 'Fantasie Impromptu in C-sharp minor, Op. 66',
+    composer: 'Chopin',
+    pct: 1,
+    link: 'https://www.youtube.com/watch?v=GvroGMGGFpA',
+  },
+  {
+    title: 'Étude, Op. 76 No. 2',
+    composer: 'Sibelius',
+    pct: 70,
+    link: 'https://www.youtube.com/watch?v=v_mBNnQInDQ',
+  },
+  {
+    title: 'Impromptu in G-flat major, Op. 90 No. 3',
+    composer: 'Schubert',
+    pct: 60,
+    link: 'https://www.youtube.com/watch?v=pJG_gCFNboo',
+  },
+  {
+    title: 'Étude in G-flat major, Op. 25 No. 9 "Butterfly"',
+    composer: 'Chopin',
+    pct: 85,
+    link: 'https://www.youtube.com/watch?v=GoT3nFJoNWQ',
+  },
+  {
+    title: 'Waltz in A minor, B. 150',
+    composer: 'Chopin',
+    pct: 35,
+    link: 'https://www.youtube.com/watch?v=4bumW6aHYmg',
+  },
+  {
+    title: 'Grande Valse in A-flat major, Op. 42',
+    composer: 'Chopin',
+    pct: 20,
+    link: 'https://www.youtube.com/watch?v=d3YiKLPYLls',
+  },
+]
+
+const BAR_LEN = 20
+
+function bar(pct: number): string {
+  const filled = Math.round((pct / 100) * BAR_LEN)
+  const empty = BAR_LEN - filled
+  return '▓'.repeat(filled) + '░'.repeat(empty)
+}
+
+function barColor(pct: number): string {
+  if (pct >= 70) return 'hsl(140, 60%, 50%)'
+  if (pct >= 40) return 'hsl(200, 80%, 60%)'
+  return 'hsl(45, 100%, 60%)'
+}
+---
+
+<Layout>
+  <PageHead slot="head" title="Piano" description="Pieces I'm currently learning" />
+
+  <div class="mx-auto w-full max-w-3xl">
+    <Breadcrumbs items={[{ label: 'Piano', icon: 'lucide:piano' }]} />
+  </div>
+
+  <section class="mx-auto w-full max-w-3xl px-4 pb-12">
+    <div class="flex flex-col divide-y divide-border">
+      {[...pieces].sort((a, b) => b.pct - a.pct).map((piece) => (
+        <div class="flex items-center gap-4 py-3">
+
+          <Icon name="lucide:music" class="size-3.5 shrink-0 text-muted-foreground/50" />
+
+          <div class="min-w-0 flex-1">
+            <div class="flex items-baseline gap-2 min-w-0">
+              {piece.link ? (
+                <a
+                  href={piece.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="truncate text-sm font-medium hover:underline"
+                >
+                  {piece.title}
+                </a>
+              ) : (
+                <span class="truncate text-sm font-medium">{piece.title}</span>
+              )}
+              <span class="text-muted-foreground shrink-0 text-xs">{piece.composer}</span>
+            </div>
+          </div>
+
+          <div class="flex shrink-0 items-center gap-3">
+            <span
+              class="font-mono text-xs tracking-tighter"
+              style={`color: ${barColor(piece.pct)}`}
+            >
+              {bar(piece.pct)}
+            </span>
+            <span class="w-8 text-right font-mono text-xs text-muted-foreground">
+              {piece.pct}%
+            </span>
+          </div>
+
+        </div>
+      ))}
+    </div>
+  </section>
+</Layout>

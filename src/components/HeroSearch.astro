@@ -37,7 +37,7 @@ const filterData: Record<string, FilterItem[]> = {
   interests: [
     { name: "Competitive Programming", gold: true, tooltip: "AtCoder, Codeforces, ICPC" },
     { name: "osu!", tooltip: "<3 osu!", link: "https://osu.ppy.sh/users/13370667" },
-    { name: "Piano", tooltip: "chopin", gold: true },
+    { name: "Piano", tooltip: "chopin", gold: true, link: "/piano" },
     { name: "Calisthenics", tooltip: "in progress" },
     { name: "Running", gold: true, tooltip: "in progress" },
     { name: "Travel", tooltip: "japan" },
@@ -124,7 +124,12 @@ const filterData: Record<string, FilterItem[]> = {
         <div class="hero-search__filter-items">
           {filterData.interests.map((item) => (
             item.link ? (
-              <a href={item.link} target="_blank" rel="noopener noreferrer" class={`hero-search__filter-item ${item.gold ? 'hero-search__filter-item--featured-artists' : ''}`} data-tooltip={item.tooltip}>
+              <a
+                href={item.link}
+                {...(item.link.startsWith('/') ? {} : { target: '_blank', rel: 'noopener noreferrer' })}
+                class={`hero-search__filter-item ${item.gold ? 'hero-search__filter-item--featured-artists' : ''}`}
+                data-tooltip={item.tooltip}
+              >
                 {item.name}
                 {item.tooltip && <span class="hero-search__tooltip">{item.tooltip}</span>}
               </a>

@@ -299,7 +299,11 @@
       }
 
       this.currentTrack = src
-      this.audio.src = audioUrl
+
+      // Use opus if supported, fall back to mp3
+      const opusUrl = audioUrl.replace(/\.mp3$/i, '.opus')
+      const supportsOpus = this.audio.canPlayType('audio/ogg; codecs=opus') !== ''
+      this.audio.src = supportsOpus ? opusUrl : audioUrl
       
       // Set volume (convert from 0-100 to 0-1)
       const normalizedVolume = Math.max(0, Math.min(1, volume / 100))

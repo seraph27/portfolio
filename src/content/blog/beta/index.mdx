@@ -9,51 +9,105 @@ difficulties:
   - rating: 5.8
     mode: osu
 image: flexoki-light-orb.webp
-audio: "no11.mp3"
+audio: "no11.opus"
 audioStartTime: 0
 audioVolume: 100
 ---
 import { Image } from 'astro:assets';
 import Callout from '@/components/Callout.astro';
-import { Icon } from 'astro-icon/components';
+import withTarjan from './PXL_20251112_201305597.TS-000.webp';
+import signedSheet from './PXL_20251112_204642359.MP.webp';
+import badge from './PXL_20251115_173253097.webp';
+import swag from './PXL_20251115_180247037.webp';
 import ucRiverside from './uc_riverside.webp';
-import schedule from './schedule.webp';
 
-## ICPC 2025 SoCal Regionals
+Our team **Tapioca Express** placed **8th** at ICPC 2025 SoCal Regionals.
 
-post in progress
-Our team **Tapioca Express** placed **8th** at ICPC 2025 SoCal Regionals!
+## Before the Contest
 
-<div class="max-w-md mx-auto my-8">
-  <Image src={schedule} alt="Contest Schedule" class="rounded-lg shadow-md" />
+A few days before the contest, Robert Tarjan came to give a talk at UCSD.
+If you don't know who that is -- he invented Tarjan's SCC algorithm, link-cut trees, splay trees, and won the Turing Award in 1986.
+I asked him to sign my algorithms cheat sheet after.
+
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-4 my-8">
+  <figure class="flex flex-col gap-2">
+    <div class="overflow-hidden rounded-lg">
+      <Image src={withTarjan} alt="With Robert Tarjan" class="w-full object-cover" />
+    </div>
+    <figcaption class="text-muted-foreground text-xs text-center italic">Robert Tarjan after his talk at UCSD</figcaption>
+  </figure>
+  <figure class="flex flex-col gap-2">
+    <div class="overflow-hidden rounded-lg">
+      <Image src={signedSheet} alt="Signed algorithms cheat sheet" class="w-full object-cover" />
+    </div>
+    <figcaption class="text-muted-foreground text-xs text-center italic">"May all your algorithms be fast!" — Robert E. Tarjan</figcaption>
+  </figure>
 </div>
 
+the GOAT signed my ICPC sheet
+## Hydroplaning on the Highway
+
+We drove up from San Diego the morning of the contest. Ben ([benjaminJohnson2204](https://github.com/benjaminJohnson2204)) was driving his Kia keicar on the highway and it was raining. 
+When we're going up the highway with the 360 turn, it was sloping down. Idk if its the center of gravity being too high, the entire car hydroplaned and spun to the right and nearly sent all five of us into the siderail.
 
 
-<div class="[&_td]:align-middle">
-| Variant | Usage |
-| ------- | ----- |
-| <span class="flex items-center gap-2 border-blue-500 dark:bg-blue-950/10 text-blue-700 dark:text-blue-300 px-2 py-1 border-l-4"><Icon name="lucide:info" /> Note</span> | For general information or comments that don't fit other categories |
-| <span class="flex items-center gap-2 border-green-500 dark:bg-green-950/10 text-green-700 dark:text-green-300 px-2 py-1 border-l-4"><Icon name="lucide:lightbulb" /> Tip</span> | For helpful advice or shortcuts related to the topic at hand |
-| <span class="flex items-center gap-2 border-amber-500 dark:bg-amber-950/10 text-amber-700 dark:text-amber-300 px-2 py-1 border-l-4"><Icon name="lucide:alert-triangle" /> Warning</span> | For potential pitfalls or common misconceptions |
-| <span class="flex items-center gap-2 border-red-500 dark:bg-red-950/10 text-red-700 dark:text-red-300 px-2 py-1 border-l-4"><Icon name="lucide:shield-alert" /> Danger</span> | For things that could potentially be destructive or harmful |
-| <span class="flex items-center gap-2 border-purple-500 dark:bg-purple-950/10 text-purple-700 dark:text-purple-300 px-2 py-1 border-l-4"><Icon name="lucide:message-square-warning" /> Important</span> | For things that are important to the reader's understanding |
+<figure class="my-8 flex flex-col gap-2">
+  <div class="overflow-hidden rounded-lg">
+    <Image src={ucRiverside} alt="UC Riverside" class="w-full object-cover max-h-72" />
+  </div>
+  <figcaption class="text-muted-foreground text-xs text-center italic">Going to UC Riverside instead of Riverside City College 💀</figcaption>
+</figure>
+
+Also we went to the wrong venue. I sent our entire team to UC Riverside when its Riverside City College good thing its only 10 minutes from each other but it's still really funny cause we did this in 2024 as well.
+
+## The Contest
+
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-4 my-8">
+  <figure class="flex flex-col gap-2">
+    <div class="overflow-hidden rounded-lg">
+      <Image src={badge} alt="ICPC contestant badge" class="w-full object-cover" />
+    </div>
+    <figcaption class="text-muted-foreground text-xs text-center italic">UCSD Tapioca Express</figcaption>
+  </figure>
+  <figure class="flex flex-col gap-2">
+    <div class="overflow-hidden rounded-lg">
+      <Image src={swag} alt="Contest swag" class="w-full object-cover" />
+    </div>
+    <figcaption class="text-muted-foreground text-xs text-center italic">Jane Street hoodie + JetBrains notebook. The important stuff.</figcaption>
+  </figure>
 </div>
 
-### dogshit schedule
-why are we waking up at 5am 
+We took caffeine pills 1 hour before & during the contest. IDK why but every year we have to wake up at 5am but the contests starts at like 2pm and honestly the wait just destroys your brain. 
+This year there was no good food either or breakfast ;-;
 
 
-### Hydroplaning on the highway
-ben almost crashed his kia onto the siderail
-*image*
+The strategy going in was simple: give Ben all the easy problems, give Hugo math problems, and I'll do everything else.
 
-<div class="h-96 w-full overflow-hidden border bg-muted my-4">
-  <Image src={ucRiverside} alt="UC Riverside" class="h-full w-full object-cover" />
-</div>
+**A** and **I** were solved within the first 12 minutes. Then somehow we took a long time identifying what the easier problems were. We worked on multiple problems at the same time — I went for **D** and it took around 5 minutes to implement, which was correct. Then Ben did **G** which was easier than expected.
 
-*Going to UC Riverside instead of Riverside City College :skull:*
+I was working on **H** as well but it was WA. Ben fixed it around the 100min mark. Ben also spent a lot of time on **C** — implementation hell — which in hindsight was probably a bad idea since we WAed 4 times and just wasted precious time on stupid implementation. But C was also solved after H.
 
-*Taking caffeine pills during contest*
+**F** looks very disgusting but we noticed it was just some casework. Ben solved that one (actually carrying). Shortly after, Hugo solved **J** which is pretty disgusting implementation — I had some ideas for it but he went for it. Then we did **L** which we probably should've done earlier, and Hugo did the Rubiks Cube problem which is all implementation.
+
+The rest of the contest was just us thinking through the harder problems left, and Ben trying to solve **K**.
+
+We ended up placing **8th out of all SoCal teams**.
+
+<video
+  src="/blog/beta/contest_celebration.mp4"
+  controls
+  playsinline
+  class="w-full rounded-lg my-6"
+/>
+
+<Callout variant="note" title="Problems">
+  Contest problem set [here](/blog/beta/contest-Post-SCICPC-2025-2026.pdf).
+</Callout>
 
 ## Reflection
+
+Honestly, 8th is decent but it's not where I want to be. The problems we couldn't solve weren't unsolvable. Ben was extremely close to solving K at the end. E and M I think E was definitely solvable but the problem statement is actually so confusing.
+The gap between where I am and where the top teams are is real and it's a skill issue. 
+It's kinda sad I'm not strong enough to go NAC / WF, I think if I actually started in freshman it's like very doable. But I'm also somewhat relieved that I gave it a good try before graduation. 
+I don't plan to stop after graduating / getting work, as kotatsugame once said "There is no reason to stop". The plan is just to keep grinding atcoder and other shit, and actually get to a good level. 
+

@@ -15,7 +15,7 @@ function findAudioFiles(dir) {
     const fullPath = path.join(dir, item.name)
     if (item.isDirectory()) {
       files.push(...findAudioFiles(fullPath))
-    } else if (item.isFile() && /\.(mp3|wav|ogg|m4a)$/i.test(item.name)) {
+    } else if (item.isFile() && /\.(mp3|opus|wav|ogg|m4a|mp4|webm)$/i.test(item.name)) {
       files.push(fullPath)
     }
   }

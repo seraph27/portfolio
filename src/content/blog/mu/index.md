@@ -24,7 +24,7 @@ difficulties:
   - rating: 7.7
     mode: catch
 image: 3-cat-blue-eye-mocha.webp
-audio: "Stories.mp3"
+audio: "Stories.opus"
 audioStartTime: 0
 audioVolume: 30
 ---

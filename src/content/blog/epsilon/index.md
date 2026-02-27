@@ -12,7 +12,7 @@ difficulties:
   - rating: 4.1
     mode: osu
 image: wallhaven-zp85do.webp
-audio: "audio.mp3"
+audio: "audio.opus"
 audioStartTime: 0
 audioVolume: 30
 ---

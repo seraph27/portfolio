@@ -17,7 +17,8 @@
     box-shadow: var(--shadow-panel);
     border-radius: var(--panel-radius);
     font-family: var(--font-osu);
-    transition: all var(--transition-base);
+    transition: box-shadow var(--transition-base);
+    contain: layout style paint;
   }
 
   .beatmapset-panel:hover {
@@ -42,8 +43,8 @@
     @apply h-full w-full;
     object-fit: cover;
     opacity: 0.3;
-    filter: blur(2px);
     transform: scale(1.15);
+    will-change: auto;
   }
 
   .beatmapset-panel__bg-fallback {
