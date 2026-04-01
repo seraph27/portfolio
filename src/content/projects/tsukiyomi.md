@@ -1,8 +1,9 @@
 ---
-name: "Tsukiyomi – AI Japanese Light-Novel Recommender"
-description: "RAG-powered recommendation engine for Japanese light novels using semantic search and embeddings."
-tags: ["Python", "PyTorch", "Hugging Face", "Milvus", "Machine Learning", "RAG"]
-image: "../../../public/sky.jpg"
+name: "Tsukiyomi"
+description: "macOS menu bar productivity app. Time blocks, todo, CP problem backlog, macro/calorie tracker, Pomodoro, and daily notes — all in one panel."
+tags: ["Swift", "SwiftUI", "SwiftData", "macOS"]
+image: "../../../public/static/work/tsukiyomi.png"
+link: "https://github.com/seraph27/tsukiyomi"
 startDate: 2025-10-01
 ---
 

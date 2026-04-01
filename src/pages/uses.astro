@@ -1,0 +1,179 @@
+---
+import Breadcrumbs from '@/components/Breadcrumbs.astro'
+import PageHead from '@/components/PageHead.astro'
+import Layout from '@/layouts/Layout.astro'
+import { Icon } from 'astro-icon/components'
+
+interface Item {
+  name: string
+  desc: string
+  link?: string
+  primary?: boolean
+  status?: 'stopped'
+  icon: string
+  logo?: string
+}
+
+interface Section {
+  heading: string
+  items: Item[]
+}
+
+const work: Section[] = [
+  {
+    heading: 'Languages',
+    items: [
+      { name: 'C++', desc: 'Systems, competitive programming', link: 'https://isocpp.org/', primary: true, icon: 'simple-icons:cplusplus' },
+      { name: 'LaTeX', desc: 'Typesetting for papers and notes', link: 'https://www.latex-project.org/', icon: 'simple-icons:latex' },
+      { name: 'TypeScript', desc: 'Full stack everywhere', link: 'https://www.typescriptlang.org/', primary: true, icon: 'simple-icons:typescript' },
+      { name: 'Python', desc: 'ML, data pipelines, scripting', link: 'https://www.python.org/', primary: true, icon: 'simple-icons:python' },
+      { name: 'Bash', desc: 'Scripting and automation', link: 'https://www.gnu.org/software/bash/', primary: true, icon: 'simple-icons:gnubash' },
+      { name: 'Rust', desc: 'Project Euler, learning', link: 'https://www.rust-lang.org/', icon: 'simple-icons:rust' },
+      { name: 'OpenGL', desc: 'Graphics programming', link: 'https://www.opengl.org/', icon: 'simple-icons:opengl' },
+      { name: 'Swift / SwiftUI', desc: 'macOS native app development', link: 'https://swift.org/', icon: 'simple-icons:swift' },
+      { name: 'Lua', desc: 'Neovim config', link: 'https://www.lua.org/', icon: 'simple-icons:lua' },
+    ],
+  },
+  {
+    heading: 'Frameworks',
+    items: [
+      { name: 'Next.js', desc: 'Full stack at LunaBill', link: 'https://nextjs.org/', primary: true, icon: 'simple-icons:nextdotjs' },
+      { name: 'React', desc: 'UI components', link: 'https://react.dev/', primary: true, icon: 'simple-icons:react' },
+      { name: 'Astro', desc: 'This portfolio', link: 'https://astro.build/', primary: true, icon: 'simple-icons:astro' },
+      { name: 'Svelte 5', desc: 'Frontend, Runes mode', link: 'https://svelte.dev/', primary: true, icon: 'simple-icons:svelte' },
+      { name: 'PyTorch', desc: 'Deep learning and model work', link: 'https://pytorch.org/', icon: 'simple-icons:pytorch' },
+      { name: 'Drizzle ORM', desc: 'Type safe SQL', link: 'https://orm.drizzle.team/', primary: true, icon: 'simple-icons:drizzle' },
+      { name: 'Tailwind CSS', desc: 'Utility first CSS framework', link: 'https://tailwindcss.com/', primary: true, icon: 'simple-icons:tailwindcss' },
+      { name: 'shadcn/ui', desc: 'Component library', link: 'https://ui.shadcn.com/', primary: true, icon: 'simple-icons:shadcnui' },
+      { name: 'Unity', desc: 'Game engine', link: 'https://unity.com/', status: 'stopped', icon: 'simple-icons:unity' },
+    ],
+  },
+  {
+    heading: 'Infrastructure',
+    items: [
+      { name: 'GitHub', desc: 'Version control and code hosting', link: 'https://github.com/', primary: true, icon: 'simple-icons:github' },
+      { name: 'Neon', desc: 'Serverless Postgres', link: 'https://neon.tech/', primary: true, icon: 'simple-icons:postgresql' },
+      { name: 'Overleaf', desc: 'LaTeX editor for papers and docs', link: 'https://overleaf.com/', icon: 'simple-icons:overleaf' },
+      { name: 'Vercel', desc: 'Deployment', link: 'https://vercel.com/', primary: true, icon: 'simple-icons:vercel' },
+      { name: 'Telnyx', desc: 'Telephony and SMS', link: 'https://telnyx.com/', primary: true, icon: 'lucide:phone-call' },
+      { name: 'Clerk', desc: 'Auth and user management', link: 'https://clerk.com/', icon: 'lucide:lock' },
+      { name: 'Turborepo', desc: 'Monorepo build system', link: 'https://turbo.build/', icon: 'simple-icons:turborepo' },
+    ],
+  },
+  {
+    heading: 'AI / ML',
+    items: [
+      { name: 'Fireworks AI', desc: 'Model inference and fine tuning', link: 'https://fireworks.ai/', icon: 'lucide:flame' },
+      { name: 'Hugging Face', desc: 'Model hub and fine tuning', link: 'https://huggingface.co/', icon: 'simple-icons:huggingface' },
+      { name: 'Vogent', desc: 'Voice AI for outbound calls', link: 'https://vogent.ai/', primary: true, icon: 'lucide:phone' },
+      { name: 'Respan (KeywordsAI)', desc: 'LLM observability and classification', link: 'https://respan.ai/', primary: true, icon: 'lucide:brain' },
+      { name: 'Pinecone', desc: 'Vector DB', link: 'https://www.pinecone.io/', icon: 'lucide:database' },
+      { name: 'Parsebot', desc: 'RPA for payer portal navigation and document retrieval (by Parse, YC)', link: 'https://parsebot.io/', primary: true, icon: 'lucide:globe' },
+      { name: 'Stedi', desc: 'Payer resolution', link: 'https://stedi.com/', primary: true, icon: 'lucide:building-2' },
+      { name: 'Availity', desc: 'Healthcare eligibility and claims portal', link: 'https://availity.com/', primary: true, icon: 'lucide:shield-check' },
+    ],
+  },
+  {
+    heading: 'Dev Tools',
+    items: [
+      { name: 'Neovim', desc: 'LazyVim base with custom LSP and CP snippets', link: 'https://neovim.io/', primary: true, icon: 'simple-icons:neovim' },
+      { name: 'tmux', desc: 'Session and pane management', link: 'https://github.com/tmux/tmux', primary: true, icon: 'lucide:square-terminal' },
+      { name: 'Claude Code', desc: 'AI CLI for pair programming', link: 'https://claude.ai/code', primary: true, icon: 'simple-icons:claude' },
+      { name: 'Gemini', desc: 'Daily AI assistant', link: 'https://gemini.google.com/', primary: true, icon: 'simple-icons:googlegemini' },
+      { name: 'Greptile', desc: 'AI codebase search and Q&A', link: 'https://greptile.com/', primary: true, icon: 'lucide:search-code', logo: '/static/logos/greptile.svg' },
+      { name: 'Postman', desc: 'API testing and debugging', link: 'https://www.postman.com/', icon: 'simple-icons:postman' },
+      { name: 'Cursor', desc: 'AI editor', link: 'https://cursor.sh/', status: 'stopped', icon: 'simple-icons:cursor' },
+      { name: 'Codex', desc: 'OpenAI code agent', link: 'https://openai.com/codex', status: 'stopped', icon: 'lucide:code-2' },
+    ],
+  },
+]
+
+const personal: Section[] = [
+  {
+    heading: 'OS / Environment',
+    items: [
+      { name: 'Linux', desc: 'Daily driver OS', link: 'https://kernel.org/', primary: true, icon: 'simple-icons:linux' },
+      { name: 'Omarchy', desc: 'Opinionated Arch Linux distro', link: 'https://omarchy.org/', primary: true, icon: 'simple-icons:archlinux' },
+      { name: 'Hyprland', desc: 'Wayland compositor and tiling WM', link: 'https://hyprland.org/', primary: true, icon: 'lucide:layout-grid' },
+      { name: 'Zsh', desc: 'Shell with custom aliases and completions', link: 'https://www.zsh.org/', primary: true, icon: 'lucide:terminal' },
+      { name: 'tmux', desc: 'Terminal multiplexer', link: 'https://github.com/tmux/tmux', primary: true, icon: 'lucide:square-terminal' },
+    ],
+  },
+  {
+    heading: 'Productivity',
+    items: [
+      { name: 'Tsukiyomi', desc: 'My macOS menu bar app for scheduling, todo, tracking and CP backlog', link: 'https://github.com/seraph27/tsukiyomi', primary: true, icon: 'lucide:layout-dashboard' },
+      { name: 'Obsidian', desc: 'Note taking and second brain', link: 'https://obsidian.md/', primary: true, icon: 'simple-icons:obsidian' },
+      { name: 'Zen Browser', desc: 'Daily browser, Arc-style tabs', link: 'https://zen-browser.app/', primary: true, icon: 'lucide:globe' },
+      { name: 'ani-cli', desc: 'Watch anime from the terminal', link: 'https://github.com/pystardust/ani-cli', primary: true, icon: 'lucide:tv-2' },
+      { name: 'Riptide', desc: 'Task management', status: 'stopped', icon: 'lucide:waves' },
+      { name: 'Notion', desc: 'Docs and project planning', link: 'https://notion.so/', status: 'stopped', icon: 'simple-icons:notion' },
+    ],
+  },
+  {
+    heading: 'Hardware',
+    items: [
+      { name: 'MacBook M4 Air 512GB', desc: 'Main machine', link: 'https://www.apple.com/macbook-air/', primary: true, icon: 'simple-icons:apple' },
+      { name: 'Wacom CTL-485', desc: 'Tablet for osu and drawing', link: 'https://www.wacom.com/', primary: true, icon: 'lucide:pen-line' },
+      { name: 'SteelSeries Rival 3 WL Gen 2', desc: 'Lavender colorway, wireless mouse', link: 'https://steelseries.com/', icon: 'simple-icons:steelseries' },
+      { name: 'Sony WH-1000XM4', desc: 'Daily headphones', link: 'https://www.sony.com/', primary: true, icon: 'simple-icons:sony' },
+      { name: 'Custom Mini ITX', desc: 'Meshlicious case, Ryzen 3600X, RTX 2060 Super', primary: true, icon: 'lucide:cpu' },
+      { name: 'Tofu 60 Redux + Wooting PCB', desc: 'Purple colorway, Raptors HE switches, hall effect analog', link: 'https://wooting.io/wooting-60he', primary: true, icon: 'lucide:keyboard' },
+    ],
+  },
+]
+---
+
+<style>
+  .gold { color: hsl(38, 100%, 48%); }
+  .gold-icon { color: hsl(38, 100%, 48%); }
+  .logo-img {
+    height: 1rem;
+    width: auto;
+    max-width: 5rem;
+    margin-top: 0.125rem;
+    flex-shrink: 0;
+    filter: brightness(0);
+    object-fit: contain;
+  }
+  [data-theme='dark'] .logo-img {
+    filter: brightness(0) invert(1);
+  }
+</style>
+
+<Layout>
+  <PageHead slot="head" title="Stack" description="Tools, stack, and setup" />
+
+  <div class="mx-auto w-full max-w-5xl">
+    <Breadcrumbs items={[{ label: 'Stack', icon: 'lucide:wrench' }]} />
+  </div>
+
+  <section class="mx-auto w-full max-w-5xl px-4 pb-12">
+    <div class="columns-1 md:columns-2 gap-8">
+      {[...work, ...personal].map((section) => (
+        <div class="break-inside-avoid mb-8">
+          <p class="text-muted-foreground mb-3 text-xs font-semibold uppercase tracking-widest">{section.heading}</p>
+          <div class="flex flex-col">
+            {section.items.map((item) => (
+              <div class={`flex items-center gap-3 border-t border-border py-2 ${item.status === 'stopped' ? 'opacity-35' : ''}`}>
+                <Icon name={item.icon} class={`size-4 shrink-0 ${item.primary ? 'gold-icon' : 'text-muted-foreground'}`} />
+                <div class="flex flex-col sm:flex-row sm:items-baseline sm:gap-3 min-w-0 flex-1">
+                  <span class={`text-sm font-medium shrink-0 ${item.primary ? 'gold' : ''}`}>
+                    {item.link
+                      ? <a href={item.link} target="_blank" rel="noopener noreferrer" class="hover:underline underline-offset-2">{item.name}</a>
+                      : item.name
+                    }
+                    {item.status === 'stopped' && (
+                      <span class="ml-1.5 text-[10px] font-normal text-muted-foreground">[stopped]</span>
+                    )}
+                  </span>
+                  <span class="text-muted-foreground text-xs">{item.desc}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  </section>
+</Layout>

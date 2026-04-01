@@ -1,128 +1,145 @@
 ---
-import Link from '@/components/Link.astro'
 import PageHead from '@/components/PageHead.astro'
-import { ScrollArea } from '@/components/ui/scroll-area'
 import Layout from '@/layouts/Layout.astro'
+import { Icon } from 'astro-icon/components'
 ---
 
 <style>
-  .gradient-text {
-    background: linear-gradient(90deg, #8b5cf6 0%, #dc2626 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    transition: background 0.3s ease;
+  .about-heading-bar {
+    height: 3px;
+    width: 2.5rem;
+    background: linear-gradient(90deg, #8b5cf6, #dc2626);
+    border-radius: 9999px;
+    margin-top: 0.5rem;
+    margin-bottom: 1.5rem;
   }
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.05rem 0.45rem;
+    border-radius: 4px;
+    font-size: 0.82em;
+    font-weight: 500;
+    white-space: nowrap;
+    vertical-align: baseline;
+    line-height: 1.6;
+    transition: filter 0.15s ease, opacity 0.15s ease;
+  }
+  a:hover .tag, .tag:hover {
+    filter: brightness(0.82);
+  }
+  .tag-logo {
+    width: auto;
+    height: 0.85em;
+    display: inline-block;
+    vertical-align: middle;
+    object-fit: contain;
+  }
+  .tag-purple { background: rgba(139,92,246,0.15); color: #a78bfa; }
+  .tag-blue   { background: rgba(59,130,246,0.15);  color: #7dd3fc; }
+  .tag-red    { background: rgba(220,38,38,0.15);   color: #fca5a5; }
+  .tag-green  { background: rgba(34,197,94,0.15);   color: #86efac; }
+  .tag-orange { background: rgba(249,115,22,0.15);  color: #fdba74; }
+  .tag-gold   { background: rgba(234,179,8,0.15);   color: hsl(38,100%,48%); }
 
-  a:hover .gradient-text {
-    background: linear-gradient(90deg, #7c3aed 0%, #b91c1c 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-
-  .no-underline-prose :where(a):not(:where(.not-prose, .not-prose *)) {
-    text-decoration: none;
-  }
+  [data-theme='light'] .tag-purple { background: rgba(139,92,246,0.25); color: #2e1065; }
+  [data-theme='light'] .tag-blue   { background: rgba(59,130,246,0.20); color: #1e40af; }
+  [data-theme='light'] .tag-red    { background: rgba(220,38,38,0.25);  color: #450a0a; }
+  [data-theme='light'] .tag-green  { background: rgba(34,197,94,0.22);  color: #166534; }
+  [data-theme='light'] .tag-orange { background: rgba(249,115,22,0.25); color: #431407; }
+  [data-theme='light'] .tag-gold   { background: rgba(234,179,8,0.25);  color: #422006; }
 </style>
 
 <Layout>
   <PageHead slot="head" title="About" />
-  <section class="mx-auto flex max-w-3xl flex-col gap-4 px-4 py-6">
-    <div class="flex flex-col gap-4">
-      <div class="flex flex-col gap-y-4">
-        <div
-          class="prose dark:prose-invert text-dark-wine no-underline-prose max-w-none"
-        >
-          <p>
-            Hi~ I go by the alias <span class="gradient-text">seraph</span> online. I'm currently a Founding Engineer at <Link
-              href="https://lunabill.com/"
-              external><span class="gradient-text">LunaBill</span></Link
-            >
-            (Y Combinator F25), working on automating medical-insurance follow up calls with voice agents at scale. Previously, I was an MLE Intern at <Link
-              href="https://www.foxconn.com"
-              external><span class="gradient-text">Foxconn</span></Link
-            >, where I worked on latency optimization for multilingual voice
-            agents.
-          </p>
 
-          <p>
-            I'm a final-year <span class="gradient-text">math-cs student</span> at
-            UC San Diego (UCSD). My interests lie in algorithm design and optimization, low-level AI systems (CUDA, Triton, PyTorch internals), and recommender systems. 
-            I have been daily driving <Link href="https://omarchy.org/" external><span class="gradient-text">Omarchy</span></Link>, 
-            an opinionated Arch Linux distro, and my preferred IDE is <span class="gradient-text">neovim + tmux</span>.
-          </p>
+  <section class="mx-auto flex max-w-4xl flex-col gap-10 px-4 py-6 md:flex-row md:gap-12">
 
-          <p>
-            Outside of academics, I'm a <span class="gradient-text">competitive programming</span>
-            enjoyer; in particular puzzles that force you to come up with elegant
-            solutions (i.e. atcoder style problems). I also run a small
-            (but active!) problem-solving <Link
-              href="https://discord.gg/9kSBNvXVwC"
-              external
-              class="text-foreground"
-              ><span class="gradient-text">server</span></Link
-            > with 100+ members.
-          </p>
+    <!-- Left sidebar -->
+    <aside class="flex flex-col items-center gap-4 md:w-52 md:shrink-0 md:items-start">
+      <img
+        src="/static/avatar.jpg"
+        alt="seraph"
+        class="w-40 rounded-xl object-cover md:w-full aspect-square"
+      />
 
-          <p>
-            In my free time, I play rhythm games (my home page is strongly inspired by <Link
-            href="https://osu.ppy.sh/users/13370667"
-            external
-            class="text-foreground"
-            ><span class="gradient-text">osu!</span></Link
-          >), piano, and listen to all sorts of music such as jpop, kpop, rock, metal and classical.
-           I also like exploring good cafes and hidden gems.
-          </p>
+      <div class="flex flex-col items-center gap-0.5 md:items-start">
+        <span class="text-lg font-semibold tracking-tight">seraph</span>
+        <span class="text-muted-foreground text-xs">Founding Engineer @ LunaBill (YC25)</span>
+      </div>
 
-          <div class="mt-8">
-            <h3 class="text-foreground mb-3 text-sm font-semibold">News</h3>
-            <ScrollArea
-              className="h-auto w-full rounded-md border"
-              client:idle
-            >
-              <div class="space-y-2 p-4 text-sm text-dark-wine">
-                <div class="grid grid-cols-[110px_1fr] gap-x-2">
-                  <span class="text-dark-wine">[2025/12]</span>
-                  <span>Graduated from UCSD 🎓</span>
-                </div>
-                <div class="grid grid-cols-[110px_1fr] gap-x-2">
-                  <span class="text-dark-wine">[2025/11]</span>
-                  <span>ICPC SoCal Regionals 2025 (Tapioca Express ranked 8th!!)</span>
-                </div>
-                <div class="grid grid-cols-[110px_1fr] gap-x-2">
-                  <span class="text-dark-wine">[2025/09]</span>
-                  <span
-                    >Joined <Link
-                      href="https://lunabill.com/"
-                      external
-                      underline>Lunabill</Link
-                    > as a founding software engineer</span
-                  >
-                </div>
-                <div class="grid grid-cols-[110px_1fr] gap-x-2">
-                  <span class="text-dark-wine">[2025/06]</span>
-                  <span
-                    >Joined <Link
-                      href="https://www.foxconn.com"
-                      external
-                      underline>Foxconn</Link
-                    > as a MLE</span
-                  >
-                </div>
-                <div class="grid grid-cols-[110px_1fr] gap-x-2">
-                  <span class="text-dark-wine">[2024/11]</span>
-                  <span>ICPC SoCal Regionals 2024 (Crystal Castles ranked 17th!!)</span>
-                </div>
-                <div class="grid grid-cols-[110px_1fr] gap-x-2">
-                  <span class="text-dark-wine">[2021/09]</span>
-                  <span>Attended UCSD</span>
-                </div>
-              </div>
-            </ScrollArea>
+      <div class="flex items-center gap-3 text-muted-foreground">
+        <a href="https://github.com/Seraph27" target="_blank" rel="noopener noreferrer" class="hover:text-foreground transition-colors" title="GitHub">
+          <Icon name="simple-icons:github" class="size-4" />
+        </a>
+        <a href="mailto:rexchao.careers@gmail.com" class="hover:text-foreground transition-colors" title="Email">
+          <Icon name="lucide:mail" class="size-4" />
+        </a>
+      </div>
+
+      <div class="flex items-center gap-1.5 text-muted-foreground text-xs">
+        <Icon name="lucide:map-pin" class="size-3" />
+        <span>Berkeley, CA</span>
+      </div>
+    </aside>
+
+    <!-- Right content -->
+    <div class="flex-1 min-w-0">
+      <h1 class="text-xl font-semibold">About Me</h1>
+      <div class="about-heading-bar"></div>
+
+      <div class="prose dark:prose-invert max-w-none text-sm leading-relaxed space-y-4">
+        <p>
+          I'm currently a Founding Engineer at <a href="https://lunabill.com/" target="_blank" rel="noopener noreferrer"><span class="tag tag-purple">LunaBill</span></a> (<a href="https://www.ycombinator.com/" target="_blank" rel="noopener noreferrer"><span class="tag tag-orange"><Icon name="simple-icons:ycombinator" class="size-3 inline-block" /> Y Combinator F25</span></a>), building the full AR revenue cycle engine: claim ingestion, eligibility checks, portal automation, outbound voice agents and appeals, with smart call routing and fine tuned classifiers. Previously, I was an MLE Intern at <a href="https://www.foxconn.com" target="_blank" rel="noopener noreferrer"><span class="tag tag-red">Foxconn</span></a>, where I worked on latency optimization for multilingual voice agents.
+        </p>
+
+        <p>
+          I'm a <span class="tag tag-blue">UCSD math-cs</span> alumni. Outside of work I've been going deep on low-level systems and computer architecture. I enjoy mathematics and have been pushing toward 2000 on <a href="https://codeforces.com/" target="_blank" rel="noopener noreferrer"><span class="tag tag-blue"><Icon name="simple-icons:codeforces" class="size-3 inline-block" /> Codeforces</span></a>, with a side interest in the quantitative and algorithmic side of things. I have been daily driving <a href="https://omarchy.org/" target="_blank" rel="noopener noreferrer"><span class="tag tag-green"><Icon name="simple-icons:archlinux" class="size-3 inline-block" /> Omarchy</span></a>, an opinionated Arch Linux distro, and my preferred IDE is <span class="tag tag-green"><Icon name="simple-icons:neovim" class="size-3 inline-block" /> neovim + tmux</span>.
+        </p>
+
+        <p>
+          Outside of work, I'm a <span class="tag tag-gold">competitive programming</span> enjoyer; in particular puzzles that force you to come up with elegant solutions (i.e. atcoder style problems). I also run a small (but active!) problem-solving <a href="https://discord.gg/9kSBNvXVwC" target="_blank" rel="noopener noreferrer"><span class="tag tag-purple"><Icon name="simple-icons:discord" class="size-3 inline-block" /> Discord server</span></a> with 200+ members.
+        </p>
+
+        <p>
+          In my free time, I play rhythm games like <a href="https://osu.ppy.sh/users/13370667" target="_blank" rel="noopener noreferrer"><span class="tag tag-red"><Icon name="simple-icons:osu" class="size-3 inline-block" /> osu!</span></a>, piano, and listen to all sorts of music such as jpop, kpop, rock, metal and classical. I also like exploring good cafes and hidden gems.
+        </p>
+      </div>
+
+      <!-- News -->
+      <div class="mt-8">
+        <h3 class="text-sm font-semibold mb-3 flex items-center gap-1.5">
+          <span>📌</span> News
+        </h3>
+        <div class="flex flex-col gap-1.5 text-sm">
+          <div class="grid grid-cols-[90px_1fr] gap-x-3 items-baseline">
+            <span class="text-muted-foreground text-xs font-mono">[2025/12]</span>
+            <span class="text-muted-foreground text-xs">Graduated from UCSD 🎓</span>
+          </div>
+          <div class="grid grid-cols-[90px_1fr] gap-x-3 items-baseline">
+            <span class="text-muted-foreground text-xs font-mono">[2025/11]</span>
+            <span class="text-muted-foreground text-xs">ICPC SoCal Regionals 2025 (Tapioca Express ranked 8th!!)</span>
+          </div>
+          <div class="grid grid-cols-[90px_1fr] gap-x-3 items-baseline">
+            <span class="text-muted-foreground text-xs font-mono">[2025/09]</span>
+            <span class="text-muted-foreground text-xs">Joined <a href="https://lunabill.com/" target="_blank" rel="noopener noreferrer" class="tag tag-purple">Lunabill</a> as a founding software engineer</span>
+          </div>
+          <div class="grid grid-cols-[90px_1fr] gap-x-3 items-baseline">
+            <span class="text-muted-foreground text-xs font-mono">[2025/06]</span>
+            <span class="text-muted-foreground text-xs">Joined <a href="https://www.foxconn.com" target="_blank" rel="noopener noreferrer" class="tag tag-red">Foxconn</a> as a MLE</span>
+          </div>
+          <div class="grid grid-cols-[90px_1fr] gap-x-3 items-baseline">
+            <span class="text-muted-foreground text-xs font-mono">[2024/11]</span>
+            <span class="text-muted-foreground text-xs">ICPC SoCal Regionals 2024 (Crystal Castles ranked 17th!!)</span>
+          </div>
+          <div class="grid grid-cols-[90px_1fr] gap-x-3 items-baseline">
+            <span class="text-muted-foreground text-xs font-mono">[2021/09]</span>
+            <span class="text-muted-foreground text-xs">Attended UCSD</span>
           </div>
         </div>
       </div>
+
     </div>
   </section>
 </Layout>

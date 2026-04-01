@@ -25,6 +25,8 @@ const extractDomain = (url: string) => {
     return url
   }
 }
+
+const imgSrc = project.data.image ? (project.data.image as any).src : null
 ---
 
 <div
@@ -38,15 +40,19 @@ const extractDomain = (url: string) => {
         external
       >
         {project.data.image && (
-          <div class="w-full sm:max-w-3xs sm:shrink-0">
+          <button
+            class="project-img-btn w-full sm:max-w-3xs sm:shrink-0 cursor-zoom-in overflow-hidden rounded-sm aspect-[1200/630] block"
+            data-img-src={imgSrc}
+            data-img-alt={project.data.name}
+          >
             <Image
               src={project.data.image}
               alt={project.data.name}
               width={1200}
-              height={630}
-              class="object-cover"
+              height={1200}
+              class="w-full h-full object-cover object-center"
             />
-          </div>
+          </button>
         )}
         <div class="grow">
           <h3 class="mb-1 text-lg font-medium">{project.data.name}</h3>
@@ -83,15 +89,19 @@ const extractDomain = (url: string) => {
     ) : (
       <div class="flex flex-col gap-4 sm:flex-row">
         {project.data.image && (
-          <div class="w-full sm:max-w-3xs sm:shrink-0">
+          <button
+            class="project-img-btn w-full sm:max-w-3xs sm:shrink-0 cursor-zoom-in overflow-hidden rounded-sm aspect-[1200/630] block"
+            data-img-src={imgSrc}
+            data-img-alt={project.data.name}
+          >
             <Image
               src={project.data.image}
               alt={project.data.name}
               width={1200}
-              height={630}
-              class="object-cover"
+              height={1200}
+              class="w-full h-full object-cover object-center"
             />
-          </div>
+          </button>
         )}
         <div class="grow">
           <h3 class="mb-1 text-lg font-medium">{project.data.name}</h3>
@@ -123,3 +133,28 @@ const extractDomain = (url: string) => {
     )
   }
 </div>
+
+<script>
+  if (!document.getElementById('img-click-preview')) {
+    const overlay = document.createElement('div')
+    overlay.id = 'img-click-preview'
+    overlay.className = 'fixed inset-0 z-50 flex items-center justify-center'
+    overlay.style.display = 'none'
+    overlay.style.background = 'rgba(0,0,0,0.6)'
+    overlay.innerHTML = '<img style="max-height:85vh;max-width:85vw;object-fit:contain;border-radius:8px;box-shadow:0 25px 60px rgba(0,0,0,0.5)" />'
+    overlay.addEventListener('click', () => { overlay.style.display = 'none' })
+    document.body.appendChild(overlay)
+  }
+
+  document.querySelectorAll('.project-img-btn').forEach((btn) => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault()
+      e.stopPropagation()
+      const overlay = document.getElementById('img-click-preview')!
+      const overlayImg = overlay.querySelector('img')!
+      const srcImg = (btn as HTMLElement).querySelector('img')
+      overlayImg.src = srcImg?.src || (btn as HTMLElement).dataset.imgSrc || ''
+      overlay.style.display = 'flex'
+    })
+  })
+</script>
