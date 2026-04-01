@@ -1,34 +1,145 @@
 ---
-import AudioPlayer from '@/components/AudioPlayer.astro'
-import BlogGridCard from '@/components/BlogGridCard.astro'
-import HeroSearch from '@/components/HeroSearch.astro'
 import PageHead from '@/components/PageHead.astro'
 import Layout from '@/layouts/Layout.astro'
-import { getAllPosts } from '@/lib/data-utils'
-
-const allPosts = await getAllPosts()
-const recentPosts = allPosts.slice(0, 12)
+import { Icon } from 'astro-icon/components'
 ---
 
+<style>
+  .about-heading-bar {
+    height: 3px;
+    width: 2.5rem;
+    background: linear-gradient(90deg, #8b5cf6, #dc2626);
+    border-radius: 9999px;
+    margin-top: 0.5rem;
+    margin-bottom: 1.5rem;
+  }
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.05rem 0.45rem;
+    border-radius: 4px;
+    font-size: 0.82em;
+    font-weight: 500;
+    white-space: nowrap;
+    vertical-align: baseline;
+    line-height: 1.6;
+    transition: filter 0.15s ease, opacity 0.15s ease;
+  }
+  a:hover .tag, .tag:hover {
+    filter: brightness(0.82);
+  }
+  .tag-logo {
+    width: auto;
+    height: 0.85em;
+    display: inline-block;
+    vertical-align: middle;
+    object-fit: contain;
+  }
+  .tag-purple { background: rgba(139,92,246,0.15); color: #a78bfa; }
+  .tag-blue   { background: rgba(59,130,246,0.15);  color: #7dd3fc; }
+  .tag-red    { background: rgba(220,38,38,0.15);   color: #fca5a5; }
+  .tag-green  { background: rgba(34,197,94,0.15);   color: #86efac; }
+  .tag-orange { background: rgba(249,115,22,0.15);  color: #fdba74; }
+  .tag-gold   { background: rgba(234,179,8,0.15);   color: hsl(38,100%,48%); }
+
+  [data-theme='light'] .tag-purple { background: rgba(139,92,246,0.25); color: #2e1065; }
+  [data-theme='light'] .tag-blue   { background: rgba(59,130,246,0.20); color: #1e40af; }
+  [data-theme='light'] .tag-red    { background: rgba(220,38,38,0.25);  color: #450a0a; }
+  [data-theme='light'] .tag-green  { background: rgba(34,197,94,0.22);  color: #166534; }
+  [data-theme='light'] .tag-orange { background: rgba(249,115,22,0.25); color: #431407; }
+  [data-theme='light'] .tag-gold   { background: rgba(234,179,8,0.25);  color: #422006; }
+</style>
+
 <Layout>
-  <PageHead
-    slot="head"
-    title="meow"
-    description="give me a github star! right now!"
-  />
+  <PageHead slot="head" title="About" />
 
-  <HeroSearch />
+  <section class="mx-auto flex max-w-4xl flex-col gap-10 px-4 py-6 md:flex-row md:gap-12">
 
-  <div class="mx-auto w-full max-w-[970px] px-4 lg:px-0">
-    <!-- Blog Grid -->
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-2 place-items-center lg:place-items-stretch">
-      {
-        recentPosts.map((post) => (
-          <BlogGridCard entry={post} />
-        ))
-      }
+    <!-- Left sidebar -->
+    <aside class="flex flex-col items-center gap-4 md:w-52 md:shrink-0 md:items-start">
+      <img
+        src="/static/avatar.jpg"
+        alt="seraph"
+        class="w-40 rounded-xl object-cover md:w-full aspect-square"
+      />
+
+      <div class="flex flex-col items-center gap-0.5 md:items-start">
+        <span class="text-lg font-semibold tracking-tight">seraph</span>
+        <span class="text-muted-foreground text-xs">Founding Engineer @ LunaBill (YC25)</span>
+      </div>
+
+      <div class="flex items-center gap-3 text-muted-foreground">
+        <a href="https://github.com/Seraph27" target="_blank" rel="noopener noreferrer" class="hover:text-foreground transition-colors" title="GitHub">
+          <Icon name="simple-icons:github" class="size-4" />
+        </a>
+        <a href="mailto:rexchao.careers@gmail.com" class="hover:text-foreground transition-colors" title="Email">
+          <Icon name="lucide:mail" class="size-4" />
+        </a>
+      </div>
+
+      <div class="flex items-center gap-1.5 text-muted-foreground text-xs">
+        <Icon name="lucide:map-pin" class="size-3" />
+        <span>Berkeley, CA</span>
+      </div>
+    </aside>
+
+    <!-- Right content -->
+    <div class="flex-1 min-w-0">
+      <h1 class="text-xl font-semibold">About Me</h1>
+      <div class="about-heading-bar"></div>
+
+      <div class="prose dark:prose-invert max-w-none text-sm leading-relaxed space-y-4">
+        <p>
+          I'm currently a Founding Engineer at <a href="https://lunabill.com/" target="_blank" rel="noopener noreferrer"><span class="tag tag-purple">LunaBill</span></a> (<a href="https://www.ycombinator.com/" target="_blank" rel="noopener noreferrer"><span class="tag tag-orange"><Icon name="simple-icons:ycombinator" class="size-3 inline-block" /> Y Combinator F25</span></a>), building the full AR revenue cycle engine: claim ingestion, eligibility checks, portal automation, outbound voice agents and appeals, with smart call routing and fine tuned classifiers. Previously, I was an MLE Intern at <a href="https://www.foxconn.com" target="_blank" rel="noopener noreferrer"><span class="tag tag-red">Foxconn</span></a>, where I worked on latency optimization for multilingual voice agents.
+        </p>
+
+        <p>
+          I'm a <span class="tag tag-blue">UCSD math-cs</span> alumni. Outside of work I've been going deep on low-level systems and computer architecture. I enjoy mathematics and have been pushing toward 2000 on <a href="https://codeforces.com/" target="_blank" rel="noopener noreferrer"><span class="tag tag-blue"><Icon name="simple-icons:codeforces" class="size-3 inline-block" /> Codeforces</span></a>, with a side interest in the quantitative and algorithmic side of things. I have been daily driving <a href="https://omarchy.org/" target="_blank" rel="noopener noreferrer"><span class="tag tag-green"><Icon name="simple-icons:archlinux" class="size-3 inline-block" /> Omarchy</span></a>, an opinionated Arch Linux distro, and my preferred IDE is <span class="tag tag-green"><Icon name="simple-icons:neovim" class="size-3 inline-block" /> neovim + tmux</span>.
+        </p>
+
+        <p>
+          Outside of work, I'm a <span class="tag tag-gold">competitive programming</span> enjoyer; in particular puzzles that force you to come up with elegant solutions (i.e. atcoder style problems). I also run a small (but active!) problem-solving <a href="https://discord.gg/9kSBNvXVwC" target="_blank" rel="noopener noreferrer"><span class="tag tag-purple"><Icon name="simple-icons:discord" class="size-3 inline-block" /> Discord server</span></a> with 200+ members.
+        </p>
+
+        <p>
+          In my free time, I play rhythm games like <a href="https://osu.ppy.sh/users/13370667" target="_blank" rel="noopener noreferrer"><span class="tag tag-red"><Icon name="simple-icons:osu" class="size-3 inline-block" /> osu!</span></a>, piano, and listen to all sorts of music such as jpop, kpop, rock, metal and classical. I also like exploring good cafes and hidden gems.
+        </p>
+      </div>
+
+      <!-- News -->
+      <div class="mt-8">
+        <h3 class="text-sm font-semibold mb-3 flex items-center gap-1.5">
+          <span>📌</span> News
+        </h3>
+        <div class="flex flex-col gap-1.5 text-sm">
+          <div class="grid grid-cols-[90px_1fr] gap-x-3 items-baseline">
+            <span class="text-muted-foreground text-xs font-mono">[2025/12]</span>
+            <span class="text-muted-foreground text-xs">Graduated from UCSD 🎓</span>
+          </div>
+          <div class="grid grid-cols-[90px_1fr] gap-x-3 items-baseline">
+            <span class="text-muted-foreground text-xs font-mono">[2025/11]</span>
+            <span class="text-muted-foreground text-xs">ICPC SoCal Regionals 2025 (Tapioca Express ranked 8th!!)</span>
+          </div>
+          <div class="grid grid-cols-[90px_1fr] gap-x-3 items-baseline">
+            <span class="text-muted-foreground text-xs font-mono">[2025/09]</span>
+            <span class="text-muted-foreground text-xs">Joined <a href="https://lunabill.com/" target="_blank" rel="noopener noreferrer" class="tag tag-purple">Lunabill</a> as a founding software engineer</span>
+          </div>
+          <div class="grid grid-cols-[90px_1fr] gap-x-3 items-baseline">
+            <span class="text-muted-foreground text-xs font-mono">[2025/06]</span>
+            <span class="text-muted-foreground text-xs">Joined <a href="https://www.foxconn.com" target="_blank" rel="noopener noreferrer" class="tag tag-red">Foxconn</a> as a MLE</span>
+          </div>
+          <div class="grid grid-cols-[90px_1fr] gap-x-3 items-baseline">
+            <span class="text-muted-foreground text-xs font-mono">[2024/11]</span>
+            <span class="text-muted-foreground text-xs">ICPC SoCal Regionals 2024 (Crystal Castles ranked 17th!!)</span>
+          </div>
+          <div class="grid grid-cols-[90px_1fr] gap-x-3 items-baseline">
+            <span class="text-muted-foreground text-xs font-mono">[2021/09]</span>
+            <span class="text-muted-foreground text-xs">Attended UCSD</span>
+          </div>
+        </div>
+      </div>
+
     </div>
-  </div>
-
-  <AudioPlayer />
+  </section>
 </Layout>

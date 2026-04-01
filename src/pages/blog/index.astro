@@ -1,0 +1,34 @@
+---
+import AudioPlayer from '@/components/AudioPlayer.astro'
+import BlogGridCard from '@/components/BlogGridCard.astro'
+import HeroSearch from '@/components/HeroSearch.astro'
+import PageHead from '@/components/PageHead.astro'
+import Layout from '@/layouts/Layout.astro'
+import { getAllPosts } from '@/lib/data-utils'
+
+const allPosts = await getAllPosts()
+const recentPosts = allPosts.slice(0, 12)
+---
+
+<Layout>
+  <PageHead
+    slot="head"
+    title="meow"
+    description="give me a github star! right now!"
+  />
+
+  <HeroSearch />
+
+  <div class="mx-auto w-full max-w-[970px] px-4 lg:px-0">
+    <!-- Blog Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-2 place-items-center lg:place-items-stretch">
+      {
+        recentPosts.map((post) => (
+          <BlogGridCard entry={post} />
+        ))
+      }
+    </div>
+  </div>
+
+  <AudioPlayer />
+</Layout>
