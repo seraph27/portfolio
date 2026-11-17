@@ -12,7 +12,7 @@ interface Props {
 const { links } = Astro.props
 ---
 
-<ul class="flex flex-wrap gap-2" role="list">
+<ul class="-mr-2.5 flex flex-wrap gap-1" role="list">
   {
     links.map(({ href, label }) => (
       <li>
@@ -20,7 +20,7 @@ const { links } = Astro.props
           href={href}
           aria-label={label}
           title={label}
-          class={buttonVariants({ variant: 'outline', size: 'icon' })}
+          class={buttonVariants({ variant: 'ghost', size: 'icon' })}
           external
         >
           <Icon

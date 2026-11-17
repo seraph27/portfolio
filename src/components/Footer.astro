@@ -1,12 +1,24 @@
 ---
 import { SOCIAL_LINKS } from '@/consts'
+import { cn } from '@/lib/utils'
 import SocialIcons from './SocialIcons.astro'
+
+interface Props {
+  width?: string
+}
+
+const { width = 'max-w-3xl' } = Astro.props
 ---
 
 <footer
-  class="mx-auto mb-8 flex w-full max-w-3xl flex-col items-center justify-center gap-y-2 px-4 sm:mb-4 sm:flex-row sm:justify-between"
+  class={cn(
+    'mx-auto mb-8 flex w-full flex-col items-center justify-center gap-y-2 px-4 sm:mb-6 sm:flex-row sm:justify-between',
+    width,
+  )}
 >
-  <div class="flex items-center justify-center gap-x-2 text-center text-dark-wine text-sm">
+  <div
+    class="font-display text-dark-wine flex items-center justify-center gap-x-2 text-center text-sm"
+  >
     <span>☆</span>
     <span>seraph</span>
     <span>©</span>

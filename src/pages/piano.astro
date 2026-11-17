@@ -122,18 +122,18 @@ function barColor(pct: number): string {
 <Layout>
   <PageHead slot="head" title="Piano" description="Pieces I'm currently learning" />
 
-  <div class="mx-auto w-full max-w-3xl">
+  <div class="mx-auto w-full max-w-[calc(var(--container-3xl)-2rem)]">
     <Breadcrumbs items={[{ label: 'Piano', icon: 'lucide:piano' }]} />
   </div>
 
-  <section class="mx-auto w-full max-w-3xl px-4 pb-12">
+  <section class="mx-auto w-full max-w-[calc(var(--container-3xl)-2rem)] pb-12">
     <div class="flex flex-col divide-y divide-border">
       {[...pieces].sort((a, b) => b.pct - a.pct).map((piece) => (
-        <div class="flex items-center gap-4 py-3">
+        <div class="flex flex-wrap items-center gap-x-4 gap-y-1.5 py-3">
 
           <Icon name="lucide:music" class="size-3.5 shrink-0 text-muted-foreground/50" />
 
-          <div class="min-w-0 flex-1">
+          <div class="min-w-0 flex-1 basis-[calc(100%-2rem)] sm:basis-0">
             <div class="flex items-baseline gap-2 min-w-0">
               {piece.link ? (
                 <a
@@ -151,7 +151,7 @@ function barColor(pct: number): string {
             </div>
           </div>
 
-          <div class="flex shrink-0 items-center gap-3">
+          <div class="flex shrink-0 items-center gap-3 pl-[1.875rem] sm:pl-0">
             <span
               class="font-mono text-xs tracking-tighter"
               style={`color: ${barColor(piece.pct)}`}

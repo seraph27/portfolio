@@ -1,141 +1,549 @@
 ---
+import Anime3x3 from '@/components/Anime3x3.astro'
 import PageHead from '@/components/PageHead.astro'
+import WhiteBoxLogo from '@/components/WhiteBoxLogo.astro'
 import Layout from '@/layouts/Layout.astro'
 import { Icon } from 'astro-icon/components'
+
+const links = [
+  {
+    href: 'https://github.com/Seraph27',
+    label: 'GitHub',
+    icon: 'simple-icons:github',
+  },
+  {
+    href: 'mailto:rexchao.careers@gmail.com',
+    label: 'Email',
+    icon: 'lucide:mail',
+  },
+  {
+    href: 'https://codeforces.com/profile/shiinamashiro_',
+    label: 'Codeforces',
+    icon: 'simple-icons:codeforces',
+  },
+  {
+    href: 'https://osu.ppy.sh/users/13370667',
+    label: 'osu!',
+    icon: 'simple-icons:osu',
+  },
+  {
+    href: 'https://instagram.com/level5esper',
+    label: 'Instagram',
+    icon: 'simple-icons:instagram',
+  },
+]
+
+// Pages on this site, shown after the profile links
+const pages = [
+  { href: '/piano', label: 'Piano', icon: 'lucide:piano' },
+  // No climbing page; this jumps to the news, where the first V4 is
+  { href: '#news-heading', label: 'Bouldering, V4', icon: 'lucide:mountain' },
+]
 ---
 
-<style>
-  .about-heading-bar {
-    height: 3px;
-    width: 2.5rem;
-    background: linear-gradient(90deg, #8b5cf6, #dc2626);
-    border-radius: 9999px;
-    margin-top: 0.5rem;
-    margin-bottom: 1.5rem;
-  }
-  .tag {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.25rem;
-    padding: 0.05rem 0.45rem;
-    border-radius: 4px;
-    font-size: 0.82em;
-    font-weight: 500;
-    white-space: nowrap;
-    vertical-align: baseline;
-    line-height: 1.6;
-    transition: filter 0.15s ease, opacity 0.15s ease;
-  }
-  a:hover .tag, .tag:hover {
-    filter: brightness(0.82);
-  }
-  .about-copy :where(p) {
-    color: var(--foreground);
-  }
-  .tag-purple { background: rgba(139,92,246,0.15); color: #a78bfa; }
-  .tag-blue   { background: rgba(59,130,246,0.15);  color: #7dd3fc; }
-  .tag-red    { background: rgba(220,38,38,0.15);   color: #fca5a5; }
-  .tag-green  { background: rgba(34,197,94,0.15);   color: #86efac; }
-  .tag-orange { background: rgba(249,115,22,0.15);  color: #fdba74; }
-  .tag-gold   { background: rgba(234,179,8,0.15);   color: hsl(38,100%,48%); }
-
-  [data-theme='light'] .tag-purple { background: rgba(139,92,246,0.25); color: #2e1065; }
-  [data-theme='light'] .tag-blue   { background: rgba(59,130,246,0.20); color: #1e40af; }
-  [data-theme='light'] .tag-red    { background: rgba(220,38,38,0.25);  color: #450a0a; }
-  [data-theme='light'] .tag-green  { background: rgba(34,197,94,0.22);  color: #166534; }
-  [data-theme='light'] .tag-orange { background: rgba(249,115,22,0.25); color: #431407; }
-  [data-theme='light'] .tag-gold   { background: rgba(234,179,8,0.25);  color: #422006; }
-</style>
-
-<Layout>
+<Layout width="max-w-4xl" identity={false}>
   <PageHead slot="head" title="About" />
 
-  <section class="mx-auto flex max-w-4xl flex-col gap-10 px-4 py-6 md:flex-row md:gap-12">
-
-    <!-- Left sidebar -->
-    <aside class="flex flex-col items-center gap-4 md:w-52 md:shrink-0 md:items-start">
-      <img
-        src="/static/avatar.jpg"
-        alt="seraph"
-        class="w-40 rounded-xl object-cover md:w-full aspect-square"
-      />
-
-      <div class="flex flex-col items-center gap-0.5 md:items-start">
-        <span class="text-lg font-semibold tracking-tight">seraph</span>
-        <span class="text-muted-foreground text-xs">Founding Engineer @ LunaBill (YC25)</span>
-      </div>
-
-      <div class="flex items-center gap-3 text-muted-foreground">
-        <a href="https://github.com/Seraph27" target="_blank" rel="noopener noreferrer" class="hover:text-foreground transition-colors" title="GitHub">
-          <Icon name="simple-icons:github" class="size-4" />
-        </a>
-        <a href="mailto:rexchao.careers@gmail.com" class="hover:text-foreground transition-colors" title="Email">
-          <Icon name="lucide:mail" class="size-4" />
-        </a>
-      </div>
-
-      <div class="flex items-center gap-1.5 text-muted-foreground text-xs">
-        <Icon name="lucide:map-pin" class="size-3" />
-        <span>Berkeley, CA</span>
-      </div>
-    </aside>
-
-    <!-- Right content -->
-    <div class="flex-1 min-w-0">
-      <h1 class="text-xl font-semibold">About Me</h1>
-      <div class="about-heading-bar"></div>
-
-      <div class="prose dark:prose-invert about-copy max-w-none text-sm leading-relaxed space-y-4">
-        <p>
-          I'm currently a Founding Engineer at <span class="tag tag-purple">LunaBill</span> (<a href="https://www.ycombinator.com/" target="_blank" rel="noopener noreferrer"><span class="tag tag-orange"><Icon name="simple-icons:ycombinator" class="size-3 inline-block" /> Y Combinator F25</span></a>), building the full AR revenue cycle engine: claim ingestion, eligibility checks, portal automation, outbound voice agents and appeals, with smart call routing and fine tuned classifiers. Previously, I was an MLE Intern at Foxconn, where I worked on latency optimization for multilingual voice agents.
-        </p>
-
-        <p>
-          I'm a <span class="tag tag-blue">UCSD math-cs</span> alum. Building infra and high velocity shipping by day; going deep on low-level systems, learning ML inference specifically (JAX / TPU), and pushing 2100 on <a href="https://codeforces.com/" target="_blank" rel="noopener noreferrer"><span class="tag tag-blue"><Icon name="simple-icons:codeforces" class="size-3 inline-block" /> Codeforces</span></a> by night. I've been daily driving <a href="https://omarchy.org/" target="_blank" rel="noopener noreferrer"><span class="tag tag-green"><Icon name="simple-icons:archlinux" class="size-3 inline-block" /> Omarchy</span></a>, an opinionated Arch Linux distro, with <span class="tag tag-green"><Icon name="simple-icons:neovim" class="size-3 inline-block" /> Neovim + tmux</span> as my preferred editor.
-        </p>
-
-        <p>
-          Outside of work, I'm a <span class="tag tag-gold">competitive programming</span> enjoyer; in particular puzzles that force you to come up with elegant solutions (i.e. atcoder style problems). I also run a small (but active!) problem-solving <a href="https://discord.gg/9kSBNvXVwC" target="_blank" rel="noopener noreferrer"><span class="tag tag-purple"><Icon name="simple-icons:discord" class="size-3 inline-block" /> Discord server</span></a> with 200+ members.
-        </p>
-
-        <p>
-          In my free time, I play rhythm games like <a href="https://osu.ppy.sh/users/13370667" target="_blank" rel="noopener noreferrer"><span class="tag tag-red"><Icon name="simple-icons:osu" class="size-3 inline-block" /> osu!</span></a>, piano, and listen to all sorts of music such as jpop, kpop, rock, metal and classical. I also like exploring good cafes and hidden gems.
-        </p>
-      </div>
-
-      <!-- News -->
-      <div class="mt-8">
-        <h3 class="text-sm font-semibold mb-3 flex items-center gap-1.5">
-          <span>📌</span> News
-        </h3>
-        <div class="flex flex-col gap-1.5 text-sm">
-          <div class="grid grid-cols-[90px_1fr] gap-x-3 items-baseline">
-            <span class="text-muted-foreground text-xs font-mono">[2025/12]</span>
-            <span class="text-muted-foreground text-xs">Graduated from UCSD 🎓</span>
-          </div>
-          <div class="grid grid-cols-[90px_1fr] gap-x-3 items-baseline">
-            <span class="text-muted-foreground text-xs font-mono">[2025/11]</span>
-            <span class="text-muted-foreground text-xs">ICPC SoCal Regionals 2025 (Tapioca Express ranked 8th!!)</span>
-          </div>
-          <div class="grid grid-cols-[90px_1fr] gap-x-3 items-baseline">
-            <span class="text-muted-foreground text-xs font-mono">[2025/09]</span>
-            <span class="text-muted-foreground text-xs">Joined <a href="https://lunabill.com/" target="_blank" rel="noopener noreferrer" class="tag tag-purple">Lunabill</a> as a founding software engineer</span>
-          </div>
-          <div class="grid grid-cols-[90px_1fr] gap-x-3 items-baseline">
-            <span class="text-muted-foreground text-xs font-mono">[2025/06]</span>
-            <span class="text-muted-foreground text-xs">Joined <a href="https://www.foxconn.com" target="_blank" rel="noopener noreferrer" class="tag tag-red">Foxconn</a> as a MLE</span>
-          </div>
-          <div class="grid grid-cols-[90px_1fr] gap-x-3 items-baseline">
-            <span class="text-muted-foreground text-xs font-mono">[2024/11]</span>
-            <span class="text-muted-foreground text-xs">ICPC SoCal Regionals 2024 (Crystal Castles ranked 17th!!)</span>
-          </div>
-          <div class="grid grid-cols-[90px_1fr] gap-x-3 items-baseline">
-            <span class="text-muted-foreground text-xs font-mono">[2021/09]</span>
-            <span class="text-muted-foreground text-xs">Attended UCSD</span>
-          </div>
+  <section
+    class="mx-auto flex w-full max-w-4xl flex-col gap-8 px-4 py-6 md:flex-row md:gap-12"
+  >
+    <aside class="md:w-52 md:shrink-0">
+      <div class="flex items-center gap-4 md:flex-col md:items-start">
+        <img
+          src="/static/avatar.jpg"
+          alt="seraph"
+          width="208"
+          height="208"
+          class="aspect-square w-20 shrink-0 rounded-2xl object-cover md:w-full"
+        />
+        <div class="min-w-0">
+          <h1 class="font-display text-2xl leading-tight font-semibold">
+            Rex Chao
+          </h1>
+          <p class="font-display text-muted-foreground text-sm">seraph</p>
+          <p class="text-muted-foreground mt-1.5 text-[13px] leading-snug">
+            Founding Engineer @ LunaBill (YC F25)
+          </p>
         </div>
       </div>
 
+      <ul
+        class="mt-4 -ml-2 flex items-center md:-ml-[5px]"
+        role="list"
+      >
+        {
+          links.map(({ href, label, icon }) => (
+            <li>
+              <a
+                href={href}
+                target={href.startsWith('mailto:') ? undefined : '_blank'}
+                rel="noopener noreferrer"
+                title={label}
+                aria-label={label}
+                class="profile-link"
+              >
+                <Icon name={icon} class="size-[18px]" />
+              </a>
+            </li>
+          ))
+        }
+        <li class="bg-border mx-1 h-4 w-px" aria-hidden="true"></li>
+        {
+          pages.map(({ href, label, icon }) => (
+            <li>
+              <a href={href} title={label} aria-label={label} class="profile-link">
+                <Icon name={icon} class="size-[18px]" />
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+
+      <p class="text-muted-foreground mt-2 flex items-center gap-1.5 text-xs">
+        <Icon name="lucide:map-pin" class="size-3.5" />
+        <span>sf / tw</span>
+      </p>
+
+      <details class="a3-more mt-2">
+        <summary>
+          <Icon name="lucide:grid-3x3" class="size-3.5" />
+          <span>anime 3x3</span>
+          <Icon name="lucide:chevron-down" class="chev size-3" />
+        </summary>
+        <Anime3x3 class="mt-3 max-w-64 md:max-w-none" label="pick a tile" />
+      </details>
+    </aside>
+
+    <div class="min-w-0 flex-1">
+      <h2 class="font-display text-xl font-semibold">About Me</h2>
+      <div class="heading-bar"></div>
+
+      <div class="about-copy">
+        <p>
+          I'm currently a Founding Engineer at <span class="tag tag-teal"
+            >LunaBill</span
+          > <span class="whitespace-nowrap"
+            >(<a
+              href="https://www.ycombinator.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              ><span class="tag tag-orange"
+                ><Icon name="simple-icons:ycombinator" /> Y Combinator F25</span
+              ></a
+            >),</span
+          > building the full AR revenue cycle engine: claim ingestion,
+          eligibility checks, portal automation, outbound voice agents and
+          appeals, with smart call routing and fine tuned classifiers.
+          Previously, I was an MLE Intern at Foxconn, where I worked on latency
+          optimization for multilingual voice agents.
+        </p>
+
+        <p>
+          On the side, I run <a
+            href="https://whitebox.ac"
+            target="_blank"
+            rel="noopener noreferrer"
+            ><span class="tag tag-purple"><WhiteBoxLogo /> WhiteBox</span></a
+          >, a community of 20k+ across social media and signups, focused on
+          using AI to learn and helping people become better engineers. I built
+          the platform behind it too: real implementation problems, an adaptive
+          coach, a persistent memory system and hand-curated roadmaps.
+        </p>
+
+        <p>
+          I'm a <span class="tag tag-blue">UCSD math-cs</span> alum. Shipping fast
+          by day; working on WhiteBox and content creation <span
+            class="whitespace-nowrap"
+            >(<a
+              href="https://instagram.com/level5esper"
+              target="_blank"
+              rel="noopener noreferrer"
+              ><span class="tag tag-pink"
+                ><Icon name="simple-icons:instagram" /> @level5esper</span
+              ></a
+            ></span
+          > on Instagram) by night. I'm also going deep on low-level systems and ML inference (TPUs,
+          <a
+            href="https://github.com/sgl-project/sglang"
+            target="_blank"
+            rel="noopener noreferrer"><span class="tag tag-green">SGLang</span></a
+          >), with <span class="tag tag-green"
+            ><Icon name="simple-icons:neovim" /> Neovim + tmux</span
+          > as my preferred editor.
+        </p>
+
+        <p>
+          Outside of work, I'm a <span class="tag tag-gold"
+            >competitive programming</span
+          > enjoyer; in particular puzzles that force you to come up with elegant
+          solutions (i.e. atcoder style problems). I play rhythm games like <a
+            href="https://osu.ppy.sh/users/13370667"
+            target="_blank"
+            rel="noopener noreferrer"
+            ><span class="tag tag-pink"
+              ><Icon name="simple-icons:osu" /> osu!</span
+            ></a
+          >, play <a href="/piano"
+            ><span class="tag tag-purple"
+              ><Icon name="lucide:piano" /> piano</span
+            ></a
+          > and go <span class="tag tag-orange"
+            ><Icon name="lucide:mountain" /> bouldering</span
+          > (V4). I listen to all sorts of music such as jpop, kpop,
+          rock, metal and classical, and I like exploring good cafes and hidden gems.
+        </p>
+      </div>
+
+      <section class="mt-10" aria-labelledby="news-heading">
+        <h2
+          id="news-heading"
+          class="font-display mb-3 flex scroll-mt-20 items-center gap-1.5 text-base font-semibold"
+        >
+          <span aria-hidden="true">📌</span> News
+        </h2>
+
+        <ol class="news news-main" role="list">
+          <li class="latest">
+            <time datetime="2026-11">2026/11</time>
+            <span class="rail"></span>
+            <p>Attended TorchTPU DevLabs at Google, Sunnyvale</p>
+          </li>
+          <li>
+            <time datetime="2026-11">2026/11</time>
+            <span class="rail"></span>
+            <p>Sent my first V4 🧗</p>
+          </li>
+          <li>
+            <time datetime="2026-09">2026/09</time>
+            <span class="rail"></span>
+            <p>
+              <a
+                href="https://codeforces.com/contest/2251/standings"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="news-link">ICPC Huawei Online Challenge 2026</a
+              > (ranked 3rd of 4,428!!)
+            </p>
+          </li>
+          <li>
+            <time datetime="2026-08">2026/08</time>
+            <span class="rail"></span>
+            <p>
+              Attended Google's <a
+                href="https://openxla.org/xprof/events"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="news-link">XProf ML Profiling Summit</a
+              >
+            </p>
+          </li>
+          <li>
+            <time datetime="2025-12">2025/12</time>
+            <span class="rail"></span>
+            <p>Graduated from UCSD 🎓</p>
+          </li>
+        </ol>
+        <details class="news-more">
+          <summary>
+            <span></span>
+            <span class="rail"></span>
+            <span class="news-toggle">
+              <span class="when-closed">5 earlier</span>
+              <span class="when-open">hide earlier</span>
+              <Icon name="lucide:chevron-down" class="size-3.5" />
+            </span>
+          </summary>
+          <ol class="news" role="list">
+            <li>
+              <time datetime="2025-11">2025/11</time>
+              <span class="rail"></span>
+              <p>ICPC SoCal Regionals 2025 (Tapioca Express ranked 8th!!)</p>
+            </li>
+            <li>
+              <time datetime="2025-09">2025/09</time>
+              <span class="rail"></span>
+              <p>
+                Joined <a
+                  href="https://lunabill.com/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  ><span class="tag tag-teal">Lunabill</span></a
+                > as a founding software engineer
+              </p>
+            </li>
+            <li>
+              <time datetime="2025-06">2025/06</time>
+              <span class="rail"></span>
+              <p>
+                Joined <a
+                  href="https://www.foxconn.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  ><span class="tag tag-red">Foxconn</span></a
+                > as a MLE
+              </p>
+            </li>
+            <li>
+              <time datetime="2024-11">2024/11</time>
+              <span class="rail"></span>
+              <p>ICPC SoCal Regionals 2024 (Crystal Castles ranked 17th!!)</p>
+            </li>
+            <li class="end">
+              <time datetime="2021-09">2021/09</time>
+              <span class="rail"></span>
+              <p>Attended UCSD</p>
+            </li>
+          </ol>
+        </details>
+      </section>
     </div>
   </section>
 </Layout>
+
+<style>
+  .heading-bar {
+    height: 3px;
+    width: 2.5rem;
+    margin-top: 0.5rem;
+    margin-bottom: 1.5rem;
+    border-radius: 9999px;
+    background: linear-gradient(90deg, var(--osu-pink), #8b5cf6);
+  }
+
+  .profile-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 0.5rem;
+    color: var(--muted-foreground);
+    transition:
+      color 0.15s ease,
+      background-color 0.15s ease;
+  }
+  /* Seven links have to fit the 13rem sidebar on desktop */
+  @media (min-width: 48rem) {
+    .profile-link {
+      width: 1.75rem;
+      height: 1.75rem;
+      border-radius: 0.375rem;
+    }
+  }
+  .profile-link:hover {
+    color: var(--foreground);
+    background: var(--muted);
+  }
+
+  .about-copy {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    font-size: 0.9375rem;
+    line-height: 1.75;
+    color: color-mix(in oklab, var(--foreground) 88%, transparent);
+  }
+
+  /* Inline tags. --c is the tag's hue; text and tint are derived from it. */
+  .tag {
+    --c: #737373;
+    padding: 0.1em 0.42em;
+    border-radius: 6px;
+    font-size: 0.92em;
+    font-weight: 500;
+    white-space: nowrap;
+    color: color-mix(in oklab, var(--c) 74%, #111);
+    background: color-mix(in oklab, var(--c) 11%, transparent);
+    transition: background-color 0.15s ease;
+  }
+  .tag :global(svg) {
+    display: inline-block;
+    width: 0.92em;
+    height: 0.92em;
+    margin-right: 0.15em;
+    vertical-align: -0.1em;
+    color: var(--c);
+  }
+  a .tag {
+    box-shadow: inset 0 -1.5px 0 color-mix(in oklab, var(--c) 38%, transparent);
+  }
+  a:hover .tag {
+    background: color-mix(in oklab, var(--c) 20%, transparent);
+  }
+  .tag-purple {
+    --c: #7c3aed;
+  }
+  .tag-teal {
+    --c: #0d9488;
+  }
+  .tag-blue {
+    --c: #2563eb;
+  }
+  .tag-red {
+    --c: #dc2626;
+  }
+  .tag-pink {
+    --c: #e63b85;
+  }
+  .tag-green {
+    --c: #16a34a;
+  }
+  .tag-orange {
+    --c: #ea580c;
+  }
+  .tag-gold {
+    --c: #b7791f;
+  }
+  :global([data-theme='dark']) .tag {
+    color: color-mix(in oklab, var(--c) 55%, #fff);
+    background: color-mix(in oklab, var(--c) 20%, transparent);
+  }
+
+  /* The 3x3 stays folded under the location line until asked for */
+  .a3-more summary {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+    width: fit-content;
+    list-style: none;
+    cursor: pointer;
+    font-size: 0.75rem;
+    line-height: 1rem;
+    color: var(--muted-foreground);
+    transition: color 0.15s ease;
+  }
+  .a3-more summary::-webkit-details-marker {
+    display: none;
+  }
+  .a3-more summary:hover,
+  .a3-more[open] summary {
+    color: var(--foreground);
+  }
+  .a3-more summary :global(.chev) {
+    transition: transform 0.15s ease;
+  }
+  .a3-more[open] summary :global(.chev) {
+    transform: rotate(180deg);
+  }
+
+  /* News timeline: date, rail with a dot, text */
+  .news li,
+  .news-more summary {
+    display: grid;
+    grid-template-columns: 3.75rem 1.5rem 1fr;
+    align-items: baseline;
+  }
+  .news li {
+    padding: 0.3rem 0;
+    font-size: 0.875rem;
+    line-height: 1.4;
+  }
+  .news time {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0;
+    color: var(--muted-foreground);
+  }
+  .news p {
+    color: color-mix(in oklab, var(--foreground) 82%, transparent);
+  }
+  .rail {
+    position: relative;
+    align-self: stretch;
+  }
+  .rail::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: -0.3rem;
+    bottom: -0.3rem;
+    width: 1px;
+    background: var(--border);
+  }
+  .news .rail::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 0.6rem;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    border: 1.5px solid
+      color-mix(in oklab, var(--muted-foreground) 60%, var(--background));
+    background: var(--background);
+    transform: translate(-50%, -50%);
+  }
+  .news-main li:first-child .rail::before {
+    top: 0.6rem;
+  }
+  .news li.end .rail::before {
+    bottom: auto;
+    height: 0.9rem;
+  }
+  .news li.latest .rail::after {
+    border-color: var(--osu-pink);
+    background: var(--osu-pink);
+  }
+  .news-link {
+    text-decoration: underline;
+    text-decoration-color: color-mix(
+      in oklab,
+      var(--muted-foreground) 50%,
+      transparent
+    );
+    text-underline-offset: 3px;
+    transition: text-decoration-color 0.15s ease;
+  }
+  .news-link:hover {
+    text-decoration-color: var(--osu-pink);
+  }
+
+  .news-more summary {
+    list-style: none;
+    cursor: pointer;
+    padding: 0.3rem 0;
+    font-size: 0.75rem;
+    color: var(--muted-foreground);
+  }
+  .news-more summary::-webkit-details-marker {
+    display: none;
+  }
+  .news-more:not([open]) summary .rail::before {
+    bottom: 0.2rem;
+    background: linear-gradient(var(--border), transparent);
+  }
+  .news-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    width: fit-content;
+    font-family: var(--font-display);
+    transition: color 0.15s ease;
+  }
+  .news-more summary:hover .news-toggle {
+    color: var(--foreground);
+  }
+  .news-toggle :global(svg) {
+    transition: transform 0.15s ease;
+  }
+  .news-more[open] .news-toggle :global(svg) {
+    transform: rotate(180deg);
+  }
+  .news-more[open] .when-closed,
+  .news-more:not([open]) .when-open {
+    display: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .profile-link,
+    .a3-more summary,
+    .a3-more summary :global(.chev),
+    .tag,
+    .news-link,
+    .news-toggle,
+    .news-toggle :global(svg) {
+      transition: none;
+    }
+  }
+</style>

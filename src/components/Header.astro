@@ -1,37 +1,103 @@
 ---
 import Link from '@/components/Link.astro'
 import { NAV_LINKS } from '@/consts'
+import { cn } from '@/lib/utils'
 import { Image } from 'astro:assets'
 import icon from '../../public/icon.jpg'
+
+interface Props {
+  width?: string
+  identity?: boolean
+}
+
+const { width = 'max-w-3xl', identity = true } = Astro.props
+const path = Astro.url.pathname.replace(/\/$/, '') || '/'
+// Tags and authors are sections of the blog
+const sectionOf = (p: string) =>
+  p.startsWith('/tags') || p.startsWith('/authors') ? '/blog' : p
+const isActive = (href: string) => {
+  const p = sectionOf(path)
+  return p === href || p.startsWith(href + '/')
+}
 ---
 
-<div>
-  <div
-    class="mx-auto flex max-w-3xl items-center justify-between gap-4 px-4 py-3"
+<div
+  class={cn(
+    'mx-auto flex h-14 items-center gap-4 px-4',
+    identity ? 'justify-between' : 'justify-end',
+    width,
+  )}
+>
+  {
+    identity && (
+      <Link
+        href="/"
+        class="group flex shrink-0 items-center gap-2.5"
+        aria-label="seraph, home"
+      >
+        <Image
+          src={icon}
+          alt=""
+          class="size-8 rounded-full object-cover"
+          width={128}
+          height={128}
+          quality={90}
+        />
+        <span class="font-display text-foreground/80 group-hover:text-foreground text-[15px] font-semibold transition-colors max-[379px]:hidden">
+          seraph
+        </span>
+      </Link>
+    )
+  }
+  {/* The right margin pins the nav to the 3xl column edge on every page, so it
+      stays under the cursor when the header widens to match a wider page. */}
+  <nav
+    class="font-display mr-[max(-0.625rem,calc(50%-23.625rem))] flex items-center gap-1 text-sm"
+    aria-label="Main"
   >
-    <Link href="/" class="flex shrink-0 items-center justify-center">
-      <Image
-        src={icon}
-        alt="seraph"
-        class="size-10 rounded-full object-cover"
-        width={200}
-        height={200}
-        quality={100}
-      />
-    </Link>
-    <div class="flex items-center gap-4">
-      <nav class="flex items-center gap-4 text-sm sm:gap-6" style="font-family: 'Torus', ui-sans-serif, system-ui, sans-serif;">
-        {
-          NAV_LINKS.map((item) => (
-            <Link
-              href={item.href}
-              class="text-foreground/60 hover:text-foreground capitalize transition-colors"
-            >
-              {item.label}
-            </Link>
-          ))
-        }
-      </nav>
-    </div>
-  </div>
+    {
+      NAV_LINKS.map((item) => {
+        const active = isActive(item.href)
+        return (
+          <Link
+            href={item.href}
+            aria-current={active ? 'page' : undefined}
+            class={cn(
+              'nav-link relative px-2.5 py-2 capitalize',
+              active
+                ? 'text-foreground'
+                : 'text-foreground/60 hover:text-foreground',
+            )}
+          >
+            {item.label}
+          </Link>
+        )
+      })
+    }
+  </nav>
 </div>
+
+<style>
+  .nav-link::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: 2px;
+    width: 18px;
+    height: 3px;
+    border-radius: 9999px;
+    background: var(--osu-pink);
+    transform: translateX(-50%) scaleX(0);
+    transition: transform 0.18s ease;
+  }
+  .nav-link:hover::after,
+  .nav-link:focus-visible::after,
+  .nav-link[aria-current='page']::after {
+    transform: translateX(-50%) scaleX(1);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .nav-link::after {
+      transition: none;
+    }
+  }
+</style>

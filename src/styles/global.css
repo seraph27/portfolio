@@ -30,6 +30,9 @@
   --color-ring: var(--ring);
 
   --color-dark-wine: var(--dark-wine);
+  --color-osu: var(--osu-pink);
+
+  --font-display: 'Torus', ui-sans-serif, system-ui, sans-serif;
 }
 
 @font-face {
@@ -146,6 +149,7 @@
   --border: oklch(0.922 0 0);
   --ring: oklch(0.708 0 0);
   --dark-wine: oklch(0.18 0.06 340);
+  --osu-pink: #ff66ab;
 }
 
 [data-theme='dark'] {

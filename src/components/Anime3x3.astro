@@ -1,0 +1,153 @@
+---
+import { cn } from '@/lib/utils'
+
+interface Props {
+  class?: string
+  /** Caption shown while no tile is hovered, focused or tapped */
+  label?: string
+}
+
+const { class: className, label = 'anime 3x3' } = Astro.props
+
+// Row by row, matching /static/anime-3x3.jpg
+const titles = [
+  'Steins;Gate',
+  'Attack on Titan',
+  'Re:Zero',
+  'A Certain Scientific Railgun',
+  'Code Geass',
+  'Made in Abyss',
+  'Summer Time Rendering',
+  'Lycoris Recoil',
+  'Kaguya-sama: Love Is War',
+]
+---
+
+<figure class={cn('a3', className)} data-a3>
+  <div class="a3-grid">
+    <img
+      src="/static/anime-3x3.jpg"
+      alt="A 3 by 3 grid of my nine favorite anime"
+      width="540"
+      height="540"
+      loading="lazy"
+      decoding="async"
+    />
+    {
+      titles.map((title) => (
+        <button
+          type="button"
+          class="a3-cell"
+          data-title={title}
+          aria-label={title}
+        />
+      ))
+    }
+  </div>
+  <figcaption class="a3-caption">
+    <span data-a3-label data-default={label}>{label}</span>
+  </figcaption>
+</figure>
+
+<style>
+  .a3 {
+    width: 100%;
+  }
+  .a3-grid {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    aspect-ratio: 1;
+    overflow: hidden;
+    border-radius: 0.75rem;
+    /* shown while the lazy image loads on first open */
+    background: var(--muted);
+  }
+  .a3-grid img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .a3-cell {
+    position: relative;
+    cursor: default;
+    background: transparent;
+    transition: background-color 0.15s ease;
+  }
+  /* Dim the other eight tiles while one is hovered or focused */
+  .a3-grid:has(.a3-cell:hover) .a3-cell:not(:hover),
+  .a3-grid:has(.a3-cell:focus-visible) .a3-cell:not(:focus-visible) {
+    background: color-mix(in oklab, var(--background) 55%, transparent);
+  }
+  .a3-cell:focus-visible {
+    outline: 2px solid var(--osu-pink);
+    outline-offset: -2px;
+  }
+  .a3-caption {
+    margin-top: 0.5rem;
+    min-height: 1rem;
+    font-family: var(--font-display);
+    font-size: 0.75rem;
+    line-height: 1rem;
+    color: var(--muted-foreground);
+  }
+  .a3-caption [data-active] {
+    color: var(--foreground);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .a3-cell {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  // Delegated so it keeps working after client-side navigation.
+  const setLabel = (cell: Element | null) => {
+    const figure = cell?.closest('[data-a3]')
+    const label = figure?.querySelector<HTMLElement>('[data-a3-label]')
+    if (!label) return
+    const title = (cell as HTMLElement).dataset.title
+    label.textContent = title ?? label.dataset.default ?? ''
+    label.toggleAttribute('data-active', Boolean(title))
+  }
+  const reset = (figure: Element | null) => {
+    const label = figure?.querySelector<HTMLElement>('[data-a3-label]')
+    if (!label) return
+    label.textContent = label.dataset.default ?? ''
+    label.removeAttribute('data-active')
+  }
+  const cellOf = (e: Event) =>
+    e.target instanceof Element ? e.target.closest('.a3-cell') : null
+
+  document.addEventListener('pointerover', (e) => {
+    const cell = cellOf(e)
+    if (cell) setLabel(cell)
+  })
+  document.addEventListener('pointerout', (e) => {
+    const cell = cellOf(e)
+    const to = (e as PointerEvent).relatedTarget
+    if (cell && !(to instanceof Element && to.closest('.a3-cell'))) {
+      reset(cell.closest('[data-a3]'))
+    }
+  })
+  document.addEventListener('focusin', (e) => {
+    const cell = cellOf(e)
+    if (cell) setLabel(cell)
+  })
+  document.addEventListener('focusout', (e) => {
+    const cell = cellOf(e)
+    if (cell) reset(cell.closest('[data-a3]'))
+  })
+  // Touch browsers that do not focus buttons on tap never fire focusout,
+  // so a tap anywhere else clears the caption.
+  document.addEventListener('click', (e) => {
+    const cell = cellOf(e)
+    if (cell) return setLabel(cell)
+    document
+      .querySelectorAll('[data-a3]:has([data-active])')
+      .forEach((figure) => reset(figure))
+  })
+</script>
