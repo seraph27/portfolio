@@ -1,7 +1,7 @@
 ---
 import Badge from '@/components/Badge.astro'
-import Link from '@/components/Link.astro'
 import { Separator } from '@/components/ui/separator'
+import { cn } from '@/lib/utils'
 
 import { Icon } from 'astro-icon/components'
 import { Image } from 'astro:assets'
@@ -26,135 +26,145 @@ const extractDomain = (url: string) => {
   }
 }
 
-const imgSrc = project.data.image ? (project.data.image as any).src : null
+const link = project.data.link
 ---
 
 <div
-  class="hover:border-border hover:bg-bg-fuchsia-50 border p-4 transition-all duration-300 ease-in-out hover:shadow-sm"
+  class="group hover:border-foreground/25 has-[.card-link:focus-visible]:outline-ring relative flex flex-col gap-4 rounded-xl border p-4 transition-[border-color,box-shadow] duration-200 hover:shadow-[0_10px_30px_-18px_rgb(0_0_0/0.35)] has-[.card-link:focus-visible]:outline-2 has-[.card-link:focus-visible]:outline-offset-2 motion-reduce:transition-none sm:flex-row sm:gap-5"
 >
   {
-    project.data.link ? (
-      <Link
-        href={project.data.link}
-        class="flex flex-col gap-4 sm:flex-row"
-        external
+    project.data.image && (
+      <button
+        type="button"
+        class="project-img-btn relative z-10 block aspect-[1200/630] w-full cursor-zoom-in overflow-hidden rounded-lg sm:max-w-3xs sm:shrink-0 sm:self-start"
+        aria-label={`Enlarge the ${project.data.name} image`}
       >
-        {project.data.image && (
-          <button
-            class="project-img-btn w-full sm:max-w-3xs sm:shrink-0 cursor-zoom-in overflow-hidden rounded-sm aspect-[1200/630] block"
-            data-img-src={imgSrc}
-            data-img-alt={project.data.name}
-          >
-            <Image
-              src={project.data.image}
-              alt={project.data.name}
-              width={1200}
-              height={1200}
-              class="w-full h-full object-cover object-center"
-            />
-          </button>
-        )}
-        <div class="grow">
-          <h3 class="mb-1 text-lg font-medium">{project.data.name}</h3>
-          <p class="text-muted-foreground mb-2 text-sm">
-            {project.data.description}
-          </p>
-          {project.data.startDate && (
-            <div class="text-muted-foreground/70 mb-2 flex flex-wrap items-center gap-x-2 text-xs">
-              <span class="flex items-center gap-x-1.5">
-                <Icon name="lucide:calendar" class="size-3" />
-                <span>
-                  {formatMonthYear(project.data.startDate)}
-                  {project.data.endDate
-                    ? ` → ${formatMonthYear(project.data.endDate)}`
-                    : ' → Present'}
-                </span>
-              </span>
-              <Separator orientation="vertical" className="h-4!" />
-              <span class="flex items-center gap-x-1">
-                <Icon name="lucide:external-link" class="size-3" />
-                <span>{extractDomain(project.data.link)}</span>
-              </span>
-            </div>
+        <Image
+          src={project.data.image}
+          alt=""
+          width={1200}
+          height={1200}
+          class={cn(
+            'h-full w-full object-center',
+            project.data.imageFit === 'contain'
+              ? 'bg-white object-contain'
+              : 'object-cover',
           )}
-          {project.data.tags && (
-            <div class="flex flex-wrap gap-2">
-              {project.data.tags.map((tag: string) => (
-                <Badge text={tag} />
-              ))}
-            </div>
-          )}
-        </div>
-      </Link>
-    ) : (
-      <div class="flex flex-col gap-4 sm:flex-row">
-        {project.data.image && (
-          <button
-            class="project-img-btn w-full sm:max-w-3xs sm:shrink-0 cursor-zoom-in overflow-hidden rounded-sm aspect-[1200/630] block"
-            data-img-src={imgSrc}
-            data-img-alt={project.data.name}
-          >
-            <Image
-              src={project.data.image}
-              alt={project.data.name}
-              width={1200}
-              height={1200}
-              class="w-full h-full object-cover object-center"
-            />
-          </button>
-        )}
-        <div class="grow">
-          <h3 class="mb-1 text-lg font-medium">{project.data.name}</h3>
-          <p class="text-muted-foreground mb-2 text-sm">
-            {project.data.description}
-          </p>
-          {project.data.startDate && (
-            <div class="text-muted-foreground/70 mb-2 flex flex-wrap items-center gap-x-2 text-xs">
-              <span class="flex items-center gap-x-1.5">
-                <Icon name="lucide:calendar" class="size-3" />
-                <span>
-                  {formatMonthYear(project.data.startDate)}
-                  {project.data.endDate
-                    ? ` → ${formatMonthYear(project.data.endDate)}`
-                    : ' → Present'}
-                </span>
-              </span>
-            </div>
-          )}
-          {project.data.tags && (
-            <div class="flex flex-wrap gap-2">
-              {project.data.tags.map((tag: string) => (
-                <Badge text={tag} />
-              ))}
-            </div>
-          )}
-        </div>
-      </div>
+        />
+      </button>
     )
   }
+  <div class="min-w-0 grow">
+    <h3 class="font-display mb-1 text-lg leading-snug font-semibold">
+      {
+        link ? (
+          <a
+            href={link}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="card-link inline-flex items-center gap-1.5 outline-none after:absolute after:inset-0 after:rounded-xl"
+          >
+            <span>{project.data.name}</span>
+            <Icon
+              name="lucide:arrow-up-right"
+              class="text-muted-foreground/60 group-hover:text-osu size-4 shrink-0 transition-[color,transform] duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 motion-reduce:transform-none motion-reduce:transition-none"
+            />
+          </a>
+        ) : (
+          <span>{project.data.name}</span>
+        )
+      }
+    </h3>
+    <p class="text-muted-foreground mb-2.5 text-sm leading-relaxed">
+      {project.data.description}
+    </p>
+    {
+      project.data.startDate && (
+        <div class="text-muted-foreground mb-3 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs">
+          <span class="flex items-center gap-x-1.5">
+            <Icon name="lucide:calendar" class="size-3" />
+            <span>
+              {formatMonthYear(project.data.startDate)}
+              {project.data.endDate
+                ? ` → ${formatMonthYear(project.data.endDate)}`
+                : ' → Present'}
+            </span>
+          </span>
+          {link && (
+            <>
+              <Separator orientation="vertical" className="h-3!" />
+              <span class="flex items-center gap-x-1">
+                <Icon name="lucide:link" class="size-3" />
+                <span>{extractDomain(link)}</span>
+              </span>
+            </>
+          )}
+        </div>
+      )
+    }
+    {
+      project.data.tags && (
+        <div class="flex flex-wrap gap-1.5">
+          {project.data.tags.map((tag: string) => (
+            <Badge text={tag} />
+          ))}
+        </div>
+      )
+    }
+  </div>
 </div>
 
+<style is:global>
+  #img-zoom {
+    max-width: none;
+    max-height: none;
+    margin: auto;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    cursor: zoom-out;
+  }
+  #img-zoom::backdrop {
+    background: rgb(0 0 0 / 0.6);
+  }
+  #img-zoom img {
+    display: block;
+    max-width: 88vw;
+    max-height: 85vh;
+    object-fit: contain;
+    border-radius: 8px;
+    background: #fff;
+    box-shadow: 0 25px 60px rgb(0 0 0 / 0.5);
+  }
+</style>
+
 <script>
-  if (!document.getElementById('img-click-preview')) {
-    const overlay = document.createElement('div')
-    overlay.id = 'img-click-preview'
-    overlay.className = 'fixed inset-0 z-50 flex items-center justify-center'
-    overlay.style.display = 'none'
-    overlay.style.background = 'rgba(0,0,0,0.6)'
-    overlay.innerHTML = '<img style="max-height:85vh;max-width:85vw;object-fit:contain;border-radius:8px;box-shadow:0 25px 60px rgba(0,0,0,0.5)" />'
-    overlay.addEventListener('click', () => { overlay.style.display = 'none' })
-    document.body.appendChild(overlay)
+  // One delegated listener, so the zoom keeps working after client-side
+  // navigation swaps the page. A <dialog> gives Escape and focus return.
+  const zoomDialog = () => {
+    let dialog = document.getElementById('img-zoom') as HTMLDialogElement | null
+    if (!dialog) {
+      dialog = document.createElement('dialog')
+      dialog.id = 'img-zoom'
+      dialog.setAttribute('aria-label', 'Enlarged image')
+      dialog.innerHTML = '<img alt="" />'
+      dialog.addEventListener('click', () => dialog!.close())
+      document.body.appendChild(dialog)
+    }
+    return dialog
   }
 
-  document.querySelectorAll('.project-img-btn').forEach((btn) => {
-    btn.addEventListener('click', (e) => {
-      e.preventDefault()
-      e.stopPropagation()
-      const overlay = document.getElementById('img-click-preview')!
-      const overlayImg = overlay.querySelector('img')!
-      const srcImg = (btn as HTMLElement).querySelector('img')
-      overlayImg.src = srcImg?.src || (btn as HTMLElement).dataset.imgSrc || ''
-      overlay.style.display = 'flex'
-    })
+  document.addEventListener('click', (e) => {
+    const btn =
+      e.target instanceof Element ? e.target.closest('.project-img-btn') : null
+    if (!btn) return
+    e.preventDefault()
+    const src = btn.querySelector('img')
+    if (!src) return
+    const dialog = zoomDialog()
+    const img = dialog.querySelector('img')!
+    img.src = src.currentSrc || src.src
+    img.alt = btn.getAttribute('aria-label')?.replace(/^Enlarge the /, '') ?? ''
+    dialog.showModal()
   })
 </script>

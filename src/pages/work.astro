@@ -13,6 +13,11 @@ const workProjects = allProjects.filter(
     !p.id.includes('cp-dashboard') &&
     !p.id.includes('cp-solutions') &&
     !p.id.includes('interview-platform') &&
+    !p.id.includes('icpc-huawei-scheduler') &&
+    !p.id.includes('clipfarm') &&
+    !p.id.includes('doomschool') &&
+    !p.id.includes('mindsolve') &&
+    !p.id.includes('seraph-agent') &&
     !p.id.includes('old-blog') &&
     !p.id.includes('nvim-configs') &&
     !p.id.includes('tmux-config'),
@@ -40,7 +45,10 @@ const years = Object.keys(projectsByYear).sort(
       {
         years.map((year) => (
           <section class="flex flex-col gap-y-4">
-            <div class="font-medium">{year}</div>
+            <h2 class="font-display text-muted-foreground flex items-center gap-3 text-sm font-semibold">
+              <span>{year}</span>
+              <span class="bg-border h-px flex-1" />
+            </h2>
             <ul class="flex flex-col gap-4">
               {projectsByYear[year].map((project) => (
                 <li>

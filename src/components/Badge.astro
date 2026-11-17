@@ -228,7 +228,7 @@ const categoryStyle = getCategoryStyle(content)
     !categoryStyle && variant === 'muted' && 'border-transparent bg-muted text-foreground',
     !categoryStyle && variant === 'outline' && 'text-foreground border-border',
     !categoryStyle && variant === 'default' && 'border-transparent bg-primary text-primary-foreground',
-    categoryStyle && 'border-border bg-[hsl(287,100%,95.5%)] text-[hsl(352.7,60%,30%)]',
+    categoryStyle && 'border-border bg-muted/50 text-foreground/75 [&_svg]:text-foreground/45',
     className,
   )}
 >

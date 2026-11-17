@@ -6,16 +6,23 @@ import Layout from '@/layouts/Layout.astro'
 import { getAllProjects } from '@/lib/data-utils'
 
 const allProjects = await getAllProjects()
-// Filter to show personal projects
-const projects = allProjects.filter(
-  (p) =>
-    p.id.includes('cp-dashboard') ||
-    p.id.includes('cp-solutions') ||
-    p.id.includes('interview-platform') ||
-    p.id.includes('tsukiyomi') ||
-    p.id.includes('nvim-configs') ||
-    p.id.includes('tmux-config'),
-)
+// Personal projects, in the order they are shown
+const order = [
+  'interview-platform',
+  'clipfarm',
+  'icpc-huawei-scheduler',
+  'doomschool',
+  'mindsolve',
+  'seraph-agent',
+  'tsukiyomi',
+  'cp-dashboard',
+  'cp-solutions',
+  'nvim-configs',
+  'tmux-config',
+]
+const projects = order
+  .map((id) => allProjects.find((p) => p.id === id))
+  .filter((p) => p !== undefined)
 ---
 
 <Layout>

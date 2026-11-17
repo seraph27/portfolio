@@ -8,6 +8,7 @@ const blog = defineCollection({
       title: z.string().max(60),
       description: z.string().max(150),
       date: z.coerce.date(),
+      updated: z.coerce.date().optional(),
       order: z.number().optional(),
       image: image().optional(),
       tags: z.array(z.string()).optional(),
@@ -47,7 +48,9 @@ const projects = defineCollection({
       name: z.string(),
       description: z.string(),
       tags: z.array(z.string()),
-      image: image(),
+      image: image().optional(),
+      // 'contain' keeps a whole logo visible; screenshots default to 'cover'
+      imageFit: z.enum(['cover', 'contain']).optional(),
       link: z.string().url().optional(),
       startDate: z.coerce.date().optional(),
       endDate: z.coerce.date().optional(),
