@@ -3,7 +3,7 @@ title: "μ"
 description: "Placeholder Mu post."
 date: 2025-10-23
 tags: ["Trie", "String Matching", "KMP", "Suffix Array", "Game Theory", "Interactive", "Constructive", "Ad-hoc", "Brain Teaser"]
-draft: false
+draft: true
 difficulties:
   - rating: 1.2
     mode: catch

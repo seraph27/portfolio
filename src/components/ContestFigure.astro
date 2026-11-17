@@ -1,0 +1,45 @@
+---
+interface Props {
+  name: string
+  alt: string
+  width?: number
+  height?: number
+}
+const { name, alt, width = 900, height = 640 } = Astro.props
+const base = `/static/icpc-2026/${name}`
+---
+
+<figure class="contest-figure">
+  <picture>
+    <source media="(max-width: 600px)" srcset={`${base}-phone.svg`} />
+    <img src={`${base}-desktop.svg`} {alt} {width} {height} loading="lazy" />
+  </picture>
+  <figcaption><slot /></figcaption>
+</figure>
+
+<style>
+  .contest-figure {
+    margin: 2rem 0;
+  }
+  picture {
+    display: block;
+  }
+  .contest-figure img {
+    display: block;
+    width: 100%;
+    height: auto;
+    margin: 0;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+  }
+  figcaption {
+    margin-top: 0.65rem;
+    color: var(--muted-foreground);
+    font-size: 0.75rem;
+    line-height: 1.65;
+  }
+  figcaption :global(a) {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+</style>

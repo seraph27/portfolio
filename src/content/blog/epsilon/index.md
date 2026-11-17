@@ -3,7 +3,7 @@ title: "ε"
 description: "Placeholder Epsilon post."
 date: 2025-11-08
 tags: ["Linked Lists", "Trees", "Simulation"]
-draft: false
+draft: true
 difficulties:
   - rating: 1.5
     mode: osu

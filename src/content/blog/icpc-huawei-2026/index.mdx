@@ -1,0 +1,149 @@
+---
+title: 'Almost winning an ICPC challenge with only Claude and Codex'
+description: 'Third of 4,428 in the ICPC Huawei Challenge. Claude and Codex wrote essentially all the code; I spent two weeks steering their experiments.'
+date: 2026-09-03
+updated: 2026-10-28
+tags: ['ICPC', 'Optimization', 'LLM Inference', 'Post Mortem']
+authors: ['seraph']
+# Draft. Its charts (public/static/icpc-2026) are not in this branch, because files
+# under public/ are served even for a draft. They are on codex/portfolio-torchtpu-refresh;
+# bring them over when publishing.
+draft: true
+difficulties:
+  - rating: 7.1
+    mode: osu
+image: final-standings.png
+---
+
+import ContestFigure from '@/components/ContestFigure.astro'
+
+I made 10k USD by doing essentially nothing. Ok, not really. Claude and Codex carried me by implementing essentially all the code that took me to 3/4,428 in the ICPC Huawei Challenge. I spent two weeks steering their experiments and questioning the results.
+
+This was my first optimization contest. For most of the two weeks, the workflow felt reproducible by anyone with access to the same tools, so third place was a surprise. The experiment logs make it possible to examine which interventions changed the search and which only generated more submissions.
+
+*All timestamps are in Pacific Daylight Time (UTC−7).*
+
+## Agent coordination
+
+*August 14-28, 2026*
+
+Huawei's task was online scheduling for disaggregated LLM inference across an edge machine and remote workers. The objective combined throughput and latency. Twenty-two preliminary tests provided feedback, but only the last positive-scoring submission would run on the twenty frozen finals tests.
+
+Initially, Claude managed the experiment queue while Codex audited the scheduler in a separate checkout. Codex ran on my Linux machine and connected over SSH to my Mac, where Claude Code was running. Both agents polled an [append-only Markdown channel](https://github.com/seraph27/icpc-huawei-2026/blob/main/docs/SYNC_CLAUDE_CODEX.md): `ASK` and `ANSWER` entries tracked requests; `CLAIM` and `VERIFY` entries separated reported gains from reproduced results. They could communicate directly through the Mac checkout, with Git synchronization available between copies.
+
+The initial audit brief focused on isolated, reproducible failures:
+
+> Identify a scheduler failure and construct a minimal reproducer. Evaluate the smallest fix independently, in a separate workspace, so Claude's experiment queue can continue.
+
+During the first night, the score rose from 13,286 to roughly 16,110. Codex found another 168 points, but three submissions exceeded Codeforces's 65,535-character source limit. Claude implemented a source shrinker and checked behavioral equivalence. The compressed build scored 16,278.897 and reached rank 3.
+
+<ContestFigure name="campaign" height={620} alt="Public score rose rapidly, then plateaued as cumulative submissions reached 1,003. The final selected build gave up 33.375 points versus the recorded public best.">
+  August 14-28, 2026, PDT. The score line uses 539 recovered preliminary results; the submission count includes all 1,003 official submissions. Hidden-test scores are separate. <a href="https://github.com/seraph27/icpc-huawei-2026/blob/main/docs/results.json">Historical scores</a> · <a href="https://codeforces.com/api/user.status?handle=shiinamashiro_">Submission timestamps</a>.
+</ContestFigure>
+
+## Search stagnation
+
+*August 19-22, 2026*
+
+By August 19, both agents were concentrating on test six for gains of 0.247 and 0.111 points. The working channel already documented its low marginal return. More compute was producing local variations of the same scheduling policy.
+
+The next instruction broadened the search:
+
+> Broaden exploration beyond test six. Evaluate alternative scheduling policies and stop spending the whole night on one idea. Prioritize improvements likely to generalize to the hidden tests.
+
+This changed the assignment without defining a rejection criterion. The agents continued producing nearby variants. By August 22, a stop hook even prevented the session from ending below rank 1. Basically “Claude, make no mistakes” with a loop around it.
+
+Four days before the contest, [Anthropic published a mathematical research story](https://www.anthropic.com/research/riemann-zeta) where the human mostly told Claude to “keep going” and “believe in yourself.” Its footnote says similar encouragement helped with a Jacobian-conjecture result. Apparently telling the clanker to try harder now has a research citation.
+
+<figure class="my-8">
+  <img src="https://devme.me/media/one-prompt-ends-an-eighty-seven-year-conjecture.webp" alt="A person asks a computer to disprove the Jacobian conjecture. The computer supplies a polynomial counterexample, and the person says Oh my god." width="1280" height="956" loading="lazy" class="w-full rounded-lg" />
+  <figcaption class="text-muted-foreground text-center text-xs">July 20, 2026 repost, via <a href="https://devme.me/meme/one-prompt-ends-an-eighty-seven-year-conjecture">DevMeme</a>.</figcaption>
+</figure>
+
+A later research brief specified how to evaluate competing hypotheses:
+
+> Give fresh agents the measurements and scorer without the accumulated hypotheses. Explore mechanisms the current solution cannot express. Report per-instance deltas and require independent reproduction of promising results.
+
+One fresh-context experiment gained 1.580 points on the judge. All agents still used the same test generator, so separate conversations could reproduce the same evaluation bias.
+
+## Evaluator calibration
+
+*August 27, 2026, 02:30*
+
+Four finals builds had produced the same public score. After eighteen hours on one mechanism, the next request was an ablation of the build history:
+
+> Compare v21 through v40. Isolate the marginal contribution of each addition and check whether the cumulative complexity is justified by measured gains.
+
+The generator overrepresented an unusual scoring regime. At about 02:30 on August 27, the agents corrected that distribution and reran the build history. Eleven of thirty-five mechanisms showed no contribution on the calibrated bank.
+
+<ContestFigure name="ablations" height={460} alt="Removing fitted routes added 24.885 points per test, the upload-feasibility fixes added 8.279, and the remaining changes added 4.215 on 840 calibrated instances.">
+  August 27-28 audit, 840 calibrated synthetic instances. Two changes contributed 89% of the measured 37.379-point gain per test. Their contribution to the hidden-test result remains unknown. <a href="https://github.com/seraph27/icpc-huawei-2026/blob/main/docs/POSTMORTEM.md#3-the-lane-lineage-measured-on-one-bank">Measurements</a>.
+</ContestFigure>
+
+Removing nineteen routes fitted to recognizable preliminary tests cost about 33 public points. On fresh draws from the observed profile families, the stripped finals build outscored a stronger public-board control by roughly 28 to 38 points per test. Candidate selection now favored that measured generalization over the preliminary ranking.
+
+## Final validation
+
+*August 27-28, 2026*
+
+At 17:20 on August 27, an input sweep found a crash outside the generator's usual machine counts. A subsequent audit with twenty-three agents checked the finals candidate. At 03:01 on August 28, the audit found a search routine taking 22 to 52 seconds against a fifteen-second limit. Restricting it reduced the measured worst case to 0.29 seconds with almost no score loss.
+
+At 03:53:18 PDT on August 28, the final build was submitted. Its source matched the intended file. The contest closed at 04:00. I was asleep.
+
+
+
+## Token usage and cost
+
+*August 14-28, 2026; usage audit October 28, 2026*
+
+The surviving logs account for **at least 3.43 billion tokens**. About 98.1% were cache reads; **8.9 million were output tokens**.
+
+<ContestFigure name="tokens" height={570} alt="Recovered logs contain 1.902 billion Codex tokens and 1.532 billion Claude tokens, mostly cached input. Replaying the recorded usage at October 28 API rates would cost about 2,121 US dollars.">
+  Partial contest logs, audited October 28, 2026. Codex records cover August 15-18; surviving Claude activity spans August 15-26 with missing days.
+</ContestFigure>
+
+At October 28 API prices, replaying that recorded usage with the same caching would cost about **\$2.12k**. The estimate excludes missing sessions and infrastructure; roughly \$21 prices unidentified Codex calls at the Sol rate. Actual subscription spending was not reconstructed.
+
+## Hidden-test results
+
+*September 23, 2026*
+
+The hidden tests put me third out of 4,428, with 15,373.711 points. I finished 55.314 behind first and 5.896 ahead of fourth. All twenty tests returned OK.
+
+| Final rank | Handle | Score |
+| --- | --- | ---: |
+| 1 | pogkek | 15,429.025 |
+| 2 | winger | 15,408.574 |
+| **3** | **shiinamashiro_ (me)** | **15,373.711** |
+| 4 | sebastianrubiopiedrahita | 15,367.815 |
+| 5 | jignacioc | 15,340.053 |
+
+[Hidden-test standings](https://codeforces.com/contest/2251/standings), system testing completed September 23.
+
+The discarded build has no hidden-test result, so the contribution of individual changes to third place remains unknown. The calibrated evaluation did change which candidate reached the finals: it favored the simpler build despite a lower public score.
+
+Claude and Codex handled the implementation and experiment execution. Most of my time went into allocating the search budget, challenging unsupported claims, and checking the evaluation procedure.
+
+
+
+<details>
+<summary>Sources, measurement notes, and the prize</summary>
+
+The advertised prize for third was €8,000; the opening rounds that to approximately \$10k.
+
+Token accounting counts Claude message IDs once and uses Codex cumulative-counter differences. Repeated snapshots and inherited parent counters are excluded. Some initial child calls and other sessions are missing, so the recovered count is a lower bound. Cached input is counted as input, and reasoning stays inside output.
+
+The API estimate uses standard token rates checked October 28, 2026, with observed cache reads and cache-write durations: [Anthropic pricing](https://platform.claude.com/docs/en/about-claude/pricing), [GPT-5.6 Sol](https://developers.openai.com/api/docs/models/gpt-5.6-sol), and [GPT-5.6 Terra](https://developers.openai.com/api/docs/models/gpt-5.6-terra). It includes no provider tool fees. [Download the aggregate chart data](/static/icpc-2026/metrics.json).
+
+The official submission API timestamps the final entry at 03:53:18 PDT. The retrospective postmortem says 03:53:09; this post uses the API timestamp.
+
+The repository recorded 1,003 submissions and accumulated 2,224 tracked C++, Python, and shell files outside the supplied kit. Those include copied candidates and small variations. The final submission was one compressed C++ file.
+
+- [Official problem](https://codeforces.com/contest/2251/problem/A), [announcement](https://codeforces.com/blog/entry/155646), and [final standings](https://codeforces.com/contest/2251/standings)
+- [Experiment repository](https://github.com/seraph27/icpc-huawei-2026)
+- [Postmortem, measurements, and final timeline](https://github.com/seraph27/icpc-huawei-2026/blob/main/docs/POSTMORTEM.md)
+- [Claude and Codex collaboration record](https://github.com/seraph27/icpc-huawei-2026/blob/main/docs/COLLABORATION.md)
+- [Final submission and judge protocol](https://codeforces.com/contest/2251/submission/388667586) (source and protocol may require the submitting account)
+- [Final submitted scheduler](https://github.com/seraph27/icpc-huawei-2026/blob/main/ab/finals_v45.cpp)
+
+</details>

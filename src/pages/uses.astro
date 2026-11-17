@@ -92,9 +92,10 @@ const personal: Section[] = [
   {
     heading: 'OS / Environment',
     items: [
-      { name: 'Linux', desc: 'Daily driver OS', link: 'https://kernel.org/', primary: true, icon: 'simple-icons:linux' },
-      { name: 'Omarchy', desc: 'Opinionated Arch Linux distro', link: 'https://omarchy.org/', primary: true, icon: 'simple-icons:archlinux' },
-      { name: 'Hyprland', desc: 'Wayland compositor and tiling WM', link: 'https://hyprland.org/', primary: true, icon: 'lucide:layout-grid' },
+      { name: 'macOS', desc: 'Daily driver OS', link: 'https://www.apple.com/macos/', primary: true, icon: 'simple-icons:macos' },
+      { name: 'Linux', desc: 'Previous daily driver', link: 'https://kernel.org/', icon: 'simple-icons:linux' },
+      { name: 'Omarchy', desc: 'Opinionated Arch Linux distro', link: 'https://omarchy.org/', icon: 'simple-icons:archlinux' },
+      { name: 'Hyprland', desc: 'Wayland compositor and tiling WM', link: 'https://hyprland.org/', icon: 'lucide:layout-grid' },
       { name: 'Zsh', desc: 'Shell with custom aliases and completions', link: 'https://www.zsh.org/', primary: true, icon: 'lucide:terminal' },
       { name: 'tmux', desc: 'Terminal multiplexer', link: 'https://github.com/tmux/tmux', primary: true, icon: 'lucide:square-terminal' },
     ],
@@ -113,7 +114,7 @@ const personal: Section[] = [
   {
     heading: 'Hardware',
     items: [
-      { name: 'MacBook M4 Air 512GB', desc: 'Main machine', link: 'https://www.apple.com/macbook-air/', primary: true, icon: 'simple-icons:apple' },
+      { name: 'MacBook Pro M5 Pro', desc: 'Main machine', link: 'https://www.apple.com/macbook-pro/', primary: true, icon: 'simple-icons:apple' },
       { name: 'Wacom CTL-485', desc: 'Tablet for osu and drawing', link: 'https://www.wacom.com/', primary: true, icon: 'lucide:pen-line' },
       { name: 'SteelSeries Rival 3 WL Gen 2', desc: 'Lavender colorway, wireless mouse', link: 'https://steelseries.com/', icon: 'simple-icons:steelseries' },
       { name: 'Sony WH-1000XM4', desc: 'Daily headphones', link: 'https://www.sony.com/', primary: true, icon: 'simple-icons:sony' },
@@ -141,14 +142,14 @@ const personal: Section[] = [
   }
 </style>
 
-<Layout>
+<Layout width="max-w-[calc(var(--container-5xl)+2rem)]">
   <PageHead slot="head" title="Stack" description="Tools, stack, and setup" />
 
   <div class="mx-auto w-full max-w-5xl">
     <Breadcrumbs items={[{ label: 'Stack', icon: 'lucide:wrench' }]} />
   </div>
 
-  <section class="mx-auto w-full max-w-5xl px-4 pb-12">
+  <section class="mx-auto w-full max-w-5xl pb-12">
     <div class="columns-1 md:columns-2 gap-8">
       {[...work, ...personal].map((section) => (
         <div class="break-inside-avoid mb-8">

@@ -3,7 +3,7 @@ title: "κ"
 description: "Placeholder Kappa post."
 date: 2025-10-27
 tags: ["Bit Manipulation", "Math", "Number Theory"]
-draft: false
+draft: true
 difficulties:
   - rating: 4.5
     mode: mania
