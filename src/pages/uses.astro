@@ -14,6 +14,8 @@ interface Item {
 
 interface Section {
   heading: string
+  /** Section hue; chips derive their tint, text and icon color from it */
+  color: string
   items: Item[]
 }
 
@@ -21,6 +23,7 @@ interface Section {
 const sections: Section[] = [
   {
     heading: 'Languages',
+    color: '#2563eb',
     items: [
       { name: 'C++', link: 'https://isocpp.org/', icon: 'simple-icons:cplusplus' },
       { name: 'TypeScript', link: 'https://www.typescriptlang.org/', icon: 'simple-icons:typescript' },
@@ -30,6 +33,7 @@ const sections: Section[] = [
   },
   {
     heading: 'Web',
+    color: '#7c3aed',
     items: [
       { name: 'Next.js', link: 'https://nextjs.org/', icon: 'simple-icons:nextdotjs' },
       { name: 'React', link: 'https://react.dev/', icon: 'simple-icons:react' },
@@ -44,6 +48,7 @@ const sections: Section[] = [
   },
   {
     heading: 'At LunaBill',
+    color: '#0d9488',
     items: [
       { name: 'Telnyx', link: 'https://telnyx.com/', icon: 'lucide:phone-call', note: 'telephony' },
       { name: 'Vogent', link: 'https://vogent.ai/', icon: 'lucide:phone', note: 'voice agents' },
@@ -55,6 +60,7 @@ const sections: Section[] = [
   },
   {
     heading: 'Tools',
+    color: '#16a34a',
     items: [
       { name: 'Neovim', link: 'https://neovim.io/', icon: 'simple-icons:neovim' },
       { name: 'tmux', link: 'https://github.com/tmux/tmux', icon: 'simple-icons:tmux' },
@@ -73,6 +79,7 @@ const sections: Section[] = [
   },
   {
     heading: 'Hardware',
+    color: '#ea580c',
     items: [
       { name: 'MacBook Pro M5 Pro', link: 'https://www.apple.com/macbook-pro/', icon: 'simple-icons:apple' },
       { name: 'Custom Mini ITX', icon: 'lucide:cpu', note: 'Ryzen 3600X, RTX 2060 Super' },
@@ -97,8 +104,11 @@ const sections: Section[] = [
     <dl class="divide-border divide-y">
       {
         sections.map((section) => (
-          <div class="grid gap-x-6 gap-y-3 py-5 first:pt-2 sm:grid-cols-[7.5rem_1fr]">
-            <dt class="font-display text-muted-foreground text-sm font-semibold sm:pt-1.5">
+          <div
+            class="grid gap-x-6 gap-y-3 py-5 first:pt-2 sm:grid-cols-[7.5rem_1fr]"
+            style={`--c: ${section.color}`}
+          >
+            <dt class="stack-heading font-display text-sm font-semibold sm:pt-1.5">
               {section.heading}
             </dt>
             <dd class="flex flex-wrap gap-2">
@@ -112,24 +122,10 @@ const sections: Section[] = [
                     }
                   : {}
                 return (
-                  <Tag
-                    {...props}
-                    class:list={[
-                      'inline-flex items-center gap-1.5 rounded-md border px-2.5 py-1 text-sm',
-                      item.link &&
-                        'hover:border-foreground/25 hover:bg-muted/50 transition-colors motion-reduce:transition-none',
-                    ]}
-                  >
-                    <Icon
-                      name={item.icon}
-                      class="text-foreground/55 size-3.5 shrink-0"
-                    />
-                    <span class="font-medium">{item.name}</span>
-                    {item.note && (
-                      <span class="text-muted-foreground text-xs">
-                        {item.note}
-                      </span>
-                    )}
+                  <Tag {...props} class="chip">
+                    <Icon name={item.icon} />
+                    <span>{item.name}</span>
+                    {item.note && <span class="chip-note">{item.note}</span>}
                   </Tag>
                 )
               })}
@@ -140,3 +136,63 @@ const sections: Section[] = [
     </dl>
   </section>
 </Layout>
+
+<style>
+  /* Same recipe as the tags on the home page: one hue per section. */
+  .stack-heading {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    align-self: start;
+    color: color-mix(in oklab, var(--c) 70%, #111);
+  }
+  .stack-heading::before {
+    content: '';
+    width: 0.375rem;
+    height: 0.375rem;
+    border-radius: 2px;
+    background: var(--c);
+  }
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.3rem 0.65rem;
+    border-radius: 0.5rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    line-height: 1.25rem;
+    color: color-mix(in oklab, var(--c) 68%, #111);
+    background: color-mix(in oklab, var(--c) 9%, transparent);
+    transition:
+      background-color 0.15s ease,
+      box-shadow 0.15s ease;
+  }
+  .chip :global(svg) {
+    width: 0.9rem;
+    height: 0.9rem;
+    flex-shrink: 0;
+    color: var(--c);
+  }
+  .chip-note {
+    font-size: 0.75rem;
+    font-weight: 400;
+    color: color-mix(in oklab, var(--c) 45%, #555);
+  }
+  a.chip {
+    box-shadow: inset 0 -1.5px 0 color-mix(in oklab, var(--c) 30%, transparent);
+  }
+  a.chip:hover {
+    background: color-mix(in oklab, var(--c) 18%, transparent);
+    box-shadow: inset 0 -1.5px 0 color-mix(in oklab, var(--c) 60%, transparent);
+  }
+  :global([data-theme='dark']) .chip,
+  :global([data-theme='dark']) .stack-heading {
+    color: color-mix(in oklab, var(--c) 55%, #fff);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .chip {
+      transition: none;
+    }
+  }
+</style>
