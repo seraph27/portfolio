@@ -9,17 +9,17 @@ interface Props {
 
 const { class: className, label = 'anime 3x3' } = Astro.props
 
-// Row by row, matching /static/anime-3x3.jpg
-const titles = [
-  'Steins;Gate',
-  'Attack on Titan',
-  'Re:Zero',
-  'A Certain Scientific Railgun',
-  'Code Geass',
-  'Made in Abyss',
-  'Summer Time Rendering',
-  'Lycoris Recoil',
-  'Kaguya-sama: Love Is War',
+// Row by row, matching /static/anime-3x3.jpg. `mal` is the MyAnimeList id.
+const tiles = [
+  { title: 'Steins;Gate', mal: 9253 },
+  { title: 'Attack on Titan', mal: 16498 },
+  { title: 'Re:Zero', mal: 31240 },
+  { title: 'A Certain Scientific Railgun', mal: 6213 },
+  { title: 'Code Geass', mal: 1575 },
+  { title: 'Made in Abyss', mal: 34599 },
+  { title: 'Summer Time Rendering', mal: 47194 },
+  { title: 'Lycoris Recoil', mal: 50709 },
+  { title: 'Kaguya-sama: Love Is War', mal: 37999 },
 ]
 ---
 
@@ -34,12 +34,14 @@ const titles = [
       decoding="async"
     />
     {
-      titles.map((title) => (
-        <button
-          type="button"
+      tiles.map(({ title, mal }) => (
+        <a
           class="a3-cell"
+          href={`https://myanimelist.net/anime/${mal}`}
+          target="_blank"
+          rel="noopener noreferrer"
           data-title={title}
-          aria-label={title}
+          aria-label={`${title} on MyAnimeList`}
         />
       ))
     }
@@ -60,7 +62,7 @@ const titles = [
     aspect-ratio: 1;
     overflow: hidden;
     border-radius: 0.75rem;
-    /* shown while the lazy image loads on first open */
+    /* shown while the lazy image loads */
     background: var(--muted);
   }
   .a3-grid img {
@@ -72,7 +74,6 @@ const titles = [
   }
   .a3-cell {
     position: relative;
-    cursor: default;
     background: transparent;
     transition: background-color 0.15s ease;
   }
@@ -141,11 +142,10 @@ const titles = [
     const cell = cellOf(e)
     if (cell) reset(cell.closest('[data-a3]'))
   })
-  // Touch browsers that do not focus buttons on tap never fire focusout,
+  // Touch browsers that do not focus links on tap never fire focusout,
   // so a tap anywhere else clears the caption.
   document.addEventListener('click', (e) => {
-    const cell = cellOf(e)
-    if (cell) return setLabel(cell)
+    if (cellOf(e)) return
     document
       .querySelectorAll('[data-a3]:has([data-active])')
       .forEach((figure) => reset(figure))
