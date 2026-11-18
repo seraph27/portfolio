@@ -2,7 +2,7 @@
 name: "Competitive Programming Dashboard"
 description: "Real-time competitive programming dashboard tracking contest performance, rating progression, and problem-solving statistics."
 tags: ["TypeScript", "Next.js"]
-image: "../../../public/sky.jpg"
+image: "../../../public/static/work/cp-dashboard.png"
 link: "https://seraphowo.vercel.app/"
 startDate: 2024-06-01
 ---
