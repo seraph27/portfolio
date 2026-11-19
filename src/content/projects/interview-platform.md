@@ -4,6 +4,8 @@ description: 'A community of 20k+ across social media and signups, using AI to l
 tags:
   ['SvelteKit', 'TypeScript', 'PostgreSQL', 'Drizzle', 'AI']
 image: '../../../public/static/work/whitebox.png'
+imageFocus: '50% 20%'
+imageZoom: 1.45
 link: 'https://whitebox.ac'
 startDate: 2026-01-01
 ---

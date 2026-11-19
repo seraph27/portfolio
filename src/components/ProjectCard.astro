@@ -31,6 +31,9 @@ const extractDomain = (url: string) => {
 }
 
 const link = project.data.link
+const fit = project.data.imageFit ?? 'cover'
+const focus = project.data.imageFocus ?? '50% 50%'
+const zoom = project.data.imageZoom ?? 1
 ---
 
 <div
@@ -49,7 +52,8 @@ const link = project.data.link
           alt=""
           width={1200}
           height={1200}
-          class="absolute inset-0 h-full w-full object-contain object-center"
+          class={`absolute inset-0 h-full w-full ${fit === 'contain' ? 'object-contain' : 'object-cover'}`}
+          style={`object-position:${focus};transform-origin:${focus};transform:scale(${zoom})`}
         />
       </button>
     )

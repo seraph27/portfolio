@@ -49,8 +49,14 @@ const projects = defineCollection({
       description: z.string(),
       tags: z.array(z.string()),
       image: image().optional(),
-      // The card always shows the whole image, never a crop. This is the frame
-      // color behind it when the image is not 11:8; defaults to white.
+      // Card pictures fill an 11:8 frame. `imageFocus` is the point that stays
+      // in view (CSS position, e.g. '50% 20%') and `imageZoom` magnifies around
+      // it, so the readable part of a screenshot is shown large.
+      imageFocus: z.string().optional(),
+      imageZoom: z.number().optional(),
+      // 'contain' is for wide wordmark logos that must not be cut
+      imageFit: z.enum(['cover', 'contain']).optional(),
+      // Frame color behind a 'contain' or zoomed-out image; defaults to white
       imageBg: z.string().optional(),
       link: z.string().url().optional(),
       startDate: z.coerce.date().optional(),
