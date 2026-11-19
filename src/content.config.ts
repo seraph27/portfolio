@@ -49,8 +49,9 @@ const projects = defineCollection({
       description: z.string(),
       tags: z.array(z.string()),
       image: image().optional(),
-      // 'contain' keeps a whole logo visible; screenshots default to 'cover'
-      imageFit: z.enum(['cover', 'contain']).optional(),
+      // The card always shows the whole image, never a crop. This is the frame
+      // color behind it when the image is not 11:8; defaults to white.
+      imageBg: z.string().optional(),
       link: z.string().url().optional(),
       startDate: z.coerce.date().optional(),
       endDate: z.coerce.date().optional(),

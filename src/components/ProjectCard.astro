@@ -1,7 +1,6 @@
 ---
 import Badge from '@/components/Badge.astro'
 import { Separator } from '@/components/ui/separator'
-import { cn } from '@/lib/utils'
 
 import { Icon } from 'astro-icon/components'
 import { Image } from 'astro:assets'
@@ -14,7 +13,12 @@ interface Props {
 const { project } = Astro.props
 
 const formatMonthYear = (date: Date) => {
-  return date.toLocaleDateString('en-US', { month: 'short', year: 'numeric' })
+  // Dates in content are calendar dates; UTC keeps the month the same on every machine
+  return date.toLocaleDateString('en-US', {
+    month: 'short',
+    year: 'numeric',
+    timeZone: 'UTC',
+  })
 }
 
 const extractDomain = (url: string) => {
@@ -30,13 +34,14 @@ const link = project.data.link
 ---
 
 <div
-  class="group hover:border-foreground/25 has-[.card-link:focus-visible]:outline-ring relative flex flex-col gap-4 rounded-xl border p-4 transition-[border-color,box-shadow] duration-200 hover:shadow-[0_10px_30px_-18px_rgb(0_0_0/0.35)] has-[.card-link:focus-visible]:outline-2 has-[.card-link:focus-visible]:outline-offset-2 motion-reduce:transition-none sm:flex-row sm:gap-5"
+  class="group hover:border-osu/60 has-[.card-link:focus-visible]:outline-ring relative flex h-full flex-col gap-4 rounded-xl border p-4 transition-[border-color,box-shadow] duration-200 hover:shadow-[0_10px_30px_-18px_rgb(255_102_171/0.55)] has-[.card-link:focus-visible]:outline-2 has-[.card-link:focus-visible]:outline-offset-2 motion-reduce:transition-none sm:min-h-[13.75rem] sm:flex-row sm:gap-5"
 >
   {
     project.data.image && (
       <button
         type="button"
-        class="project-img-btn relative z-10 block aspect-[1200/630] w-full cursor-zoom-in overflow-hidden rounded-lg sm:max-w-3xs sm:shrink-0 sm:self-start"
+        class="project-img-btn ring-foreground/10 relative z-10 block aspect-[11/8] w-full shrink-0 cursor-zoom-in overflow-hidden rounded-lg ring-1 sm:aspect-auto sm:w-64 sm:self-stretch"
+        style={`background:${project.data.imageBg ?? '#fff'}`}
         aria-label={`Enlarge the ${project.data.name} image`}
       >
         <Image
@@ -44,17 +49,12 @@ const link = project.data.link
           alt=""
           width={1200}
           height={1200}
-          class={cn(
-            'h-full w-full object-center',
-            project.data.imageFit === 'contain'
-              ? 'bg-white object-contain'
-              : 'object-cover',
-          )}
+          class="absolute inset-0 h-full w-full object-contain object-center"
         />
       </button>
     )
   }
-  <div class="min-w-0 grow">
+  <div class="flex min-w-0 grow flex-col">
     <h3 class="font-display mb-1 text-lg leading-snug font-semibold">
       {
         link ? (
@@ -62,12 +62,12 @@ const link = project.data.link
             href={link}
             target="_blank"
             rel="noopener noreferrer"
-            class="card-link inline-flex items-center gap-1.5 outline-none after:absolute after:inset-0 after:rounded-xl"
+            class="card-link outline-none after:absolute after:inset-0 after:rounded-xl"
           >
             <span>{project.data.name}</span>
             <Icon
               name="lucide:arrow-up-right"
-              class="text-muted-foreground/60 group-hover:text-osu size-4 shrink-0 transition-[color,transform] duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 motion-reduce:transform-none motion-reduce:transition-none"
+              class="text-osu ml-1 inline-block size-4 align-[-0.1em] opacity-70 transition-[opacity,transform] duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:opacity-100 motion-reduce:transform-none motion-reduce:transition-none"
             />
           </a>
         ) : (
@@ -75,42 +75,44 @@ const link = project.data.link
         )
       }
     </h3>
-    <p class="text-muted-foreground mb-2.5 text-sm leading-relaxed">
+    <p class="text-muted-foreground mb-3 text-sm leading-relaxed">
       {project.data.description}
     </p>
-    {
-      project.data.startDate && (
-        <div class="text-muted-foreground mb-3 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs">
-          <span class="flex items-center gap-x-1.5">
-            <Icon name="lucide:calendar" class="size-3" />
-            <span>
-              {formatMonthYear(project.data.startDate)}
-              {project.data.endDate
-                ? ` → ${formatMonthYear(project.data.endDate)}`
-                : ' → Present'}
-            </span>
-          </span>
-          {link && (
-            <>
-              <Separator orientation="vertical" className="h-3!" />
-              <span class="flex items-center gap-x-1">
-                <Icon name="lucide:link" class="size-3" />
-                <span>{extractDomain(link)}</span>
+    <div class="mt-auto">
+      {
+        project.data.startDate && (
+          <div class="text-muted-foreground mb-2.5 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs">
+            <span class="flex items-center gap-x-1.5">
+              <Icon name="lucide:calendar" class="size-3" />
+              <span>
+                {formatMonthYear(project.data.startDate)}
+                {project.data.endDate
+                  ? ` → ${formatMonthYear(project.data.endDate)}`
+                  : ' → Present'}
               </span>
-            </>
-          )}
-        </div>
-      )
-    }
-    {
-      project.data.tags && (
-        <div class="flex flex-wrap gap-1.5">
-          {project.data.tags.map((tag: string) => (
-            <Badge text={tag} />
-          ))}
-        </div>
-      )
-    }
+            </span>
+            {link && (
+              <>
+                <Separator orientation="vertical" className="h-3!" />
+                <span class="flex items-center gap-x-1">
+                  <Icon name="lucide:link" class="size-3" />
+                  <span>{extractDomain(link)}</span>
+                </span>
+              </>
+            )}
+          </div>
+        )
+      }
+      {
+        project.data.tags && (
+          <div class="flex flex-wrap gap-1.5">
+            {project.data.tags.map((tag: string) => (
+              <Badge text={tag} />
+            ))}
+          </div>
+        )
+      }
+    </div>
   </div>
 </div>
 

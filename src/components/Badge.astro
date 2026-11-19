@@ -225,10 +225,9 @@ const categoryStyle = getCategoryStyle(content)
   data-slot="badge"
   class={cn(
     'inline-flex items-center justify-center rounded-md border px-2 py-0.5 text-xs font-medium w-fit whitespace-nowrap shrink-0 gap-1 overflow-hidden',
-    !categoryStyle && variant === 'muted' && 'border-transparent bg-muted text-foreground',
-    !categoryStyle && variant === 'outline' && 'text-foreground border-border',
-    !categoryStyle && variant === 'default' && 'border-transparent bg-primary text-primary-foreground',
-    categoryStyle && 'border-border bg-muted/50 text-foreground/75 [&_svg]:text-foreground/45',
+    variant === 'muted' && 'badge-pink border-transparent',
+    variant === 'outline' && 'text-foreground border-border',
+    variant === 'default' && 'border-transparent bg-primary text-primary-foreground',
     className,
   )}
 >
@@ -236,3 +235,19 @@ const categoryStyle = getCategoryStyle(content)
   {!showIcon && !categoryStyle && <Icon name="lucide:hash" class="size-3" />}
   <slot>{text}</slot>
 </span>
+
+<style>
+  /* Same recipe as the inline tags on the home page, in osu pink */
+  .badge-pink {
+    --c: #e63b85;
+    color: color-mix(in oklab, var(--c) 62%, #111);
+    background: color-mix(in oklab, var(--c) 10%, transparent);
+  }
+  .badge-pink :global(svg) {
+    color: var(--c);
+  }
+  :global([data-theme='dark']) .badge-pink {
+    color: color-mix(in oklab, var(--c) 55%, #fff);
+    background: color-mix(in oklab, var(--c) 20%, transparent);
+  }
+</style>
